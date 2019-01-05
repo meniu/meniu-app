@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-meniuser",
-    "slug": "app-meniuser",
+    "name": "app-user",
+    "slug": "app-user",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
