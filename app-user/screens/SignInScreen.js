@@ -1,11 +1,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Button, StyleSheet,  View, Text, 
+import { Button, Image, StyleSheet,  View, Text, 
   Platform, TextInput, KeyboardAvoidingView } from 'react-native';
 import Colors from "../constants/Colors";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
+import { LoginButton } from 'react-native-fbsdk';
+var { FBLogin, FBLoginManager } = require('react-native-facebook-login');
 
 class SignInScreen extends Component {
 
@@ -15,6 +17,9 @@ class SignInScreen extends Component {
     this.state = {
       email:"",
       password:"",
+      signedIn: false, 
+      name: "", 
+      photoUrl: ""
     };
 
     this.handleEmailInputSubmit = this.handleEmailInputSubmit.bind(this);
@@ -23,6 +28,28 @@ class SignInScreen extends Component {
     this.loginWithFacebook = this.loginWithFacebook.bind(this);
     this.loginWithGoogle = this.loginWithGoogle.bind(this);
   }
+
+  async googleSignIn(){
+    try {
+      const result = await Expo.Google.logInAsync({
+        androidClientId: "325641301007-dbn776ocng6arpk21leh38onr7t66j5e.apps.googleusercontent.com",
+        //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
+        scopes: ["profile", "email"]
+      })
+      if (result.type === "success") {
+        console.log("result.user", result.user);
+        this.setState({
+          signedIn: true,
+          name: result.user.name,
+          photoUrl: result.user.photoUrl
+        })
+      } else {
+        console.log("cancelled")
+      }
+    } catch (e) {
+      console.log("error", e)
+    }
+}
 
   handleEmailInputSubmit() {
     // this.setState({focusPasswordInput: true});
@@ -97,18 +124,11 @@ class SignInScreen extends Component {
         />
         <Text>¿Olvidaste tu contraseña?</Text>
         <View style={styles.buttons}>
-          <Icon.Button
-            name="facebook"
-            backgroundColor="#3b5998"
-            onPress={this.loginWithFacebook}
-            {...iconStyles}
-          >
-            Ingresa con Facebook
-          </Icon.Button>
+          <FBLogin/>
           <Icon.Button
             name="google"
             backgroundColor="#DD4B39"
-            onPress={this.loginWithGoogle}
+            onPress={this.googleSignIn}
             {...iconStyles}
           >
             Ingresa con Google

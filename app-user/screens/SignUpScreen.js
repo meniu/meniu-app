@@ -4,9 +4,6 @@ import React, { Component } from "react";
 import { Button, StyleSheet,  View, Text, 
   Platform, TextInput, KeyboardAvoidingView } from "react-native";
 import Colors from "../constants/Colors";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import SafariView from 'react-native-safari-view';
-
 
 class SignUpScreen extends Component {
 
@@ -26,8 +23,6 @@ class SignUpScreen extends Component {
     this.handleEmailInputSubmit = this.handleEmailInputSubmit.bind(this);
     this.handlePasswordInputSubmit = this.handlePasswordInputSubmit.bind(this);
     this.signWithUser = this.signWithUser.bind(this);
-    this.signWithFacebook = this.signWithFacebook.bind(this);
-    this.signWithGoogle = this.signWithGoogle.bind(this);
   }
 
   handleFirstNameInputSubmit(){
@@ -51,17 +46,7 @@ class SignUpScreen extends Component {
     this.props.navigation.navigate("Main");
   }
 
-  // Handle Login with Facebook button tap
-  signWithFacebook(){
-    // this.openURL('https://localhost:3000/auth/facebook');
-    this.props.navigation.navigate("Main");
-  } 
 
-  // Handle Login with Google button tap
-  signWithGoogle(){
-    this.props.navigation.navigate("Main");
-    // this.openURL('https://localhost:3000/auth/google');
-  } 
 
   render() {
     return (
@@ -130,24 +115,6 @@ class SignUpScreen extends Component {
           onPress={this.signWithUser}
         />
         <Text>¿Olvidaste tu contraseña?</Text>
-        <View style={styles.buttons}>
-          <Icon.Button
-            name="facebook"
-            backgroundColor="#3b5998"
-            onPress={this.signWithFacebook}
-            {...iconStyles}
-          >
-            Registro con Facebook
-          </Icon.Button>
-          <Icon.Button
-            name="google"
-            backgroundColor="#DD4B39"
-            onPress={this.signWithGoogle}
-            {...iconStyles}
-          >
-            Registro con Google
-          </Icon.Button>
-        </View>
       </KeyboardAvoidingView>
     );
   }
