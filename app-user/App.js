@@ -5,6 +5,7 @@ import HomeScreen from "./screens/HomeScreen.js";
 import SignUpScreen from "./screens/SignUpScreen.js";
 import SignInScreen from "./screens/SignInScreen.js";
 import MainScreen from "./screens/MainScreen.js";
+import Colors from "./constants/Colors.js";
 
 const AppNavigator = createStackNavigator({
   Home: {
@@ -21,6 +22,12 @@ const AppNavigator = createStackNavigator({
   },
 }, {
     initialRouteName: "Home",
+    /* header default config is here */
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: Colors.tintColor ,
+      }, 
+    },
 });
 
 const AppContainer = createAppContainer(AppNavigator);
