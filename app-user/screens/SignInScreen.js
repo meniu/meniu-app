@@ -37,7 +37,6 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
         scopes: ["profile", "email"]
       })
         if (result.type === "success") {
-          console.log("result.user", result.user);
           if(Platform.OS === 'android')
             ToastAndroid.show('Sesión iniciada', ToastAndroid.SHORT);
           this.props.navigation.navigate("Main",{
