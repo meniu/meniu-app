@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import { ToastAndroid, Platform, Image, StyleSheet,  
-  TextInput, Picker, FlatList, View, Text } from 'react-native';
+  TextInput, Picker, FlatList, View, Text,
+  AsyncStorage } from 'react-native';
 import Colors from "../../../constants/Colors";
 import PlateComponent from "../../../components/PlateComponent";
 
@@ -13,7 +14,7 @@ export default class TrendingPromotionsScreen extends Component {
     this.state = {
       user:this.props.user,
       signedIn:true,
-      text:"Búsqueda",
+      text:"",
     };
   }
 
@@ -22,15 +23,29 @@ export default class TrendingPromotionsScreen extends Component {
   };
 
   componentDidMount() {
-    let user = this.props.navigation.getParam("user",{});
-    if(!user)
+    this.getLocalUser();
+    
+  }
+
+  async getLocalUser(){
+    try {
+      const value = await AsyncStorage.getItem('user');
+      const user = JSON.parse(value);
+      if (user !== null) {
+        // We have data!!
+        if(Platform.OS === 'android')
+          ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
+        this.setState({
+          user 
+        });
+      }
+    } catch (error) {
+      // Error retrieving data
+      alert(error);
       this.setState({
         signedIn:false 
       });
-    else
-      this.setState({
-        user 
-      });
+    }
   }
 
   checkSignIn(){
@@ -62,26 +77,30 @@ export default class TrendingPromotionsScreen extends Component {
               source={{uri: this.state.user.photoUrl}}
             />
             <Text>{this.state.user.name}</Text>
+            <Text>¡Bienvenido a Meniu, {this.state.user.name}!</Text>
           </View>
-          <Text>¡Bienvenido a Meniu, {this.state.user.name}!</Text>
           <View style={styles.horizontalView}>
             <TextInput
-              style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+              style={{flex:1, height: 40, borderColor: 'gray', borderWidth: 1}}
               onChangeText={(text) => this.setState({text})}
               value={this.state.text}
+              placeholder="Búsqueda"
             />
             <Picker
               selectedValue={""}
-              style={{ height: 50, width: 100 }}
+              style={{ flex:1, height: 50, width: 100 }}
               onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
               <Picker.Item label="Premium" value="PR" />
               <Picker.Item label="Basic" value="BA" />
             </Picker>
           </View>
-          <FlatList
-            data={[{key:"Chilaquiles"},{key:"Burrito"},{key:"Taco"}]}
-            renderItem={({item}) => <PlateComponent dishName={item.key}/>}
-          />
+          <View 
+            style={styles.flatListView}>
+            <FlatList
+              data={[{key:"Chilaquiles"},{key:"Burrito"},{key:"Taco"}]}
+              renderItem={({item}) => <PlateComponent dishName={item.key}/>}
+            />
+          </View>
         </View>
       );
   }
@@ -95,11 +114,18 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.backgroundColor,
   },
   userView:{
+    flex:2,
     alignItems:"center",
   },
   horizontalView:{
+    flex:1,
     flexDirection:"row",
     justifyContent: "space-around",
     backgroundColor: Colors.cardColor,
+  },
+  flatListView:{
+    flex:7
   }
+
 });
+

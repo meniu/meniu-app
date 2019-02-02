@@ -10,6 +10,9 @@ import Colors from "./constants/Colors.js";
 const AppNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,
+    navigationOptions: ({navigation}) =>({
+       header: null,
+     }),
   },
   SignUp: {
     screen: SignUpScreen,
@@ -19,6 +22,9 @@ const AppNavigator = createStackNavigator({
   },
   Main: {
     screen: MainScreen,
+    navigationOptions: ({navigation}) =>({
+       header: null,
+     }),
   },
 }, {
     initialRouteName: "Home",

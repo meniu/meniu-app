@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
-  Platform, TextInput, KeyboardAvoidingView } from 'react-native';
+  Platform, TextInput, KeyboardAvoidingView,
+  AsyncStorage } from 'react-native';
   import Colors from "../constants/Colors";
   import Icon from 'react-native-vector-icons/FontAwesome';
   import SafariView from 'react-native-safari-view';
@@ -37,17 +38,26 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
         scopes: ["profile", "email"]
       })
         if (result.type === "success") {
-          if(Platform.OS === 'android')
-            ToastAndroid.show('Sesión iniciada', ToastAndroid.SHORT);
-          this.props.navigation.navigate("Main",{
-            user:result.user
-          });
+          
+          this.saveUserLocally(result.user);
+          
 
         } else {
           console.log("cancelled")
         }
       } catch (e) {
         console.log("error", e)
+      }
+    }
+
+    async saveUserLocally(user){
+      try {
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+        this.props.navigation.navigate("Main");
+      } catch (error) {
+        // Error saving data
+        if(Platform.OS === 'android')
+            ToastAndroid.show('No se pudo ingresar con el usuario. Intente de nuevo', ToastAndroid.SHORT);
       }
     }
 
