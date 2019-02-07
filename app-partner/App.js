@@ -5,6 +5,7 @@ import HomeScreen from "./screens/HomeScreen.js";
 import SignInScreen from "./screens/SignInScreen.js";
 import MainScreen from "./screens/MainScreen.js";
 import PlateSaleScreen from "./screens/PlateSaleScreen.js";
+import CodeScannedScreen from "./screens/CodeScannedScreen.js";
 
 const AppNavigator = createStackNavigator({
   Home: {
@@ -18,6 +19,9 @@ const AppNavigator = createStackNavigator({
   },
   PlateSale: {
     screen: PlateSaleScreen,
+  },
+  CodeScanned: {
+    screen: CodeScannedScreen,
   }
 }, {
     initialRouteName: "Home",
