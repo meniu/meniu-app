@@ -16,7 +16,7 @@ export default class PartnerSelectionScreen extends React.Component {
   
     this.state = {
       text:"",
-      //Layout: By icon or card
+      //Layout: By icon or traditional
       layout:"icon",
     };
 
@@ -28,8 +28,6 @@ export default class PartnerSelectionScreen extends React.Component {
   };
 
   handleRestaurantPress(restaurant){
-    // alert(this.props.navigation);
-
     this.props.navigation.navigate("RestaurantPlates",{
       restaurant
     });
@@ -50,7 +48,7 @@ export default class PartnerSelectionScreen extends React.Component {
             style={{ flex:1, height: 50, width: 100 }}
             onValueChange={(itemValue, itemIndex) => this.setState({layout: itemValue})}>
             <Picker.Item label="Iconos" value="icon" />
-            <Picker.Item label="Tradicional" value="card" />
+            <Picker.Item label="Tradicional" value="traditional" />
           </Picker>
           <Button
           style={{flex:1, height:50}}
@@ -68,15 +66,15 @@ export default class PartnerSelectionScreen extends React.Component {
               numColumns={(this.state.layout==="icon" ? 2 : 1)}
               keyExtractor={(item)=>item.name}
               // onPressItem={this.handleRestaurantPress}
-              data={[{name:"Super Duper", description:"restaurante hamburguesas", rating:5,
+              data={[{name:"Super Duper", description:"restaurante hamburguesas", rating:5, type:"restaurant",
                         uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-1.png",},
-                    {name:"Polliseria", description:"restaurante pollos", rating:4.5,
+                    {name:"Polliseria", description:"restaurante pollos", rating:4.5, type:"restaurant",
                               uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-2.png",},
-                    {name:"One Burrito", description:"restaurante burritos", rating:3.5,
+                    {name:"One Burrito", description:"restaurante burritos", rating:3.5, type:"restaurant",
                               uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-3.png",},
-                    {name:"Flügel", description:"restaurante alitas", rating:4,
+                    {name:"Flügel", description:"restaurante alitas", rating:4, type:"restaurant",
                               uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-4.png",},
-                    {name:"Próximamente", description:"restaurante pendiente", rating:5,
+                    {name:"Próximamente", description:"restaurante pendiente", rating:5, type:"restaurant",
                               uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-5.png",},
                     ]}
               renderItem={({item}) => {
@@ -88,7 +86,7 @@ export default class PartnerSelectionScreen extends React.Component {
                                 resizeMode="contain"
                               />
                           </TouchableHighlight>);
-                else
+                else if(this.state.layout==="traditional")
                   return <CardComponent entity={item} action={()=>this.handleRestaurantPress(item)}/>
               }
             }

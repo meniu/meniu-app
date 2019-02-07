@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
-import PlateComponent from "../../../components/PlateComponent";
+import CardComponent from "../../../components/CardComponent";
 
 import {
   StyleSheet,  Text, TextInput,  View, Image, Picker, Button,
@@ -11,6 +11,17 @@ import {
 } from 'react-native';
 
 class RestaurantPlatesScreen extends Component {
+  
+  constructor(props) {
+    super(props);
+
+    const { navigation } = this.props;
+    this.restaurant = navigation.getParam('restaurant', 'Sin Restaurante');
+    this.state = {};
+
+    this.handlePlatePress = this.handlePlatePress.bind(this);
+  }
+  
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('restaurant', 'Platos de Restaurante').name,
@@ -18,24 +29,25 @@ class RestaurantPlatesScreen extends Component {
   };
   
 
-  constructor(props) {
-    super(props);
 
-    const { navigation } = this.props;
-    this.restaurant = navigation.getParam('restaurant', 'Sin Restaurante');
-    this.state = {};
+  handlePlatePress(plate){
+    this.props.navigation.navigate("Order",{
+      plate: plate,
+      restaurant: this.restaurant
+    });
   }
-
 
   render() {
     return (
       <View style={styles.container}>
-        <Image
-          style={{flex:3, height: Layout.window.width/2, width: Layout.window.width/2}}
-          source={{uri:this.restaurant.uri}}
-          resizeMode="contain"
-        />
-        <Text style={{flex:1}}>Cómo llegar</Text>
+        <View style={styles.imageContainer}>
+          <Image
+            style={{height: Layout.window.width/3, width: Layout.window.width/3}}
+            source={{uri:this.restaurant.uri}}
+            resizeMode="contain"
+          />
+          <Text>Cómo llegar</Text>
+        </View>
         <View style={styles.horizontalView}>
           <TextInput
             style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1}}
@@ -58,11 +70,19 @@ class RestaurantPlatesScreen extends Component {
           />
         </View>
         <View style={styles.flatListView}>
-          <ScrollView style={{flex:7}}>
+          <ScrollView style={{flex:1}}>
             <FlatList
               style={{flex:1}}
-              data={[{key:"Chilaquiles"},{key:"Burrito"},{key:"Taco"}]}
-              renderItem={({item}) => <PlateComponent dishName={item.key}/>}
+              keyExtractor={(item)=>item.name}
+              data={[
+                {name:"Chilaquiles", description:"Deliciosos Chilaquiles", rating:4,discount:"1000", type:"plate",
+                uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
+                {name:"Burrito", description:"Delicioso Burrito", rating:4,discount:"1000", type:"plate",
+                uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
+                {name:"Taco", description:"Delicioso Taco", rating:4,discount:"1000", type:"plate",
+                uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
+              ]}
+              renderItem={({item}) => <CardComponent entity={item} action={()=>this.handlePlatePress(item)}/>}
             />
           </ScrollView>
         </View>
@@ -74,9 +94,13 @@ class RestaurantPlatesScreen extends Component {
 const styles = StyleSheet.create({
   container:{ 
     flex: 1, 
-    alignItems: "center", 
-    justifyContent: "flex-start",
+    alignItems: "stretch", 
+    justifyContent: "space-between",
     backgroundColor: Colors.backgroundColor,
+  },
+  imageContainer:{
+    flex:3,
+    alignItems:"center",
   },
   userView:{
     flex:2,
@@ -89,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.cardColor,
   },
   flatListView:{
-    flex:5,
+    flex:6,
     alignItems:"stretch"
   }
 

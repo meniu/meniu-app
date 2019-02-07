@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { Image } from 'react-native';
 import { createAppContainer, createStackNavigator, createBottomTabNavigator } from "react-navigation";
 import TrendingPromotionsScreen from "./tabs/trending_promotions/TrendingPromotionsScreen.js";
 import PartnerSelectionScreen from "./tabs/partner_selection/PartnerSelectionScreen.js";
@@ -80,6 +81,10 @@ const TabNavigator = createBottomTabNavigator({
 
         // You can return any component that you like here!
         return <IconComponent name={iconName} size={25} color={tintColor} />;
+        // return <Image
+        //     style={{width: undefined, height: undefined}}
+        //     source={require('../assets/images/M-sin-fondo.jpeg')}
+        //   />;
       }
     }),
   },

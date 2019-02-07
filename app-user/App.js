@@ -1,10 +1,13 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 import { createAppContainer, createStackNavigator, StackActions, NavigationActions } from "react-navigation"; // Version can be specified in package.json
+
 import HomeScreen from "./screens/HomeScreen.js";
 import SignUpScreen from "./screens/SignUpScreen.js";
 import SignInScreen from "./screens/SignInScreen.js";
 import MainScreen from "./screens/MainScreen.js";
+import OrderScreen from "./screens/OrderScreen.js";
+
 import Colors from "./constants/Colors.js";
 
 const AppNavigator = createStackNavigator({
@@ -26,6 +29,9 @@ const AppNavigator = createStackNavigator({
        header: null,
      }),
   },
+  Order: {
+    screen: OrderScreen,
+  }
 }, {
     initialRouteName: "Home",
     /* header default config is here */
