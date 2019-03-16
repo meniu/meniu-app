@@ -5,7 +5,7 @@ import { BarCodeScanner, Permissions } from 'expo';
 import { StackActions, NavigationActions } from "react-navigation";
 
 import {
-  StyleSheet, Alert,
+  StyleSheet, Alert, Modal,
   View, Text
 } from 'react-native';
 import Colors from "../constants/Colors";
@@ -35,19 +35,21 @@ class PlateSaleScreen extends Component {
     if (this.state.hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
     }
-    return (
+    let try1 = (
       <View style={styles.container}>
-        <Text style={{ flex: 1 }}>
-          Escanea el código QR del usuario Meniu para registrar el plato que quiere comprar
-        </Text>
-        <View style={{ flex: 6 }}>
+        <View style={styles.QRcontainer}>
           <BarCodeScanner
             onBarCodeScanned={this.handleBarCodeScanned}
             style={{height: 200, width: 200}}
           />
         </View>
+        <Text style={{ flex: 1 }}>
+          Escanea el código QR del usuario Meniu para registrar el plato que quiere comprar
+        </Text>
       </View>
     );
+
+    return try1;
   }
 }
 
@@ -57,6 +59,11 @@ const styles = StyleSheet.create({
     alignItems: "center", 
     justifyContent: "space-between",
     backgroundColor: Colors.backgroundColor
+  },
+  QRcontainer: {
+    flex:6,
+    alignItems:"center",
+    justifyContent: "center",
   },
 });
 

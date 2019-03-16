@@ -4,6 +4,7 @@ import { Button, Image, StyleSheet, View, TouchableOpacity,
   Text,
  } from 'react-native';
 import Colors from "../constants/Colors";
+import Layout from "../constants/Layout";
 
 
 class MainScreen extends Component {
@@ -22,35 +23,46 @@ class MainScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View>
-          <Image></Image>
-          <Image></Image>
+        <View style={styles.horizontalView}>
+          <Image 
+            style={{flex:1, width: Layout.window.width/3, height: Layout.window.width/3}}
+            source={{uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-1.png"}} 
+            resizeMode="contain"
+          />
+          <Image
+            style={{flex:1, width: Layout.window.width/3, height: Layout.window.width/3}}
+            source={require("../assets/images/M-sin-fondo.jpeg")}
+            resizeMode="contain"
+          />
         </View>
-        <Button title="Venta de plato"
-          style={styles.mainButton}
-          color={Colors.tintColor}
-          onPress={this.handlePlateSaleClick}
-        />
-        <TouchableOpacity
-          onPress={()=>{}}
-        >
-          <Text>Venta de plan</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={()=>{}}
-        >
-          <Text>Plan Mercadeo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={()=>{}}
-        >
-          <Text>Generar oferta</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={()=>{}}
-        >
-          <Text>Consultar reporte</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <Button title="Venta de plato"
+            style={styles.mainButton}
+            color={Colors.tintColor}
+            onPress={this.handlePlateSaleClick}
+          />
+          <TouchableOpacity
+            onPress={()=>{}}
+          >
+            <Text>Venta de plan</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={()=>{}}
+          >
+            <Text>Plan Mercadeo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={()=>{}}
+          >
+            <Text>Generar oferta</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={()=>{}}
+          >
+            <Text>Consultar reporte</Text>
+          </TouchableOpacity>
+          
+        </View>
       </View>
     );
   }
@@ -62,6 +74,18 @@ const styles = StyleSheet.create({
     alignItems: "center", 
     justifyContent: "space-around",
     backgroundColor: Colors.backgroundColor,
+  },
+  horizontalView:{
+    flex:3,
+    flexDirection:"row",
+    justifyContent: "space-evenly",
+    alignItems:"center",
+    backgroundColor: Colors.backgroundColor,
+  },
+  buttonContainer:{
+    flex:7,
+    justifyContent: "space-evenly",
+    alignItems: "center"
   },
   mainButton: {
     color:Colors.tintColor,

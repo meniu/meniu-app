@@ -13,4 +13,6 @@ export default {
   warningText: '#666804',
   noticeBackground: tintColor,
   noticeText: '#fff',
+  facebook: '#3b5998',
+  google: '#DD4B39'
 };

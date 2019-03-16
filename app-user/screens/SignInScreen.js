@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
-  Platform, TextInput, KeyboardAvoidingView,
+  Platform, TextInput, KeyboardAvoidingView, Alert,
   AsyncStorage } from 'react-native';
   import Colors from "../constants/Colors";
   import Icon from 'react-native-vector-icons/FontAwesome';
@@ -22,7 +22,7 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
       this.handleEmailInputSubmit = this.handleEmailInputSubmit.bind(this);
 
       this.loginWithUser = this.loginWithUser.bind(this);
-      this.loginWithFacebook = this.loginWithFacebook.bind(this);
+      this.facebookSignIn = this.facebookSignIn.bind(this);
       this.googleSignIn = this.googleSignIn.bind(this);
     }
 
@@ -75,9 +75,27 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
   }
 
   // Handle Login with Facebook button tap
-  loginWithFacebook(){
-    // this.openURL('https://localhost:3000/auth/facebook');
-    this.props.navigation.navigate("Main");
+  async facebookSignIn(){
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1056365824552520', {
+      permissions: ['public_profile'],
+    });
+    if (type === 'success') {
+      // Get the user's name using Facebook's Graph API
+      const response = await fetch(
+        `https://graph.facebook.com/me?access_token=${token}`);
+      const user = await response.json();
+      console.log("user", user);
+      Alert.alert(
+        'Logged in!',
+        `Hi ${(user.name)}!`,
+      );
+      this.saveUserLocally(user);
+
+    }
+    else {
+      Alert.alert('se recibe', type);
+    }
+    // this.props.navigation.navigate("Main");
   } 
 
   // Open URL in a browser
@@ -127,14 +145,22 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
       />
       <Text>¿Olvidaste tu contraseña?</Text>
       <View style={styles.buttons}>
-      <Icon.Button
-      name="google"
-      backgroundColor="#DD4B39"
-      onPress={this.googleSignIn}
-      {...iconStyles}
-      >
-      Ingresa con Google
-      </Icon.Button>
+        <Icon.Button
+          name="google"
+          backgroundColor={Colors.google}
+          onPress={this.googleSignIn}
+          {...iconStyles}
+          >
+          Ingresa con Google
+        </Icon.Button>
+        <Icon.Button
+          name="facebook"
+          backgroundColor={Colors.facebook}
+          onPress={this.facebookSignIn}
+          {...iconStyles}
+          >
+          Ingresa con Facebook
+        </Icon.Button>
       </View>
       </KeyboardAvoidingView>
       );
@@ -167,7 +193,7 @@ const styles = StyleSheet.create({
   },
   buttons:{
     justifyContent: 'space-between',
-    flexDirection: 'row',
+    flexDirection: 'column',
     margin: 20,
     marginBottom: 30,
   }

@@ -2,10 +2,10 @@
 
 import React, { Component } from 'react';
 import { ToastAndroid, Platform, Image, StyleSheet,  
-  TextInput, Picker, FlatList, View, Text,
+  TextInput, Picker, FlatList, View, Text, ScrollView,
   AsyncStorage } from 'react-native';
 import Colors from "../../../constants/Colors";
-import PlateComponent from "../../../components/PlateComponent";
+import CardComponent from "../../../components/CardComponent";
 
 export default class TrendingPromotionsScreen extends Component {
 
@@ -58,6 +58,13 @@ export default class TrendingPromotionsScreen extends Component {
 
   }
 
+  handlePlatePress(plate){
+    this.props.navigation.navigate("Order",{
+      plate: plate,
+      restaurant: {}
+    });
+  }
+
   renderLoading(){
     return (<View>
       <Text>Loading...</Text>
@@ -96,10 +103,21 @@ export default class TrendingPromotionsScreen extends Component {
           </View>
           <View 
             style={styles.flatListView}>
-            <FlatList
-              data={[{key:"Chilaquiles"},{key:"Burrito"},{key:"Taco"}]}
-              renderItem={({item}) => <PlateComponent dishName={item.key}/>}
-            />
+            <ScrollView style={{flex:1}}>
+              <FlatList
+                style={{flex:1}}
+                keyExtractor={(item)=>item.name}
+                data={[
+                  {name:"Chilaquiles", description:"Deliciosos Chilaquiles", rating:4,discount:"1000", type:"plate",
+                  uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
+                  {name:"Burrito", description:"Delicioso Burrito", rating:4,discount:"1000", type:"plate",
+                  uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
+                  {name:"Taco", description:"Delicioso Taco", rating:4,discount:"1000", type:"plate",
+                  uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
+                ]}
+                renderItem={({item}) => <CardComponent entity={item} action={()=>this.handlePlatePress(item)}/>}
+              />
+            </ScrollView>
           </View>
         </View>
       );
@@ -124,7 +142,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.cardColor,
   },
   flatListView:{
-    flex:7
+    flex:7,
+    alignItems:"stretch"
+
   }
 
 });

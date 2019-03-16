@@ -46,8 +46,8 @@ const MembershipsStack = createStackNavigator({
 },{
   defaultNavigationOptions:{
     headerStyle: {
-        backgroundColor: Colors.tintColor ,
-      }
+      backgroundColor: Colors.tintColor ,
+    }
   }
 });
 

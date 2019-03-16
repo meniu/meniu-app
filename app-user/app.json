@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-user",
-    "slug": "app-user",
+    "name": "meniu-app-user",
+    "slug": "meniu-app-user",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": [
@@ -10,7 +10,10 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon":"./assets/images/M-sin-fondo.png",
+    "facebookScheme": "fb1056365824552520",
+    "facebookAppId": "1056365824552520",
+    "facebookDisplayName":"Meniu-user",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -23,7 +26,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.meniu.meniuAppUser"
+    },
+    "android": {
+      "package": "com.meniu.meniu_app_user"
+    },
+    "description": "App de usuarios para Meniu"
   }
 }
