@@ -50,6 +50,26 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
       }
     }
 
+    // Handle Login with Facebook button tap
+  async facebookSignIn(){
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1056365824552520', {
+      permissions: ['public_profile'],
+    });
+    if (type === 'success') {
+      // Get the user's name using Facebook's Graph API
+      const response = await fetch(
+        `https://graph.facebook.com/me?access_token=${token}`);
+      const user = await response.json();
+      console.log("user", user);
+      this.saveUserLocally(user);
+
+    }
+    else {
+      Alert.alert('se recibe', type);
+    }
+    // this.props.navigation.navigate("Main");
+  } 
+
     async saveUserLocally(user){
       try {
         await AsyncStorage.setItem('user', JSON.stringify(user));
@@ -73,30 +93,6 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
     // in order to do other requests
     this.props.navigation.navigate("Main");
   }
-
-  // Handle Login with Facebook button tap
-  async facebookSignIn(){
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1056365824552520', {
-      permissions: ['public_profile'],
-    });
-    if (type === 'success') {
-      // Get the user's name using Facebook's Graph API
-      const response = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}`);
-      const user = await response.json();
-      console.log("user", user);
-      Alert.alert(
-        'Logged in!',
-        `Hi ${(user.name)}!`,
-      );
-      this.saveUserLocally(user);
-
-    }
-    else {
-      Alert.alert('se recibe', type);
-    }
-    // this.props.navigation.navigate("Main");
-  } 
 
   // Open URL in a browser
   openURL(url){

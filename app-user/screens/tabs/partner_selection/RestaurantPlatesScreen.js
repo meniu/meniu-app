@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
-import CardComponent from "../../../components/CardComponent";
+import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
 
 import {
   StyleSheet,  Text, TextInput,  View, Image, Picker, Button,
@@ -82,7 +82,7 @@ class RestaurantPlatesScreen extends Component {
                 {name:"Taco", description:"Delicioso Taco", rating:4,discount:"1000", type:"plate",
                 uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
               ]}
-              renderItem={({item}) => <CardComponent entity={item} action={()=>this.handlePlatePress(item)}/>}
+              renderItem={({item}) => <RestaurantCardComponent entity={item} action={()=>this.handlePlatePress(item)}/>}
             />
           </ScrollView>
         </View>

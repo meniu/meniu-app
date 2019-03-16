@@ -7,8 +7,8 @@ import { ToastAndroid, Platform, Image, StyleSheet,
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
 import { StackActions, NavigationActions } from "react-navigation";
-import CardComponent from "../../../components/CardComponent";
-
+import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
+import BadgeComponent from '../../../components/BadgeComponent';
 
 export default class PartnerSelectionScreen extends React.Component {
   constructor(props) {
@@ -36,34 +36,36 @@ export default class PartnerSelectionScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.horizontalView}>
-          <TextInput
-            style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1}}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
-            placeholder="Restaurante"
-          />
-          <Picker
-            selectedValue={this.state.layout}
-            style={{ flex:1, height: 50, width: 100 }}
-            onValueChange={(itemValue, itemIndex) => this.setState({layout: itemValue})}>
-            <Picker.Item label="Iconos" value="icon" />
-            <Picker.Item label="Tradicional" value="traditional" />
-          </Picker>
-          <Button
-          style={{flex:1, height:50}}
-          title="Filtro"
-          color={Colors.tintColor}
-          onPress={()=>{}}
-          />
+        <View style={styles.upperView}>
+          <View style={{flex:4}}></View>
+          <View style={styles.typeFilterView}>
+          {/* TODO Each filter button should be a component */}
+              <TouchableHighlight style={{flex:1}} onPress={()=>{}}>
+                <View style={styles.horizontal}>
+                  <BadgeComponent type="basic" content="B"></BadgeComponent>
+                  <Text>basic</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight style={{flex:1}} onPress={()=>{}}>
+                <View style={styles.horizontal}>
+                  <BadgeComponent type="premium" content="P"></BadgeComponent>
+                  <Text>premium</Text>
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight style={{flex:1}} onPress={()=>{}}>
+                <View style={styles.horizontal}>
+                  <BadgeComponent type="deluxe" content="D"></BadgeComponent>
+                  <Text>deluxe</Text>
+                </View>
+              </TouchableHighlight>
+          </View>
         </View>
-        <View style={{flex:9, backgroundColor:Colors.backgroundColor}}>
+        <View style={{flex:7, backgroundColor:Colors.white}}>
           <ScrollView style={{flex:1}} >
-            {/*A futuro se necesita un componente-gridview que agrupe de a dos o 3 por fila*/}
             <FlatList 
               style={{flex:1}}
               key={(this.state.layout)}
-              numColumns={(this.state.layout==="icon" ? 2 : 1)}
+              numColumns={1}
               keyExtractor={(item)=>item.name}
               // onPressItem={this.handleRestaurantPress}
               data={[{name:"Super Duper", description:"restaurante hamburguesas", rating:5, type:"restaurant",
@@ -78,16 +80,7 @@ export default class PartnerSelectionScreen extends React.Component {
                               uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-5.png",},
                     ]}
               renderItem={({item}) => {
-                if(this.state.layout==="icon")
-                  return (<TouchableHighlight  onPress={()=>this.handleRestaurantPress(item)}>
-                            <Image
-                                style={{flex:1, width: Layout.window.width/2-5, height: Layout.window.width/2-5}}
-                                source={{uri:item.uri}}
-                                resizeMode="contain"
-                              />
-                          </TouchableHighlight>);
-                else if(this.state.layout==="traditional")
-                  return <CardComponent entity={item} action={()=>this.handleRestaurantPress(item)}/>
+                return <RestaurantCardComponent entity={item} action={()=>this.handleRestaurantPress(item)}/>
               }
             }
             />
@@ -104,22 +97,30 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "stretch", 
     justifyContent: "space-between",
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: Colors.white,
   },
   userView:{
     alignItems:"center",
   },
-  horizontalView:{
-    flex:1,
-    flexDirection:"row",
+  upperView:{
+    flex:5,
     justifyContent: "space-evenly",
     alignItems:"center",
-    backgroundColor: Colors.cardColor,
+    backgroundColor: Colors.lightBackgroundColor,
   },
   horizontalImageView:{
     flex:1,
     flexDirection:"row",
     backgroundColor: Colors.backgroundColor,
     height:110,
+  },
+  typeFilterView: {
+    backgroundColor: Colors.darkBackgroundColor,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
+  horizontal: {
+    flexDirection:"row"
   }
 });

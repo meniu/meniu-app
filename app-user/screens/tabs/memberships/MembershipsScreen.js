@@ -7,7 +7,7 @@ import { ToastAndroid, Platform, Image, StyleSheet,
 export default class MembershipsScreen extends React.Component {
 
   static navigationOptions = {
-      title: 'Membresías',
+      title: 'Mi cuenta',
   };
 
   render() {

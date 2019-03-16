@@ -3,12 +3,13 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { createAppContainer, createStackNavigator, createBottomTabNavigator } from "react-navigation";
-import TrendingPromotionsScreen from "./tabs/trending_promotions/TrendingPromotionsScreen.js";
+import LastOrdersScreen from "./tabs/trending_promotions/LastOrdersScreen.js";
 import PartnerSelectionScreen from "./tabs/partner_selection/PartnerSelectionScreen.js";
 import RestaurantPlatesScreen from "./tabs/partner_selection/RestaurantPlatesScreen.js";
 import MembershipsScreen from "./tabs/memberships/MembershipsScreen.js";
 import Colors from "../constants/Colors";
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import FavoritesScreen from './tabs/favorites/FavoritesScreen.js';
 
 const PartnerSelectionStack = createStackNavigator({
   PartnerSelection: PartnerSelectionScreen,
@@ -26,8 +27,8 @@ PartnerSelectionStack.navigationOptions = {
   
 };
 
-const TrendingPromotionsStack = createStackNavigator({
-  TrendingPromotions: { screen: TrendingPromotionsScreen },
+const LastOrdersStack = createStackNavigator({
+  LastOrders: { screen: LastOrdersScreen },
   
 },{
   defaultNavigationOptions:{
@@ -37,8 +38,23 @@ const TrendingPromotionsStack = createStackNavigator({
   }
 });
 
-TrendingPromotionsStack.navigationOptions = {
-  tabBarLabel: 'Promociones',
+LastOrdersStack.navigationOptions = {
+  tabBarLabel: 'Recientes',
+};
+
+const FavoritesStack = createStackNavigator({
+  Favorites: { screen: FavoritesScreen },
+  
+},{
+  defaultNavigationOptions:{
+    headerStyle: {
+        backgroundColor: Colors.tintColor ,
+      }
+  }
+});
+
+FavoritesStack.navigationOptions = {
+  tabBarLabel: 'Favoritos',
 };
 
 const MembershipsStack = createStackNavigator({
@@ -52,7 +68,7 @@ const MembershipsStack = createStackNavigator({
 });
 
 MembershipsStack.navigationOptions = {
-  tabBarLabel: 'Membresías',
+  tabBarLabel: 'Mi cuenta',
   headerStyle: {
         backgroundColor: Colors.tintColor ,
       }
@@ -61,22 +77,35 @@ MembershipsStack.navigationOptions = {
 
 const TabNavigator = createBottomTabNavigator({
   PartnerSelectionStack,
-  TrendingPromotionsStack,
+  LastOrdersStack,
+  FavoritesStack,
   MembershipsStack
 },{
-  initialRouteName: "TrendingPromotionsStack",
+  initialRouteName: "PartnerSelectionStack",
   defaultNavigationOptions:({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
         let IconComponent = FontAwesome;
         let iconName;
-        if (routeName === 'TrendingPromotionsStack') {
-          iconName = 'home';
-        } else if (routeName === 'PartnerSelectionStack') {
-          iconName = 'cutlery';
-        } else if (routeName === 'MembershipsStack') {
-          IconComponent = MaterialCommunityIcons;
-          iconName = 'knife';
+        switch (routeName) {
+          case 'PartnerSelectionStack':
+            IconComponent = MaterialCommunityIcons;
+            iconName = 'store';
+            break;
+          case 'LastOrdersStack':
+            iconName = 'clock-o';
+            break;
+          case 'FavoritesStack':
+            iconName = 'heart-o';
+            break;
+          case 'MembershipsStack':
+            IconComponent = MaterialCommunityIcons;
+            iconName = 'face-profile';
+            break;
+          default:
+            iconName = 'home';
+
+            break;
         }
 
         // You can return any component that you like here!

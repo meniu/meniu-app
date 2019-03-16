@@ -5,7 +5,7 @@ import { ToastAndroid, Platform, Image, StyleSheet,
   TextInput, Picker, FlatList, View, Text, ScrollView,
   AsyncStorage } from 'react-native';
 import Colors from "../../../constants/Colors";
-import CardComponent from "../../../components/CardComponent";
+import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
 
 export default class TrendingPromotionsScreen extends Component {
 
@@ -19,7 +19,7 @@ export default class TrendingPromotionsScreen extends Component {
   }
 
   static navigationOptions = {
-    title: 'Platos',
+    title: 'Órdenes Recientes',
   };
 
   componentDidMount() {
@@ -115,7 +115,7 @@ export default class TrendingPromotionsScreen extends Component {
                   {name:"Taco", description:"Delicioso Taco", rating:4,discount:"1000", type:"plate",
                   uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
                 ]}
-                renderItem={({item}) => <CardComponent entity={item} action={()=>this.handlePlatePress(item)}/>}
+                renderItem={({item}) => <RestaurantCardComponent entity={item} action={()=>this.handlePlatePress(item)}/>}
               />
             </ScrollView>
           </View>
