@@ -73,6 +73,8 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
     async saveUserLocally(user){
       try {
         await AsyncStorage.setItem('user', JSON.stringify(user));
+        if(Platform.OS === 'android')
+          ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
         this.props.navigation.navigate("Main");
       } catch (error) {
         // Error saving data
@@ -149,6 +151,7 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
           >
           Ingresa con Google
         </Icon.Button>
+        <View style={styles.br}></View>
         <Icon.Button
           name="facebook"
           backgroundColor={Colors.facebook}
@@ -192,6 +195,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     margin: 20,
     marginBottom: 30,
+  },
+  br:{
+    height:10
   }
 });
 

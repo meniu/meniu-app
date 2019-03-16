@@ -33,8 +33,7 @@ export default class TrendingPromotionsScreen extends Component {
       const user = JSON.parse(value);
       if (user !== null) {
         // We have data!!
-        if(Platform.OS === 'android')
-          ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
+        
         this.setState({
           user 
         });

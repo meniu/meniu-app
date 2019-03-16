@@ -10,10 +10,10 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon":"./assets/images/M-sin-fondo.png",
+    "icon": "./assets/images/M-sin-fondo.png",
     "facebookScheme": "fb1056365824552520",
     "facebookAppId": "1056365824552520",
-    "facebookDisplayName":"Meniu-user",
+    "facebookDisplayName": "Meniu-user",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
