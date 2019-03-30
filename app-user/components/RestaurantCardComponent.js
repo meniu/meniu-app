@@ -64,13 +64,13 @@ const styles = StyleSheet.create({
     width: Layout.window.width/6, 
     height: Layout.window.width/6, 
     borderRadius: 500,
-    margin: 15,
+    margin: 10,
   },
   cardInfo: {
     flex:4,
     justifyContent: "flex-end",
     alignItems: "flex-start",
-    margin: 10
+    margin: 5
   },
   restaurantTitle: {
     flex:3,

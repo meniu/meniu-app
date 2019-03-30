@@ -6,6 +6,8 @@ import { ToastAndroid, Platform, Image, StyleSheet,
   AsyncStorage } from 'react-native';
 import Colors from "../../../constants/Colors";
 import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
+import MockData from '../../../constants/MockData';
+import PromotionCardComponent from '../../../components/PromotionCardComponent';
 
 export default class TrendingPromotionsScreen extends Component {
 
@@ -70,6 +72,13 @@ export default class TrendingPromotionsScreen extends Component {
     </View>);
   }
 
+  renderDiscountSum(array){
+    let sum = array.map(prom => prom.discount).reduce((a,b)=>
+      a + b
+    ,0);
+    return sum;
+  }
+
   render() {
     if(!this.state.user)
       return this.renderLoading();
@@ -86,12 +95,8 @@ export default class TrendingPromotionsScreen extends Component {
             <Text>¡Bienvenido a Meniu, {this.state.user.name}!</Text>
           </View>
           <View style={styles.horizontalView}>
-            <TextInput
-              style={{flex:1, height: 40, borderColor: 'gray', borderWidth: 1}}
-              onChangeText={(text) => this.setState({text})}
-              value={this.state.text}
-              placeholder="Búsqueda"
-            />
+            <Text style={{flex:1}}>Tus últimas órdenes</Text>
+            <Text style={{flex:1}}>Ahorro total: ${ this.renderDiscountSum(MockData.spentPromotions) }</Text>
             <Picker
               selectedValue={""}
               style={{ flex:1, height: 50, width: 100 }}
@@ -106,15 +111,8 @@ export default class TrendingPromotionsScreen extends Component {
               <FlatList
                 style={{flex:1}}
                 keyExtractor={(item)=>item.name}
-                data={[
-                  {name:"Chilaquiles", description:"Deliciosos Chilaquiles", rating:4,discount:"1000", type:"plate",
-                  uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-                  {name:"Burrito", description:"Delicioso Burrito", rating:4,discount:"1000", type:"plate",
-                  uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-                  {name:"Taco", description:"Delicioso Taco", rating:4,discount:"1000", type:"plate",
-                  uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-                ]}
-                renderItem={({item}) => <RestaurantCardComponent entity={item} action={()=>this.handlePlatePress(item)}/>}
+                data={MockData.spentPromotions}
+                renderItem={({item}) => <PromotionCardComponent actionType="reorder" entity={item} action={()=>this.handlePlatePress(item)}/>}
               />
             </ScrollView>
           </View>

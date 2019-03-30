@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { createAppContainer, createStackNavigator, createBottomTabNavigator } from "react-navigation";
-import LastOrdersScreen from "./tabs/trending_promotions/LastOrdersScreen.js";
+import LastOrdersScreen from "./tabs/last_orders/LastOrdersScreen.js";
 import PartnerSelectionScreen from "./tabs/partner_selection/PartnerSelectionScreen.js";
 import RestaurantPlatesScreen from "./tabs/partner_selection/RestaurantPlatesScreen.js";
 import MembershipsScreen from "./tabs/memberships/MembershipsScreen.js";

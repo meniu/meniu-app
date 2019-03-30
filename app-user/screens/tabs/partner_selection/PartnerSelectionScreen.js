@@ -9,6 +9,9 @@ import Layout from "../../../constants/Layout";
 import { StackActions, NavigationActions } from "react-navigation";
 import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
 import BadgeComponent from '../../../components/BadgeComponent';
+import FilterButtonComponent from '../../../components/FilterButtonComponent';
+import MockData from '../../../constants/MockData';
+import ImportantPromotionCardComponent from '../../../components/ImportantPromotionCardComponent';
 
 export default class PartnerSelectionScreen extends React.Component {
   constructor(props) {
@@ -37,30 +40,27 @@ export default class PartnerSelectionScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.upperView}>
-          <View style={{flex:4}}></View>
+          <View style={{flex:1}}></View>
+          <View style={{flex:3, backgroundColor:Colors.backgroundColor}}>
+            <ScrollView style={{flex:1}} horizontal={true}>
+              <FlatList
+                horizontal={true}
+                keyExtractor={(item)=>item.name}
+                data={MockData.promotions}
+                renderItem={({item})=>{
+                  return <ImportantPromotionCardComponent name={item.name} type={item.type}
+                  description={item.description} uri={item.uri} />
+                }}
+              />
+            </ScrollView>
+          </View>
           <View style={styles.typeFilterView}>
-          {/* TODO Each filter button should be a component */}
-              <TouchableHighlight style={{flex:1}} onPress={()=>{}}>
-                <View style={styles.horizontal}>
-                  <BadgeComponent type="basic" content="B"></BadgeComponent>
-                  <Text>basic</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight style={{flex:1}} onPress={()=>{}}>
-                <View style={styles.horizontal}>
-                  <BadgeComponent type="premium" content="P"></BadgeComponent>
-                  <Text>premium</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight style={{flex:1}} onPress={()=>{}}>
-                <View style={styles.horizontal}>
-                  <BadgeComponent type="deluxe" content="D"></BadgeComponent>
-                  <Text>deluxe</Text>
-                </View>
-              </TouchableHighlight>
+              <FilterButtonComponent type="basic"></FilterButtonComponent>
+              <FilterButtonComponent type="premium"></FilterButtonComponent>
+              <FilterButtonComponent type="deluxe"></FilterButtonComponent>
           </View>
         </View>
-        <View style={{flex:7, backgroundColor:Colors.white}}>
+        <View style={{flex:5, backgroundColor:Colors.white}}>
           <ScrollView style={{flex:1}} >
             <FlatList 
               style={{flex:1}}
@@ -68,21 +68,10 @@ export default class PartnerSelectionScreen extends React.Component {
               numColumns={1}
               keyExtractor={(item)=>item.name}
               // onPressItem={this.handleRestaurantPress}
-              data={[{name:"Super Duper", description:"restaurante hamburguesas", rating:5, type:"restaurant",
-                        uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-1.png",},
-                    {name:"Polliseria", description:"restaurante pollos", rating:4.5, type:"restaurant",
-                              uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-2.png",},
-                    {name:"One Burrito", description:"restaurante burritos", rating:3.5, type:"restaurant",
-                              uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-3.png",},
-                    {name:"Flügel", description:"restaurante alitas", rating:4, type:"restaurant",
-                              uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-4.png",},
-                    {name:"Próximamente", description:"restaurante pendiente", rating:5, type:"restaurant",
-                              uri:"https://meniu.com.co/wp-content/uploads/2018/08/Logos-Aliados-fondo-balncoMesa-de-trabajo-5.png",},
-                    ]}
+              data={MockData.restaurants}
               renderItem={({item}) => {
                 return <RestaurantCardComponent entity={item} action={()=>this.handleRestaurantPress(item)}/>
-              }
-            }
+              }}
             />
           </ScrollView>
         </View>
@@ -120,7 +109,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around"
   },
-  horizontal: {
-    flexDirection:"row"
-  }
+  
 });
+

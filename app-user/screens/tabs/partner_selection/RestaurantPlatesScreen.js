@@ -3,12 +3,13 @@
 import React, { Component } from 'react';
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
-import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
-
+import PromotionCardComponent from "../../../components/PromotionCardComponent";
+import MockData from "../../../constants/MockData";
 import {
   StyleSheet,  Text, TextInput,  View, Image, Picker, Button,
-  ScrollView, FlatList,
+  ScrollView, FlatList, TouchableHighlight
 } from 'react-native';
+import OrderModalComponent from '../../../components/OrderModalComponent';
 
 class RestaurantPlatesScreen extends Component {
   
@@ -17,9 +18,17 @@ class RestaurantPlatesScreen extends Component {
 
     const { navigation } = this.props;
     this.restaurant = navigation.getParam('restaurant', 'Sin Restaurante');
-    this.state = {};
+    this.state = {
+      ordering:"AZ",
+      selectedPlate:null,
+      successModalVisible:false,
+      failureModalVisible:false,
+    };
 
     this.handlePlatePress = this.handlePlatePress.bind(this);
+    this.disableModals = this.disableModals.bind(this);
+    this.navigateOrder = this.navigateOrder.bind(this);
+    this.navigateMemberShips = this.navigateMemberShips.bind(this);
   }
   
   static navigationOptions = ({ navigation }) => {
@@ -31,15 +40,57 @@ class RestaurantPlatesScreen extends Component {
 
 
   handlePlatePress(plate){
+    if(Math.random() > 0.5)
+      this.setState({
+        successModalVisible: true,
+        selectedPlate: plate
+      });
+    else 
+      this.setState({
+        failureModalVisible: true,
+        selectedPlate: plate
+      });
+  }
+
+  disableModals() {
+    this.setState({
+      successModalVisible: false,
+      failureModalVisible: false
+    })
+  }
+
+  navigateOrder(plate, restaurant) {
+    this.disableModals();
     this.props.navigation.navigate("Order",{
       plate: plate,
-      restaurant: this.restaurant
+      restaurant: restaurant
     });
+  }
+
+  navigateMemberShips() {
+    this.disableModals();
+    this.props.navigation.navigate("MembershipsStack");
+  }
+
+  renderModal(_type){
+    return this.state.selectedPlate ? (
+      <OrderModalComponent 
+        type={_type} 
+        visible={_type === "success" ? this.state.successModalVisible : this.state.failureModalVisible}
+        promotionEntity={this.state.selectedPlate} 
+        restaurantEntity={this.restaurant}
+        toggleVisible={this.disableModals}
+        buttonAction={_type === "success" ? 
+          ()=>this.navigateOrder(this.state.selectedPlate, this.restaurant) : 
+          this.navigateMemberShips}/>
+    ): null;
   }
 
   render() {
     return (
       <View style={styles.container}>
+        {this.renderModal("success")}
+        {this.renderModal("failure")}
         <View style={styles.imageContainer}>
           <Image
             style={{height: Layout.window.width/3, width: Layout.window.width/3}}
@@ -58,9 +109,9 @@ class RestaurantPlatesScreen extends Component {
           <Picker
             selectedValue={""}
             style={{ flex:1, height: 50, width: 100 }}
-            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-            <Picker.Item label="Iconos" value="icon" />
-            <Picker.Item label="Tradicional" value="card" />
+            onValueChange={(itemValue) => this.setState({ordering: itemValue})}>
+            <Picker.Item label="A-Z" value="AZ" />
+            <Picker.Item label="Z-A" value="ZA" />
           </Picker>
           <Button
           style={{flex:1, height:50}}
@@ -74,15 +125,8 @@ class RestaurantPlatesScreen extends Component {
             <FlatList
               style={{flex:1}}
               keyExtractor={(item)=>item.name}
-              data={[
-                {name:"Chilaquiles", description:"Deliciosos Chilaquiles", rating:4,discount:"1000", type:"plate",
-                uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-                {name:"Burrito", description:"Delicioso Burrito", rating:4,discount:"1000", type:"plate",
-                uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-                {name:"Taco", description:"Delicioso Taco", rating:4,discount:"1000", type:"plate",
-                uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-              ]}
-              renderItem={({item}) => <RestaurantCardComponent entity={item} action={()=>this.handlePlatePress(item)}/>}
+              data={MockData.promotions}
+              renderItem={({item}) => <PromotionCardComponent actionType="order" entity={item} action={()=>this.handlePlatePress(item)}/>}
             />
           </ScrollView>
         </View>
@@ -115,7 +159,8 @@ const styles = StyleSheet.create({
   flatListView:{
     flex:6,
     alignItems:"stretch"
-  }
+  },
+  
 
 });
 

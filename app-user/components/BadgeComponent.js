@@ -13,6 +13,27 @@ export default class BadgeComponent extends Component {
       }
     }
     
+    /**
+     * according to the type entered in props, determine the corresponding letter
+     * basic: B, premium: P, deluxe: D.
+     */
+    defaultContent() {
+      let letter = "";
+        switch (this.props.type) {
+            case "basic":
+                letter = "B";
+                break;
+            case "premium":
+                letter = "P";
+                break;
+            case "deluxe":
+                letter = "D";
+                break;
+            default:
+                break;
+        }
+        return letter;
+    }
     
     render() {
         return (
@@ -23,7 +44,7 @@ export default class BadgeComponent extends Component {
               height:26,
               margin: 5
             }}>
-                <Text style={styles.innerText}> {this.props.content}</Text>
+                <Text style={styles.innerText}> {this.props.content ? this.props.content : this.defaultContent()}</Text>
             </View>
         )
     }

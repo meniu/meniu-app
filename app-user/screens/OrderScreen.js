@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet,
+  StyleSheet, Button,
   View, Text, Image
 } from 'react-native';
 
@@ -32,26 +32,33 @@ class OrderScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.horizontalView}> 
+        <View>
           <Image
             style={{width: 100, height: 100}}
             source={{uri: this.restaurant.uri}}
           />
-          <Image
-            style={{width: 100, height: 100}}
-            source={{uri: this.plate.uri}}
-          />
+          <Text>{this.restaurant.name}</Text>
+        </View>
+          <View>
+            <Text>Plato: {this.plate.name}</Text>
+            <Text>Categoria: {this.plate.type}</Text>
+            <Text>Ahorras: {this.plate.discount}</Text>
+            <Text>Incluye: {this.plate.description}</Text>
+          </View>
         </View>
         <View style={styles.centralText}>
-          <Text>Plato: {this.plate.name}</Text>
-          <Text>Tipo: Premium</Text>
-          <Text>(Especificaciones del plato) {this.plate.description}</Text>
+          
         </View>
         <View style={styles.QRContainer}>
+        <Text>¡Código QR generado!</Text>
           <Image
             style={{flex:1, width: 200, height: 200}}
             source={require('../assets/images/qr-sample.png')}
             resizeMode="contain"
           />
+        <Text>Bon Appetit</Text>
+        <Text>Ahora puedes ir a reclamar tu pedido</Text>
+        <Button title="Ir a restaurante" onPress={()=>{}}  />
         </View>
       </View>
     );
