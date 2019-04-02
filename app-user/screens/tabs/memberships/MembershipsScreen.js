@@ -31,7 +31,7 @@ export default class MembershipsScreen extends React.Component {
         <View style={styles.planContainer}>
           <Text style={styles.flexCenter}>{"<<Icono>>"}</Text>
           <View style={styles.flexCenter}>
-            <Button title="get a plan" onPress={()=>{}}/>
+            <Button title="obten plan" onPress={()=>{}}/>
           </View>
         </View>
         <View style={{flex:6}}>

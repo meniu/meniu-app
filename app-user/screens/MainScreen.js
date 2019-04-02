@@ -9,7 +9,6 @@ import RestaurantPlatesScreen from "./tabs/partner_selection/RestaurantPlatesScr
 import MembershipsScreen from "./tabs/memberships/MembershipsScreen.js";
 import Colors from "../constants/Colors";
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-import FavoritesScreen from './tabs/favorites/FavoritesScreen.js';
 
 const PartnerSelectionStack = createStackNavigator({
   PartnerSelection: PartnerSelectionScreen,
@@ -42,20 +41,7 @@ LastOrdersStack.navigationOptions = {
   tabBarLabel: 'Recientes',
 };
 
-const FavoritesStack = createStackNavigator({
-  Favorites: { screen: FavoritesScreen },
-  
-},{
-  defaultNavigationOptions:{
-    headerStyle: {
-        backgroundColor: Colors.tintColor ,
-      }
-  }
-});
 
-FavoritesStack.navigationOptions = {
-  tabBarLabel: 'Favoritos',
-};
 
 const MembershipsStack = createStackNavigator({
   Memberships : MembershipsScreen,
@@ -78,7 +64,6 @@ MembershipsStack.navigationOptions = {
 const TabNavigator = createBottomTabNavigator({
   PartnerSelectionStack,
   LastOrdersStack,
-  FavoritesStack,
   MembershipsStack
 },{
   initialRouteName: "PartnerSelectionStack",
@@ -94,9 +79,6 @@ const TabNavigator = createBottomTabNavigator({
             break;
           case 'LastOrdersStack':
             iconName = 'clock-o';
-            break;
-          case 'FavoritesStack':
-            iconName = 'heart-o';
             break;
           case 'MembershipsStack':
             IconComponent = MaterialCommunityIcons;
