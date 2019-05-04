@@ -25,5 +25,11 @@ export default {
         uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
         {name:"wok", description:"Delicioso wok", rating:4,discount:2000, type:"basic", transactionDate: "18-03-2019",
         uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
+    ],
+    memberships:[
+        {name:"Guerrero", price:210000, description:"Para ahorrar en grande", promotionTypes:{basic:20, premium:0, deluxe:0}},
+        {name:"Premium", price:250000, description:"Almuerza como alto ejecutivo", promotionTypes:{basic:0, premium:20, deluxe:0}},
+        {name:"Deluxe", price:290000, description:"Lo mejor de lo mejor, siempre", promotionTypes:{basic:0, premium:0, deluxe:20}},
+        {name:"Personalizado", price:270000, description:"A tu medida", promotionTypes:{basic:5, premium:5, deluxe:10}},
     ]
 }

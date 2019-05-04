@@ -1,9 +1,10 @@
 "use strict";
 
-import React, { Component } from "react";
-import { Button, StyleSheet,  View, Text, 
-  Platform, TextInput, KeyboardAvoidingView } from "react-native";
 import Colors from "../constants/Colors";
+import AuthService from "../services/AuthService";
+import React, { Component } from "react";
+import { Button, StyleSheet,  View, Text, Alert,
+  Platform, TextInput, KeyboardAvoidingView } from "react-native";
 
 class SignUpScreen extends Component {
 
@@ -16,13 +17,15 @@ class SignUpScreen extends Component {
       email:"",
       password:"",
       confirmedPassword:"",
+
+      showPasswordHelper:false
     };
 
     this.handleFirstNameInputSubmit = this.handleFirstNameInputSubmit.bind(this);
     this.handleLastNameInputSubmit = this.handleLastNameInputSubmit.bind(this);
     this.handleEmailInputSubmit = this.handleEmailInputSubmit.bind(this);
     this.handlePasswordInputSubmit = this.handlePasswordInputSubmit.bind(this);
-    this.signWithUser = this.signWithUser.bind(this);
+    this.signUpWithUser = this.signUpWithUser.bind(this);
   }
 
   handleFirstNameInputSubmit(){
@@ -38,12 +41,24 @@ class SignUpScreen extends Component {
     this.confirmedPasswordInput.focus();
   }
 
-  signWithUser(){
+  signUpWithUser(){
     // POST petition, obtain token.
-
-    // Token will be required to be passed to the main application 
-    // in order to do other requests
-    this.props.navigation.navigate("Main");
+    AuthService.registerUser(this.state.email, this.state.firstName, this.state.lastName, 
+      this.state.password, this.state.confirmedPassword)
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        let user = responseJSON;
+        // Token se guarda en user.token
+        if(user.token) {
+          AuthService.saveUserLocally(user);
+          this.props.navigation.navigate("Main");
+        }
+        else throw Error("Registro inválido");
+      })
+      .catch((error)=>{
+        Alert.alert("Hubo un error en registro, por favor intenta de nuevo");
+        console.log({error});
+      });
   }
 
 
@@ -51,7 +66,6 @@ class SignUpScreen extends Component {
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <Text style={styles.subtitleText}>Ingresa con tu usuario</Text>
         <TextInput 
           ref={(input) => { this.firstNameInput = input; }}
           style={styles.input}
@@ -87,13 +101,15 @@ class SignUpScreen extends Component {
           onSubmitEditing={this.handleEmailInputSubmit}
           blurOnSubmit={false}
         />
+        {(this.state.showPasswordHelper) &&
+          <Text style={styles.helper}> Tu contraseña debe tener Mayúscula, Minúscula y un caracter especial</Text> }
         <TextInput 
           ref={(input) => { this.passwordInput = input; }}
           style={styles.input}
           value={this.state.password}
           placeholder="contraseña"
           placeholderTextColor={Colors.tintColor}
-          onChangeText={(password)=>this.setState({password})}
+          onChangeText={(password)=>this.setState({password,showPasswordHelper:true})}
           returnKeyType = "next"
           onSubmitEditing={this.handlePasswordInputSubmit}
           blurOnSubmit={false}
@@ -105,14 +121,14 @@ class SignUpScreen extends Component {
           value={this.state.confirmedPassword}
           placeholder="confirmar contraseña"
           placeholderTextColor={Colors.tintColor}
-          onChangeText={(confirmedPassword)=>this.setState({confirmedPassword})}
+          onChangeText={(confirmedPassword)=>this.setState({confirmedPassword, showPasswordHelper: false})}
           secureTextEntry
         />
         <Button
           style={styles.button}
           title="Registrate"
           color={Colors.tintColor}
-          onPress={this.signWithUser}
+          onPress={this.signUpWithUser}
         />
         <Text>¿Olvidaste tu contraseña?</Text>
       </KeyboardAvoidingView>
@@ -140,6 +156,10 @@ const styles = StyleSheet.create({
   input:{
     backgroundColor: "white",
     width:250,
+  },
+  helper:{
+    width:250,
+    color:"red",
   },
   button:{
     width:250,

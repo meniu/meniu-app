@@ -1,6 +1,6 @@
 
 export default {
-  apiUrl: "https://something.com/api",
+  apiUrl: "https://meniuwebapi.azurewebsites.net",
   facebookUrl: "https://graph.facebook.com/",
   googleUrl: "",
 };

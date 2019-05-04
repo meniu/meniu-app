@@ -8,6 +8,7 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
   import Icon from 'react-native-vector-icons/FontAwesome';
   import SafariView from 'react-native-safari-view';
   import { LoginButton } from 'react-native-fbsdk';
+import AuthService from '../services/AuthService';
 
   class SignInScreen extends Component {
 
@@ -71,16 +72,7 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
   } 
 
     async saveUserLocally(user){
-      try {
-        await AsyncStorage.setItem('user', JSON.stringify(user));
-        if(Platform.OS === 'android')
-          ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
-        this.props.navigation.navigate("Main");
-      } catch (error) {
-        // Error saving data
-        if(Platform.OS === 'android')
-            ToastAndroid.show('No se pudo ingresar con el usuario. Intente de nuevo', ToastAndroid.SHORT);
-      }
+      AuthService.saveUserLocally(user);
     }
 
     handleEmailInputSubmit() {
@@ -90,10 +82,23 @@ import { Button, Image, StyleSheet,  View, Text, ToastAndroid,
 
   loginWithUser(){
     // POST petition, obtain token.
+    const { email, password } = this.state;
 
-    // Token will be required to be passed to the main application 
-    // in order to do other requests
-    this.props.navigation.navigate("Main");
+    AuthService.logIn(email, password)
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        let user = responseJSON;
+        // Token se guarda en user.token
+        if(user.token) {
+          AuthService.saveUserLocally(user);
+          this.props.navigation.navigate("Main");
+        }
+        else throw Error("Login inválido");
+      })
+      .catch((error)=>{
+        Alert.alert("Login inválido, por favor intenta de nuevo");
+        console.log({error});
+      });
   }
 
   // Open URL in a browser

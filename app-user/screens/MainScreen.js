@@ -6,7 +6,8 @@ import { createAppContainer, createStackNavigator, createBottomTabNavigator } fr
 import LastOrdersScreen from "./tabs/last_orders/LastOrdersScreen.js";
 import PartnerSelectionScreen from "./tabs/partner_selection/PartnerSelectionScreen.js";
 import RestaurantPlatesScreen from "./tabs/partner_selection/RestaurantPlatesScreen.js";
-import MembershipsScreen from "./tabs/memberships/MembershipsScreen.js";
+import AccountScreen from "./tabs/memberships/AccountScreen.js";
+import MembershipsScreen from "./tabs/memberships/MembershipsScreen.js"
 import Colors from "../constants/Colors";
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -44,7 +45,8 @@ LastOrdersStack.navigationOptions = {
 
 
 const MembershipsStack = createStackNavigator({
-  Memberships : MembershipsScreen,
+  Account : AccountScreen,
+  Memberships : MembershipsScreen
 },{
   defaultNavigationOptions:{
     headerStyle: {
