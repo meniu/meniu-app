@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Image, Text, TouchableHighlight, View, StyleSheet } from 'react-native'
 import Colors from '../constants/Colors';
 import BadgeComponent from './BadgeComponent';
+import { Rating,  } from 'react-native-elements';
 
 export default class PromotionCardComponent extends Component {
     
@@ -43,16 +44,20 @@ export default class PromotionCardComponent extends Component {
     render() {
         return (
         <View style={styles.container}>
-            <View>
+            <View style={styles.imageContainer}>
                 <BadgeComponent type={this.props.entity.type}/>
                 <Image
-                style={{width: 50, height: 50}}
-                source={{uri: this.props.entity.uri}}
+                    style={{width: 50, height: 50}}
+                    source={{uri: this.props.entity.uri}}
                 />
                 <Text>{"$ " + this.props.entity.discount}</Text>
             </View>
-            <View>
-                <Text>{this.props.entity.rating}</Text>
+            <View style={styles.infoContainer} >
+                <Rating
+                    imageSize={10}
+                    readonly
+                    startingValue={this.props.entity.rating}
+                />
                 <Text>{this.props.entity.name}</Text>
                 <Text>{this.renderSubtitle()}</Text>
             </View>
@@ -72,11 +77,15 @@ const styles = StyleSheet.create({
       justifyContent: "space-around",
       backgroundColor: Colors.cardColor,
     },
-    plate_container: {
-      flex: 1,
+    imageContainer: {
       alignItems: "center", 
       justifyContent: "space-between",
       // backgroundColor: Colors.cardColor,
+    },
+    infoContainer: {
+        flexDirection: "column",
+        justifyContent:"space-around",
+        alignItems: "flex-start",
     }
   });
   

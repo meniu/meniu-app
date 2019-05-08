@@ -1,16 +1,21 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Colors from '../constants/Colors';
-
+import { Badge } from 'react-native-elements';
 export default class BadgeComponent extends Component {
 
     constructor(props) {
       super(props)
       // content: number, letter or whatever you want to put on the badge
       // type: type of promotion, basic/premium/deluxe
+      // color (optional): sets a color, no matter which the type is
       this.state = {
          
       }
+    }
+
+    getColor = () => {
+      return this.props.color || Colors[this.props.type]
     }
     
     /**
@@ -37,15 +42,21 @@ export default class BadgeComponent extends Component {
     
     render() {
         return (
-            <View style={{
-              backgroundColor:Colors[this.props.type],
-              borderRadius: 26/2,
-              width:26,
-              height:26,
-              margin: 5
-            }}>
-                <Text style={styles.innerText}> {this.props.content ? this.props.content : this.defaultContent()}</Text>
-            </View>
+          <Badge 
+            badgeStyle={{
+              backgroundColor:this.getColor(),
+            }} 
+            value={
+              this.props.content ? 
+              this.props.content + " " : this.defaultContent() + " "
+            }
+            textStyle={
+              styles.innerText
+            }
+            containerStyle={
+              styles.container
+            }
+          />
         )
     }
 
@@ -53,8 +64,12 @@ export default class BadgeComponent extends Component {
 
 const styles = StyleSheet.create({
   innerText: {
+    color: 'black',
+    opacity: 0.6,
     fontStyle:'italic',
-    textAlign:"left"
+  },
+  container: {
+    margin: 2,
   }
 })
 

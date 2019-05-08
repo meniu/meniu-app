@@ -104,10 +104,9 @@ const styles = StyleSheet.create({
     height:110,
   },
   typeFilterView: {
-    backgroundColor: Colors.darkBackgroundColor,
-    flex: 1,
+    backgroundColor: Colors.white,
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   
 });

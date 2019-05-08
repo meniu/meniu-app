@@ -6,10 +6,12 @@ import Layout from "../../../constants/Layout";
 import PromotionCardComponent from "../../../components/PromotionCardComponent";
 import MockData from "../../../constants/MockData";
 import {
-  StyleSheet,  Text, TextInput,  View, Image, Picker, Button,
-  ScrollView, FlatList, TouchableHighlight
+  StyleSheet,  Text, View, Image, Picker,
+  ScrollView, FlatList,
 } from 'react-native';
 import OrderModalComponent from '../../../components/OrderModalComponent';
+import FilterButtonComponent from '../../../components/FilterButtonComponent';
+import BadgeComponent from '../../../components/BadgeComponent';
 
 class RestaurantPlatesScreen extends Component {
   
@@ -25,10 +27,6 @@ class RestaurantPlatesScreen extends Component {
       failureModalVisible:false,
     };
 
-    this.handlePlatePress = this.handlePlatePress.bind(this);
-    this.disableModals = this.disableModals.bind(this);
-    this.navigateOrder = this.navigateOrder.bind(this);
-    this.navigateMemberShips = this.navigateMemberShips.bind(this);
   }
   
   static navigationOptions = ({ navigation }) => {
@@ -39,7 +37,7 @@ class RestaurantPlatesScreen extends Component {
   
 
 
-  handlePlatePress(plate){
+  handlePlatePress = (plate) => {
     if(Math.random() > 0.5)
       this.setState({
         successModalVisible: true,
@@ -52,14 +50,14 @@ class RestaurantPlatesScreen extends Component {
       });
   }
 
-  disableModals() {
+  disableModals = () => {
     this.setState({
       successModalVisible: false,
       failureModalVisible: false
     })
   }
 
-  navigateOrder(plate, restaurant) {
+  navigateOrder =(plate, restaurant) => {
     this.disableModals();
     this.props.navigation.navigate("Order",{
       plate: plate,
@@ -67,12 +65,12 @@ class RestaurantPlatesScreen extends Component {
     });
   }
 
-  navigateMemberShips() {
+  navigateMemberShips = () => {
     this.disableModals();
     this.props.navigation.navigate("MembershipsStack");
   }
 
-  renderModal(_type){
+  renderModal = (_type) => {
     return this.state.selectedPlate ? (
       <OrderModalComponent 
         type={_type} 
@@ -91,21 +89,29 @@ class RestaurantPlatesScreen extends Component {
       <View style={styles.container}>
         {this.renderModal("success")}
         {this.renderModal("failure")}
-        <View style={styles.imageContainer}>
+        <View style={styles.partnerContainer}>
           <Image
-            style={{height: Layout.window.width/3, width: Layout.window.width/3}}
+            style={styles.circledImage}
             source={{uri:this.restaurant.uri}}
             resizeMode="contain"
           />
-          <Text>Cómo llegar</Text>
+          <View style={styles.partnerDetails}>
+            <Text>{this.restaurant.name}</Text>
+            <Text>Horario de atención</Text>
+            <View style={styles.badgesContainer}>
+              <BadgeComponent type="basic" content="10"></BadgeComponent>
+              <BadgeComponent type="premium" content="15"></BadgeComponent>
+              <BadgeComponent type="deluxe" content="5"></BadgeComponent>
+            </View>
+          </View>
+          <View style={{flex:3}}>
+            <Text>Cómo llegar</Text>
+          </View>
         </View>
         <View style={styles.horizontalView}>
-          <TextInput
-            style={{ flex:1, height: 40, borderColor: 'gray', borderWidth: 1}}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
-            placeholder="Restaurante"
-          />
+          <FilterButtonComponent type="basic"></FilterButtonComponent>
+          <FilterButtonComponent type="premium"></FilterButtonComponent>
+          <FilterButtonComponent type="deluxe"></FilterButtonComponent>
           <Picker
             selectedValue={""}
             style={{ flex:1, height: 50, width: 100 }}
@@ -113,12 +119,6 @@ class RestaurantPlatesScreen extends Component {
             <Picker.Item label="A-Z" value="AZ" />
             <Picker.Item label="Z-A" value="ZA" />
           </Picker>
-          <Button
-          style={{flex:1, height:50}}
-          title="Filtro"
-          color={Colors.tintColor}
-          onPress={()=>{}}
-          />
         </View>
         <View style={styles.flatListView}>
           <ScrollView style={{flex:1}}>
@@ -142,23 +142,35 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: Colors.backgroundColor,
   },
-  imageContainer:{
-    flex:3,
+  partnerContainer:{
+    flex:2,
+    justifyContent:"flex-start",
+    flexDirection: "row",
     alignItems:"center",
   },
-  userView:{
+  circledImage:{
+    flex:1,
+    width: Layout.window.width/6, 
+    height: Layout.window.width/6, 
+    borderRadius: 500,
+    margin: 10,
+  },
+  partnerDetails:{
     flex:2,
-    alignItems:"center",
+    flexDirection:"column",
+  },
+  badgesContainer:{
+    flexDirection: "row",
+    justifyContent: "space-around"
   },
   horizontalView:{
-    flex:1,
     flexDirection:"row",
     justifyContent: "space-around",
-    backgroundColor: Colors.cardColor,
+    alignItems: "center",
+    backgroundColor: Colors.white,
   },
   flatListView:{
     flex:6,
-    alignItems:"stretch"
   },
   
 
