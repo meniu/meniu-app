@@ -9,6 +9,7 @@ export default class BadgeComponent extends Component {
       // content: number, letter or whatever you want to put on the badge
       // type: type of promotion, basic/premium/deluxe
       // color (optional): sets a color, no matter which the type is
+      // containerStyle: additional styling for the container (position, for example)
       this.state = {
          
       }
@@ -53,8 +54,10 @@ export default class BadgeComponent extends Component {
             textStyle={
               styles.innerText
             }
-            containerStyle={
-              styles.container
+            containerStyle={{
+              ...this.props.containerStyle,
+              ...styles.container
+            }
             }
           />
         )

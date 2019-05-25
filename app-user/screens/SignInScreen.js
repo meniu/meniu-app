@@ -41,7 +41,8 @@ import AuthService from '../services/AuthService';
         if (result.type === "success") {
           
           this.saveUserLocally(result.user);
-          
+          // TODO: pass token to Backend
+          this.props.navigation.navigate("Main"); 
 
         } else {
           console.log("cancelled")
@@ -63,6 +64,8 @@ import AuthService from '../services/AuthService';
       const user = await response.json();
       console.log("user", user);
       this.saveUserLocally(user);
+      // TODO: pass token to Backend
+      this.props.navigation.navigate("Main");
 
     }
     else {

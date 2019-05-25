@@ -2,11 +2,14 @@ const tintColor = 'rgba(229, 94, 36, 0.89)';
 
 export default {
   white:"white",
+  black:"black",
   tintColor,
   cardColor: "white",
   backgroundColor: "#C4C4C4",
   lightBackgroundColor: "#CDCDCD",
   darkBackgroundColor:"#888",
+  border: '#cccccc',
+  yellowMeniu:"#FEE600",
   basic:"#3EC9C2",
   premium:"#4ECE4C",
   deluxe:"#E5A002",
@@ -20,5 +23,5 @@ export default {
   noticeBackground: tintColor,
   noticeText: '#fff',
   facebook: '#3b5998',
-  google: '#DD4B39'
+  google: '#DD4B39',
 };

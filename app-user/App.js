@@ -37,7 +37,8 @@ const AppNavigator = createStackNavigator({
     /* header default config is here */
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: Colors.tintColor ,
+        backgroundColor: Colors.cardColor ,
+        height: 40,
       }, 
     },
 });

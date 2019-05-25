@@ -3,7 +3,7 @@ import { Image, Text, StyleSheet, View } from 'react-native'
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import BadgeComponent from './BadgeComponent';
-
+import { Badge } from 'react-native-elements';
 export default class ImportantPromotionCardComponent extends Component {
 
     constructor(props) {
@@ -17,16 +17,18 @@ export default class ImportantPromotionCardComponent extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <BadgeComponent style={styles.floatingBadge} type={this.props.type}/>
         <View style={styles.imageContainer}>
             <Image
               style={styles.cardImage}
-              resizeMode={"contain"}
               source={{uri: this.props.uri}}
             />
         </View>
+        <Badge status="warning" badgeStyle={{backgroundColor:Colors.yellowMeniu}} containerStyle={styles.floatingBadge}></Badge>
+        <View style={styles.floating}>
+          <BadgeComponent type={this.props.type}/>
+          <Text style={styles.floatingText}>{this.props.name}</Text>
+        </View>
         <View style={styles.descriptionContainer}>
-            <Text>{this.props.name}</Text>
             <Text>{this.props.description}</Text>
         </View>
       </View>
@@ -35,30 +37,44 @@ export default class ImportantPromotionCardComponent extends Component {
 }
 
 const styles = StyleSheet.create({
-    floatingBadge:{
-        position:"absolute",
-        bottom:60,
+  container:{
+    flex:1,
+    flexDirection:"column",
+    margin:5,
+    minWidth: Layout.window.width/2,
+},
+  floatingBadge:{
+    position:"absolute",
+    top:7,
+    left:7,
+  },
+  floating:{
+      position:"absolute",
+      bottom:46,
+      flexDirection:"column",
+      alignItems:"flex-start",
+  },
+  floatingText:{
+    color:Colors.white,
+    fontStyle:"italic",
+  },
+  imageContainer:{
+      flex:3,
+      backgroundColor:Colors.backgroundColor,
+      justifyContent:"center",
+      alignItems:"center",
+  },
+  cardImage:{
+      flex:1,
+      width: undefined, 
+      height: undefined, 
+      alignSelf: "stretch",
+      resizeMode: "cover",
+      // position: "absolute"
     },
-    container:{
-        flex:1,
-        flexDirection:"column",
-        margin:5
-    },
-    imageContainer:{
-        flex:2,
-        backgroundColor:Colors.backgroundColor,
-        justifyContent:"center",
-        alignItems:"center",
-    },
-    cardImage:{
-        flex:1,
-        width: undefined, 
-        height: undefined, 
-        alignSelf: "stretch",
-        // position: "absolute"
-      },
-    descriptionContainer:{
-        flex:1,
-        backgroundColor:Colors.darkBackgroundColor,
-    }
+  descriptionContainer:{
+      flex:1,
+      backgroundColor:Colors.yellowMeniu,
+      opacity: 0.5,
+  }
 })

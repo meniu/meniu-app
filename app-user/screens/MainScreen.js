@@ -17,7 +17,8 @@ const PartnerSelectionStack = createStackNavigator({
 },{
   defaultNavigationOptions:{
     headerStyle: {
-        backgroundColor: Colors.tintColor ,
+        backgroundColor: Colors.cardColor ,
+        height:40,
       }
   }
 });
@@ -33,7 +34,8 @@ const LastOrdersStack = createStackNavigator({
 },{
   defaultNavigationOptions:{
     headerStyle: {
-        backgroundColor: Colors.tintColor ,
+        backgroundColor: Colors.cardColor ,
+        height:40,
       }
   }
 });
@@ -50,7 +52,8 @@ const MembershipsStack = createStackNavigator({
 },{
   defaultNavigationOptions:{
     headerStyle: {
-      backgroundColor: Colors.tintColor ,
+      backgroundColor: Colors.cardColor ,
+      height:40,
     }
   }
 });
@@ -58,7 +61,8 @@ const MembershipsStack = createStackNavigator({
 MembershipsStack.navigationOptions = {
   tabBarLabel: 'Mi cuenta',
   headerStyle: {
-        backgroundColor: Colors.tintColor ,
+        backgroundColor: Colors.cardColor ,
+        height:40,
       }
 };
 
