@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { Image, Text, TouchableHighlight, View, StyleSheet } from 'react-native'
 import Colors from '../constants/Colors';
 import BadgeComponent from './BadgeComponent';
-import { Rating,  } from 'react-native-elements';
+import { Rating, Tile, Card } from 'react-native-elements';
+import Layout from "../constants/Layout";
 
 export default class PromotionCardComponent extends Component {
     
@@ -44,14 +45,29 @@ export default class PromotionCardComponent extends Component {
     render() {
         return (
         <View style={styles.container}>
-            <View style={styles.imageContainer}>
+            {/* <View style={styles.imageContainer}>
                 <BadgeComponent type={this.props.entity.type}/>
                 <Image
                     style={{width: 50, height: 50}}
                     source={{uri: this.props.entity.uri}}
                 />
                 <Text>{"$ " + this.props.entity.discount}</Text>
-            </View>
+            </View> */}
+            <Card
+                image={{uri: this.props.entity.uri}}
+                imageStyle={{ width:'100%', height:55, }}
+                imageProps={{resizeMode:"cover"}}
+                imageWrapperStyle={{overflow:"hidden"}}
+                containerStyle={styles.imageContainer}
+                // wrapperStyle={{opacity:0.5}}
+                >
+                <View style={{justifyContent:"center", alignItems:"center"}}>
+                    <Text>
+                        {"-$ " + this.props.entity.discount}
+                    </Text>
+                </View>
+            </Card>
+            <BadgeComponent type={this.props.entity.type} containerStyle={styles.floatingBadge} />
             <View style={styles.infoContainer} >
                 <Rating
                     imageSize={10}
@@ -59,10 +75,10 @@ export default class PromotionCardComponent extends Component {
                     startingValue={this.props.entity.rating}
                 />
                 <Text>{this.props.entity.name}</Text>
-                <Text>{this.renderSubtitle()}</Text>
+                <Text style={{color:Colors.darkBackgroundColor}}>{this.renderSubtitle()}</Text>
             </View>
-            <TouchableHighlight onPress={this.props.action}>
-                <Text>{this.renderOrder()}</Text>
+            <TouchableHighlight style={styles.actionButton} onPress={this.props.action}>
+                <Text style={{color:Colors.darkBackgroundColor}}>{this.renderOrder()}</Text>
             </TouchableHighlight>
         </View>
         )
@@ -73,19 +89,43 @@ const styles = StyleSheet.create({
     container:{ 
       flex: 1, 
       flexDirection: "row",
-      alignItems: "center", 
-      justifyContent: "space-around",
+      alignItems: "stretch", 
+      justifyContent: "space-between",
       backgroundColor: Colors.cardColor,
+      borderWidth: 1,
+      borderColor: Colors.border,
+      borderRadius: Layout.radius,
+      margin:2,
     },
     imageContainer: {
-      alignItems: "center", 
-      justifyContent: "space-between",
-      // backgroundColor: Colors.cardColor,
+        flex: 1,
+        alignItems: "stretch", 
+        justifyContent: "flex-start",
+        backgroundColor: Colors.yellowMeniu,
+        borderRadius:Layout.radius,
+        margin:5,
+        marginBottom:5,
+        overflow:"hidden",
     },
     infoContainer: {
+        flex:2,
         flexDirection: "column",
-        justifyContent:"space-around",
+        justifyContent:"center",
         alignItems: "flex-start",
+        borderRightWidth:1, 
+        borderRightColor:Colors.border,
+    },
+    actionButton:{
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center",
+    }, 
+    floatingBadge: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 2,
+        elevation: 2,
     }
   });
   
