@@ -24,7 +24,7 @@ export default class TrendingPromotionsScreen extends Component {
   }
 
   static navigationOptions = {
-    title: 'Órdenes Recientes',
+    title: 'Tus últimas órdenes',
   };
 
   componentDidMount() {
@@ -110,10 +110,9 @@ export default class TrendingPromotionsScreen extends Component {
               <FlatList
                 horizontal={true}
                 keyExtractor={(item)=>item.name}
-                data={MockData.promotions}
+                data={MockData.spentPromotions}
                 renderItem={({item})=>{
-                  return <ImportantPastPromotionCardComponent name={item.name} type={item.type}
-                  description={item.description} uri={item.uri} />
+                  return <ImportantPastPromotionCardComponent entity={item} />
                 }}
               />
             </ScrollView>

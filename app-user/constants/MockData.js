@@ -13,17 +13,17 @@ export default {
     promotions:[
         {name:"Chilaquiles", description:"Deliciosos Chilaquiles", rating:4,discount:1000, type:"deluxe",
         uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-        {name:"Burrito", description:"Delicioso Burrito", rating:4,discount:1000, type:"premium",
+        {name:"Burrito", description:"Delicioso Burrito", rating:4.5,discount:1000, type:"premium",
         uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-        {name:"Taco", description:"Delicioso Taco", rating:4,discount:1000, type:"basic",
+        {name:"Taco", description:"Delicioso Taco", rating:5,discount:1000, type:"basic",
         uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
     ],
     spentPromotions:[
         {name:"Sushi", description:"Delicioso Sushi", rating:4,discount:4000, type:"deluxe", transactionDate: "13-03-2019",
         uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-        {name:"Ramen", description:"Delicioso Ramen", rating:4,discount:3000, type:"premium", transactionDate: "11-03-2019",
+        {name:"Ramen", description:"Delicioso Ramen", rating:4.5,discount:3000, type:"premium", transactionDate: "11-03-2019",
         uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
-        {name:"wok", description:"Delicioso wok", rating:4,discount:2000, type:"basic", transactionDate: "18-03-2019",
+        {name:"wok", description:"Delicioso wok", rating:5,discount:2000, type:"basic", transactionDate: "18-03-2019",
         uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
     ],
     memberships:[
