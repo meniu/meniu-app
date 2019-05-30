@@ -13,6 +13,10 @@ import FilterButtonComponent from '../../../components/FilterButtonComponent';
 import MockData from '../../../constants/MockData';
 import ImportantPromotionCardComponent from '../../../components/ImportantPromotionCardComponent';
 
+/**
+ * Restaurantes ordenados por ranking siempre.
+ * Filtros por tag / localización
+ */
 export default class PartnerSelectionScreen extends React.Component {
   constructor(props) {
     super(props);
