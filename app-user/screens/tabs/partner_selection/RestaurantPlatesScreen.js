@@ -56,9 +56,11 @@ class RestaurantPlatesScreen extends Component {
     
     switch (_sorting) {
       case "AZ":
-        sortFunction =  (a,b)=>a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        sortFunction =  (a,b)=>a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        break;
       case "ZA":
-        sortFunction =  (a,b)=>b.name.toLowerCase().localeCompare(a.name.toLowerCase())
+        sortFunction =  (a,b)=>b.name.toLowerCase().localeCompare(a.name.toLowerCase());
+        break;
       default:
         break;
     }

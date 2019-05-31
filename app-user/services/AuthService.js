@@ -17,7 +17,7 @@ export default class AuthService {
     });
   }
 
-  static registerUser(email, name, lastName, password, confirmPassword) {
+  static registerUser(email, name, lastName, password, confirmPassword, acceptTermsAndConditions) {
     const accountType = "User";
     let objBody = {
       email,
@@ -26,7 +26,10 @@ export default class AuthService {
       password,
       confirmPassword,
       accountType,
+      acceptTermsAndConditions
     };
+    console.log("Se enviará", {objBody},`a la url: ${Config.apiUrl}/api/Account/Register`);
+    
     return fetch(`${Config.apiUrl}/api/Account/Register`, {
         method: 'POST',
         headers: {

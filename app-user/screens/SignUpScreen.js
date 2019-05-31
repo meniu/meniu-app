@@ -3,8 +3,10 @@
 import Colors from "../constants/Colors";
 import AuthService from "../services/AuthService";
 import React, { Component } from "react";
-import { Button, StyleSheet,  View, Text, Alert,
-  Platform, TextInput, KeyboardAvoidingView } from "react-native";
+import { Button, StyleSheet,  View, Text, Alert, Switch,
+  Platform, TextInput, KeyboardAvoidingView, TouchableHighlight } from "react-native";
+import { Overlay } from "react-native-elements";
+
 
 class SignUpScreen extends Component {
 
@@ -17,34 +19,31 @@ class SignUpScreen extends Component {
       email:"",
       password:"",
       confirmedPassword:"",
+      acceptTermsAndConditions:false,
 
-      showPasswordHelper:false
+      showPasswordHelper:false,
+      showTC:false,
     };
 
-    this.handleFirstNameInputSubmit = this.handleFirstNameInputSubmit.bind(this);
-    this.handleLastNameInputSubmit = this.handleLastNameInputSubmit.bind(this);
-    this.handleEmailInputSubmit = this.handleEmailInputSubmit.bind(this);
-    this.handlePasswordInputSubmit = this.handlePasswordInputSubmit.bind(this);
-    this.signUpWithUser = this.signUpWithUser.bind(this);
   }
 
-  handleFirstNameInputSubmit(){
+  handleFirstNameInputSubmit = ()=>{
     this.lastNameInput.focus();
   }
-  handleLastNameInputSubmit(){
+  handleLastNameInputSubmit = ()=>{
     this.emailInput.focus();
   }
-  handleEmailInputSubmit(){
+  handleEmailInputSubmit = ()=>{
     this.passwordInput.focus();
   }
-  handlePasswordInputSubmit(){
+  handlePasswordInputSubmit = ()=>{
     this.confirmedPasswordInput.focus();
   }
 
-  signUpWithUser(){
+  signUpWithUser = ()=>{
     // POST petition, obtain token.
     AuthService.registerUser(this.state.email, this.state.firstName, this.state.lastName, 
-      this.state.password, this.state.confirmedPassword)
+      this.state.password, this.state.confirmedPassword, this.state.acceptTermsAndConditions)
       .then((response) => response.json())
       .then((responseJSON) => {
         let user = responseJSON;
@@ -61,11 +60,25 @@ class SignUpScreen extends Component {
       });
   }
 
-
+  ModalTC = (props) => {
+    return( 
+      <Overlay
+        isVisible={props.visible}
+        onBackdropPress={() => this.setState({ showTC: false })}
+      >
+        <Text>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+          Nobis eum nihil vero? Fuga amet, fugit eveniet, explicabo recusandae 
+          tempora ex at delectus ipsam nihil non in deleniti dolore laborum quis.
+        </Text>
+      </Overlay>
+    );
+  }
 
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <this.ModalTC visible={this.state.showTC}/>
         <TextInput 
           ref={(input) => { this.firstNameInput = input; }}
           style={styles.input}
@@ -124,6 +137,20 @@ class SignUpScreen extends Component {
           onChangeText={(confirmedPassword)=>this.setState({confirmedPassword, showPasswordHelper: false})}
           secureTextEntry
         />
+        <View style={{flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
+          <Switch
+            value={this.state.acceptTermsAndConditions}
+            onValueChange={() => this.setState({
+              acceptTermsAndConditions: !this.state.acceptTermsAndConditions
+            })}
+          />
+          <Text>Acepto </Text>
+          <TouchableHighlight onPress={()=>this.setState({showTC:true})}>
+            <Text style={{fontWeight:"bold"}}>
+              Términos y condiciones 
+            </Text>
+          </TouchableHighlight>
+        </View>
         <Button
           style={styles.button}
           title="Registrate"

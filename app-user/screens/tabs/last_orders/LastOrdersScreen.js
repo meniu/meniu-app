@@ -2,12 +2,14 @@
 
 import React, { Component } from 'react';
 import { ToastAndroid, Platform, Image, StyleSheet,  
-  TextInput, Picker, FlatList, View, Text, ScrollView,
+  TextInput, Picker, FlatList, View, ScrollView,
   AsyncStorage } from 'react-native';
+import { Text } from 'react-native-elements';
 import Colors from "../../../constants/Colors";
 import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
 import MockData from '../../../constants/MockData';
 import PromotionCardComponent from '../../../components/PromotionCardComponent';
+import ImportantPastPromotionCardComponent from '../../../components/ImportantPastPromotionCardComponent';
 
 export default class TrendingPromotionsScreen extends Component {
 
@@ -17,11 +19,12 @@ export default class TrendingPromotionsScreen extends Component {
       user:this.props.user,
       signedIn:true,
       text:"",
+      sorting:"ALL",
     };
   }
 
   static navigationOptions = {
-    title: 'Órdenes Recientes',
+    title: 'Tus últimas órdenes',
   };
 
   componentDidMount() {
@@ -86,13 +89,33 @@ export default class TrendingPromotionsScreen extends Component {
       this.checkSignIn();
       return (
         <View style={styles.container}>
-          <View style={styles.userView}>
-            <Image
-              style={{width: 50, height: 50}}
-              source={{uri: this.state.user.photoUrl}}
-            />
-            <Text>{this.state.user.name}</Text>
-            <Text>¡Bienvenido a Meniu, {this.state.user.name}!</Text>
+          <View style={styles.horizontalView}>
+            <View style={styles.userView}>
+              <Text style={{fontWeight:"bold"}}>Felicitaciones, {this.state.user.name}!</Text>
+              <View style={{flexDirection:"row"}}>
+                <Text>Has ahorrado </Text>  
+                <Text style={{fontWeight:"bold",}}>${this.renderDiscountSum(MockData.spentPromotions)}!</Text>
+              </View>
+            </View>
+            <Picker
+              selectedValue={""}
+              style={{ flex:1, height: 50, width: 100 }}
+              onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+              <Picker.Item label="Esta Semana" value="week" />
+              <Picker.Item label="Mensual" value="month" />
+            </Picker>
+          </View>
+          <View style={{flex:3}}>
+            <ScrollView style={{flex:1}} horizontal={true}>
+              <FlatList
+                horizontal={true}
+                keyExtractor={(item)=>item.name}
+                data={MockData.spentPromotions}
+                renderItem={({item})=>{
+                  return <ImportantPastPromotionCardComponent entity={item} />
+                }}
+              />
+            </ScrollView>
           </View>
           <View style={styles.horizontalView}>
             <Text style={{flex:1}}>Tus últimas órdenes</Text>
@@ -100,7 +123,9 @@ export default class TrendingPromotionsScreen extends Component {
             <Picker
               selectedValue={""}
               style={{ flex:1, height: 50, width: 100 }}
-              onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+              onValueChange={(itemValue, itemIndex) => this.setState({sorting: itemValue})}>
+              <Picker.Item label="Todos" value="ALL" />
+              <Picker.Item label="Deluxe" value="DE" />
               <Picker.Item label="Premium" value="PR" />
               <Picker.Item label="Basic" value="BA" />
             </Picker>
@@ -130,7 +155,8 @@ const styles = StyleSheet.create({
   },
   userView:{
     flex:2,
-    alignItems:"center",
+    alignItems:"flex-start",
+    margin:5,
   },
   horizontalView:{
     flex:1,

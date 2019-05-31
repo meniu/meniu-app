@@ -3,6 +3,7 @@ const tintColor = 'rgba(229, 94, 36, 0.89)';
 export default {
   white:"white",
   black:"black",
+  transparent:"#ffffff00",
   tintColor,
   cardColor: "white",
   backgroundColor: "#C4C4C4",
