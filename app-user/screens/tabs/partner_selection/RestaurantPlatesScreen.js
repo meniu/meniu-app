@@ -69,6 +69,10 @@ class RestaurantPlatesScreen extends Component {
     return promotions;
   }
 
+  filterPromotions = (_filtering="type", _promotionList) => {
+    // Filters by selected values
+  }
+
   handlePickerSelect = (itemValue) => {
     this.setState({
       promotionList:this.sortPromotions(itemValue),

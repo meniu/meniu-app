@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import { Image, View, Text, Button, StyleSheet } from "react-native";
 import { StackActions, NavigationActions } from "react-navigation";
 import Colors from "../constants/Colors";
+import CustomIcon from "../components/CustomIcon";
+
 
 export default class HomeScreen extends Component {
   constructor(props) {
