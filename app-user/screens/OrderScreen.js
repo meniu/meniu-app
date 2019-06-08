@@ -3,9 +3,10 @@
 import React, { Component } from 'react';
 
 import {
-  StyleSheet, Button,
+  StyleSheet,
   View, Text, Image
 } from 'react-native';
+import { Button, Rating } from 'react-native-elements';
 
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
@@ -25,40 +26,52 @@ class OrderScreen extends Component {
   }
 
   static navigationOptions = {
-    title: 'Tu pedido',
+    title: 'Tu orden',
   };
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.horizontalView}> 
-        <View>
-          <Image
-            style={{width: 100, height: 100}}
-            source={{uri: this.restaurant.uri}}
-          />
-          <Text>{this.restaurant.name}</Text>
-        </View>
           <View>
-            <Text>Plato: {this.plate.name}</Text>
-            <Text>Categoria: {this.plate.type}</Text>
-            <Text>Ahorras: {this.plate.discount}</Text>
-            <Text>Incluye: {this.plate.description}</Text>
+            <Image
+              style={styles.imageStyle}
+              source={{uri: this.plate.uri}}
+            />
+            <Rating
+              imageSize={10}
+              readonly
+              startingValue={this.plate.rating}
+              style={{position:"absolute", bottom:25, left:2,}}
+            />
+            <Text style={{marginTop:3}}>{this.restaurant.name}</Text>
+          </View>
+          <View>
+            <Text style={styles.textTitle}>Nombre del plato:</Text>
+            <Text style={styles.textSubTitle}>{this.plate.name}</Text>
+            <Text style={styles.textTitle}>Categoria:</Text>
+            <Text style={styles.textSubTitle}>{this.plate.type}</Text>
+            <Text style={styles.textTitle}>Ahorraste:</Text>
+            <Text style={styles.textSubTitle}>$ {this.plate.discount}</Text>
+            <Text style={styles.textTitle}>Incluye:</Text>
+            <Text style={styles.textSubTitle}>{this.plate.description}</Text>
           </View>
         </View>
-        <View style={styles.centralText}>
-          
-        </View>
         <View style={styles.QRContainer}>
-        <Text>¡Código QR generado!</Text>
-          <Image
-            style={{flex:1, width: 200, height: 200}}
-            source={require('../assets/images/qr-sample.png')}
-            resizeMode="contain"
-          />
-        <Text>Bon Appetit</Text>
-        <Text>Ahora puedes ir a reclamar tu pedido</Text>
-        <Button title="Ir a restaurante" onPress={()=>{}}  />
+          <Text style={{fontSize:25, color:Colors.darkGreen}}>¡Código QR generado!</Text>
+          <View style={styles.QRBorder}>
+            <Image
+              style={styles.QRStyle}
+              source={require('../assets/images/qr-sample.png')}
+              resizeMode="contain"
+            />
+          </View>
+          <View style={{alignItems:"center"}}>
+            <Text style={{fontWeight:"bold", color:Colors.darkGreen}}>Bon Appetit</Text>
+            <Text style={{color:Colors.darkGreen}}>Ahora puedes ir a reclamar tu pedido</Text>
+          </View>
+          <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle} 
+            title="Ir a restaurante" onPress={()=>{}}  />
         </View>
       </View>
     );
@@ -74,10 +87,29 @@ const styles = StyleSheet.create({
   },
   horizontalView:{
     flex:2,
+    margin:5,
     flexDirection:"row",
     justifyContent: "space-evenly",
     alignItems:"center",
     backgroundColor: Colors.backgroundColor,
+    borderStyle:"dashed",
+    borderColor:Colors.darkGreen,
+    borderWidth:2,
+    borderRadius:5,
+  },
+  textTitle:{
+    color:Colors.darkGreen,
+    fontWeight:"bold",
+  },
+  textSubTitle:{
+    color:Colors.darkBackgroundColor,
+  },
+  imageStyle:{
+    width: 120, 
+    height: 96,
+    borderColor:Colors.darkGreen,
+    borderWidth:1,
+    borderRadius:5,
   },
   centralText:{
     flex:1,
@@ -88,8 +120,34 @@ const styles = StyleSheet.create({
   QRContainer:{
     flex:4,
     backgroundColor: Colors.backgroundColor,
+    justifyContent:"space-around",
     alignItems:"center",
+  },
+  QRBorder: {
+    width:170,
+    height:170,
     justifyContent:"center",
+    alignItems:"center",
+    borderColor:Colors.darkGreen,
+    borderWidth:1,
+    borderRadius:5,
+  },
+  QRStyle: { 
+    width: 150, 
+    height: 150,
+    resizeMode: "contain",
+  },
+  buttonStyle: {
+    flexDirection:"column",
+    width: "80%",
+    backgroundColor: Colors.yellowMeniu,
+    justifyContent: "center",
+    alignItems:"center",
+    alignContent:"center"
+  },
+  textButtonStyle: {
+      color:Colors.black, 
+      textAlign:"center",
   }
 });
 

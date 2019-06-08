@@ -2,16 +2,19 @@
 
 import React, { Component } from 'react';
 import { ToastAndroid, Platform, Image, StyleSheet,  
-  TextInput, Picker, FlatList, View, ScrollView,
+  TextInput, Picker, FlatList, View, ScrollView, SectionList,
   AsyncStorage } from 'react-native';
 import { Text } from 'react-native-elements';
 import Colors from "../../../constants/Colors";
-import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
 import MockData from '../../../constants/MockData';
+import Layout from '../../../constants/Layout';
 import PromotionCardComponent from '../../../components/PromotionCardComponent';
-import ImportantPastPromotionCardComponent from '../../../components/ImportantPastPromotionCardComponent';
+import ImportantPastPromotionCardComponent  from "../../../components/ImportantPastPromotionCardComponent";
+import moment from "moment";
+import Accordion from "react-native-collapsible/Accordion"
+import { AntDesign } from '@expo/vector-icons';
 
-export default class TrendingPromotionsScreen extends Component {
+export default class LastOrdersScreen extends Component {
 
   constructor(props) {
     super(props);
@@ -19,7 +22,9 @@ export default class TrendingPromotionsScreen extends Component {
       user:this.props.user,
       signedIn:true,
       text:"",
-      sorting:"ALL",
+      sorting:"all",
+      spentPromotions:[],
+      activeSections: [],
     };
   }
 
@@ -29,7 +34,7 @@ export default class TrendingPromotionsScreen extends Component {
 
   componentDidMount() {
     this.getLocalUser();
-    
+    this.setState({spentPromotions:MockData.spentPromotions});
   }
 
   async getLocalUser(){
@@ -62,6 +67,13 @@ export default class TrendingPromotionsScreen extends Component {
 
   }
 
+  getDiscountSum(array){
+    let sum = array.map(prom => prom.discount).reduce((a,b)=>
+      a + b
+    ,0);
+    return sum;
+  }
+
   handlePlatePress(plate){
     this.props.navigation.navigate("Order",{
       plate: plate,
@@ -75,11 +87,91 @@ export default class TrendingPromotionsScreen extends Component {
     </View>);
   }
 
-  renderDiscountSum(array){
-    let sum = array.map(prom => prom.discount).reduce((a,b)=>
-      a + b
-    ,0);
-    return sum;
+  renderSectionHeader = (section, index, isActive) => {
+    let iconName = isActive ? "up" : "down";
+    return (
+      <View style={[
+        styles.sectionHeader, 
+        isActive ? styles.activeSectionHeader : styles.inactiveSectionHeader
+      ]}>
+        <Text>{section.title}</Text>
+        <View style={{flexDirection:"row"}}>
+          <Text>Ahorraste: ${this.getDiscountSum(section.data)} </Text>
+          <AntDesign name={iconName} size={20} color="black" />
+        </View>
+      </View>
+    );
+  };
+
+  renderSectionContent = section => {
+    return (
+      <ScrollView style={{height:Layout.window.height/4}}>
+        <FlatList
+          style={{flex:1}}
+          data={section.data.map(prom=>{prom.key=prom.name; return prom})}
+          numColumns={2}
+          renderItem={({item})=>{
+            return <ImportantPastPromotionCardComponent entity={item} action={()=>this.handlePlatePress(item)} />
+          }}
+        />
+      </ScrollView>
+    );
+  };
+
+  updateSections = activeSections => {
+    this.setState({ activeSections });
+  };
+
+  SpentPromotionList = (props) => {
+    switch (this.state.sorting) {
+      case "all":
+        return(
+          <ScrollView style={{flex:1}}>
+            <FlatList
+              style={{flex:1}}
+              keyExtractor={(item)=>item.name}
+              data={this.state.spentPromotions}
+              renderItem={({item}) => <PromotionCardComponent actionType="reorder" entity={item} action={()=>this.handlePlatePress(item)}/>}
+            />
+          </ScrollView>
+        );
+      case "month":
+        // Use moment to calculate each included month, adding each promotion in the process.
+        // [{title:"Enero", number:1, data:[{...}, {...}]}]
+        let months = []
+        moment.locale("es");
+
+        this.state.spentPromotions.forEach(spentPromotion => {
+          let promotionMonthNumber = moment(spentPromotion.transactionDate, "DD-MM-YYYY").month();
+          let existingMonth = months.find(month => 
+            month.number == promotionMonthNumber
+          );
+          existingMonth ? 
+            existingMonth.data.push(spentPromotion):
+            months.push({
+              title:moment.months()[promotionMonthNumber],
+              number:promotionMonthNumber,
+              data:[spentPromotion],
+            });        
+          // console.log({promotionMonthNumber, existingMonth});
+        });
+        
+        // Render section list to show promotions inside each month. 
+        return (
+          <Accordion
+            activeSections={this.state.activeSections}
+            sections={months}
+            // renderSectionTitle={this._renderSectionTitle}
+            renderHeader={this.renderSectionHeader}
+            renderContent={this.renderSectionContent}
+            onChange={this.updateSections}
+          />
+        );
+      default:
+        return (
+          <Text>No has utilizado promociones</Text>
+        );
+    }
   }
 
   render() {
@@ -94,52 +186,49 @@ export default class TrendingPromotionsScreen extends Component {
               <Text style={{fontWeight:"bold"}}>Felicitaciones, {this.state.user.name}!</Text>
               <View style={{flexDirection:"row"}}>
                 <Text>Has ahorrado </Text>  
-                <Text style={{fontWeight:"bold",}}>${this.renderDiscountSum(MockData.spentPromotions)}!</Text>
+                <Text style={{fontWeight:"bold",}}>${this.getDiscountSum(this.state.spentPromotions)}!</Text>
               </View>
             </View>
-            <Picker
-              selectedValue={""}
-              style={{ flex:1, height: 50, width: 100 }}
-              onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-              <Picker.Item label="Esta Semana" value="week" />
-              <Picker.Item label="Mensual" value="month" />
-            </Picker>
+            <View style={styles.pickerView}>
+              <Picker
+                selectedValue={""}
+                style={styles.picker}
+                onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+                <Picker.Item label="Esta Semana" value="week" />
+                <Picker.Item label="Mensual" value="month" />
+              </Picker>
+            </View>
           </View>
           <View style={{flex:3}}>
             <ScrollView style={{flex:1}} horizontal={true}>
               <FlatList
                 horizontal={true}
                 keyExtractor={(item)=>item.name}
-                data={MockData.spentPromotions}
+                data={this.state.spentPromotions}
                 renderItem={({item})=>{
-                  return <ImportantPastPromotionCardComponent entity={item} />
+                  return <ImportantPastPromotionCardComponent entity={item} action={()=>this.handlePlatePress(item)} />
                 }}
               />
             </ScrollView>
+          </View>         
+          <View style={{...styles.horizontalView, justifyContent:"flex-end"}}>
+            <View style={styles.pickerView}>
+              <Picker
+                selectedValue={this.state.sorting}
+                style={styles.picker}
+                onValueChange={(itemValue, itemIndex) => this.setState({sorting: itemValue})}>
+                <Picker.Item label="Todos" value="all" />
+                <Picker.Item label="Mensual" value="month" />
+              </Picker>
+            </View>
           </View>
-          <View style={styles.horizontalView}>
+          <View style={{...styles.horizontalView, justifyContent:"space-around"}}>
             <Text style={{flex:1}}>Tus últimas órdenes</Text>
-            <Text style={{flex:1}}>Ahorro total: ${ this.renderDiscountSum(MockData.spentPromotions) }</Text>
-            <Picker
-              selectedValue={""}
-              style={{ flex:1, height: 50, width: 100 }}
-              onValueChange={(itemValue, itemIndex) => this.setState({sorting: itemValue})}>
-              <Picker.Item label="Todos" value="ALL" />
-              <Picker.Item label="Deluxe" value="DE" />
-              <Picker.Item label="Premium" value="PR" />
-              <Picker.Item label="Basic" value="BA" />
-            </Picker>
-          </View>
+            <Text style={{flex:1}}>Total ahorrado: ${ this.getDiscountSum(this.state.spentPromotions) }</Text>
+          </View> 
           <View 
             style={styles.flatListView}>
-            <ScrollView style={{flex:1}}>
-              <FlatList
-                style={{flex:1}}
-                keyExtractor={(item)=>item.name}
-                data={MockData.spentPromotions}
-                renderItem={({item}) => <PromotionCardComponent actionType="reorder" entity={item} action={()=>this.handlePlatePress(item)}/>}
-              />
-            </ScrollView>
+            <this.SpentPromotionList/>
           </View>
         </View>
       );
@@ -151,7 +240,7 @@ const styles = StyleSheet.create({
     flex: 1, 
     alignItems: "stretch", 
     justifyContent: "space-around",
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: Colors.lightBackgroundColor,
   },
   userView:{
     flex:2,
@@ -168,7 +257,34 @@ const styles = StyleSheet.create({
     flex:7,
     alignItems:"stretch"
 
-  }
+  },
+  pickerView: {
+    backgroundColor:Colors.yellowMeniu,
+    justifyContent:"center",
+    padding:5,
+    margin:5,
+    borderRadius:5,
+  },
+  picker: {
+    height: 30, 
+    width: 150,
+  },
+  sectionHeader:{
+    borderColor:Colors.yellowMeniu,
+    borderRadius:1,
+    borderWidth:1,
+    flexDirection:"row",
+    justifyContent:"space-between",
+    margin:2,
+    padding:4,
+  },
+  activeSectionHeader: {
+    backgroundColor:Colors.yellowMeniu,
+  },
+  inactiveSectionHeader: {
+    backgroundColor:Colors.white,
+  },
+
 
 });
 

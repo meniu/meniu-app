@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { Font } from 'expo';
 import { createAppContainer, createStackNavigator, StackActions, NavigationActions } from "react-navigation"; // Version can be specified in package.json
 
 import HomeScreen from "./screens/HomeScreen.js";
@@ -45,7 +45,24 @@ const AppNavigator = createStackNavigator({
 
 const AppContainer = createAppContainer(AppNavigator);
 export default class App extends React.Component {
+
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+      fontLoaded: false,     
+    }
+  }  
+
+  componentDidMount() {
+    Font.loadAsync({
+      'meniu': require('./assets/fonts/meniu.ttf'),
+    }).then(()=>{
+      this.setState({ fontLoaded: true });
+    });
+  }
+
   render(){
-    return <AppContainer/>;
+    return this.state.fontLoaded ? <AppContainer/> : null;
   }
 }

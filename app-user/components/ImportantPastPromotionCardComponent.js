@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Image, Text, StyleSheet, View } from 'react-native'
+import { Image, Text, StyleSheet, View, 
+  TouchableHighlight, } from 'react-native'
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import BadgeComponent from './BadgeComponent';
 import { Rating } from 'react-native-elements';
+
 export default class ImportantPastPromotionCardComponent extends Component {
 
     constructor(props) {
@@ -11,6 +13,8 @@ export default class ImportantPastPromotionCardComponent extends Component {
     //   Props: 
     // item={uri, type, date, name, description, ...} 
     // of the promotion/plate
+    // action
+    // function to execute when reorder is pressed
       this.state = {
          
       }
@@ -39,7 +43,10 @@ export default class ImportantPastPromotionCardComponent extends Component {
           <Text style={styles.floatingDate}>{this.props.entity.transactionDate}</Text>
         </View>
         <View style={styles.descriptionContainer}>
-            <Text>{this.props.entity.description}</Text>
+          <Text>-${this.props.entity.discount}</Text>
+          <TouchableHighlight onPress={this.props.action}>
+            <Text style={{color:Colors.darkBackgroundColor}}>Reordenar</Text>
+          </TouchableHighlight>
         </View>
       </View>
     )
@@ -48,9 +55,9 @@ export default class ImportantPastPromotionCardComponent extends Component {
 
 const styles = StyleSheet.create({
   container:{
-    flex:1,
     flexDirection:"column",
     margin:15,
+    height: Layout.window.width*0.3,
     width: Layout.window.width*3/7,
 },
   floatingBadge:{
@@ -96,7 +103,9 @@ const styles = StyleSheet.create({
     },
   descriptionContainer:{
       flex:1,
-      backgroundColor:Colors.yellowMeniu,
-      opacity: 0.5,
+      backgroundColor:Colors.yellowMeniuTransparent,
+      flexDirection:"row",
+      justifyContent:"space-between",
+      padding:3,
   }
 })
