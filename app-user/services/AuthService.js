@@ -26,7 +26,8 @@ export default class AuthService {
       password,
       confirmPassword,
       accountType,
-      acceptTermsAndConditions
+      acceptTermsAndConditions,
+      token: "string"
     };
     console.log("Se enviará", {objBody},`a la url: ${Config.apiUrl}/api/Account/Register`);
     

@@ -46,6 +46,8 @@ class SignUpScreen extends Component {
       this.state.password, this.state.confirmedPassword, this.state.acceptTermsAndConditions)
       .then((response) => response.json())
       .then((responseJSON) => {
+        console.log('respondió server');
+        console.log(responseJSON);
         let user = responseJSON;
         // Token se guarda en user.token
         if(user.token) {
