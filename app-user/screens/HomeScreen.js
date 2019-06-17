@@ -32,7 +32,7 @@ export default class HomeScreen extends Component {
             style={styles.titleImage}/>
         </View>
         <Text style={styles.subtitleText}>Almuerza inteligentemente</Text>
-        <View style={styles.buttonsView}>
+          <View style={styles.buttonsView}>
           <Button
             style={styles.button}
             title="ingresa"

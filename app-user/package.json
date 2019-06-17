@@ -7,9 +7,9 @@
     "eject": "expo eject",
     "rnpm": {
       "assets": [
-          "assets/fonts"
+        "assets/fonts"
       ]
-  }
+    }
   },
   "dependencies": {
     "expo": "^31.0.4",
@@ -20,6 +20,7 @@
     "react-native-elements": "^1.1.0",
     "react-native-facebook-login": "^1.5.0",
     "react-native-fbsdk": "^0.8.0",
+    "react-native-global-props": "^1.1.5",
     "react-native-modal": "^9.0.0",
     "react-native-safari-view": "^2.1.0",
     "react-native-vector-icons": "^6.1.0",
