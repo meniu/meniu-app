@@ -10,6 +10,7 @@ import AccountScreen from "./tabs/memberships/AccountScreen.js";
 import MembershipsScreen from "./tabs/memberships/MembershipsScreen.js"
 import Colors from "../constants/Colors";
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import CustomIcon from '../components/CustomIcon.js';
 
 const PartnerSelectionStack = createStackNavigator({
   PartnerSelection: PartnerSelectionScreen,
@@ -20,7 +21,8 @@ const PartnerSelectionStack = createStackNavigator({
         backgroundColor: Colors.cardColor ,
         height:40,
       }
-  }
+  },
+  headerLayoutPreset: "center",
 });
 
 PartnerSelectionStack.navigationOptions = {
@@ -37,7 +39,8 @@ const LastOrdersStack = createStackNavigator({
         backgroundColor: Colors.cardColor ,
         height:40,
       }
-  }
+  },
+  headerLayoutPreset: "center",
 });
 
 LastOrdersStack.navigationOptions = {
@@ -55,7 +58,8 @@ const MembershipsStack = createStackNavigator({
       backgroundColor: Colors.cardColor ,
       height:40,
     }
-  }
+  },
+  headerLayoutPreset: "center",
 });
 
 MembershipsStack.navigationOptions = {
@@ -76,15 +80,14 @@ const TabNavigator = createBottomTabNavigator({
   defaultNavigationOptions:({ navigation }) => ({
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        let IconComponent = FontAwesome;
+        let IconComponent = CustomIcon;
         let iconName;
         switch (routeName) {
           case 'PartnerSelectionStack':
-            IconComponent = MaterialCommunityIcons;
-            iconName = 'store';
+            iconName = 'restaurants';
             break;
           case 'LastOrdersStack':
-            iconName = 'clock-o';
+            iconName = 'orders';
             break;
           case 'MembershipsStack':
             IconComponent = MaterialCommunityIcons;

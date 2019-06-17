@@ -1,6 +1,5 @@
 import React from "react";
-import { Font } from 'expo';
-import { createAppContainer, createStackNavigator, StackActions, NavigationActions } from "react-navigation"; // Version can be specified in package.json
+import { createAppContainer, createStackNavigator } from "react-navigation"; // Version can be specified in package.json
 
 import HomeScreen from "./screens/HomeScreen.js";
 import SignUpScreen from "./screens/SignUpScreen.js";
@@ -9,6 +8,9 @@ import MainScreen from "./screens/MainScreen.js";
 import OrderScreen from "./screens/OrderScreen.js";
 
 import Colors from "./constants/Colors.js";
+
+import { Font } from 'expo';
+import { setCustomText } from 'react-native-global-props';
 
 const AppNavigator = createStackNavigator({
   Home: {
@@ -41,6 +43,7 @@ const AppNavigator = createStackNavigator({
         height: 40,
       }, 
     },
+    headerLayoutPreset: "center",
 });
 
 const AppContainer = createAppContainer(AppNavigator);
@@ -58,8 +61,18 @@ export default class App extends React.Component {
     Font.loadAsync({
       'meniu': require('./assets/fonts/meniu.ttf'),
     }).then(()=>{
+      this.defaultFonts();
       this.setState({ fontLoaded: true });
     });
+  }
+
+  defaultFonts(){
+    const customTextProps = {
+      style: {
+        fontFamily: 'meniu'
+      }
+    }
+    setCustomText(customTextProps)
   }
 
   render(){
