@@ -6,7 +6,8 @@ export default class BadgeComponent extends Component {
 
     constructor(props) {
       super(props)
-      // content: number, letter or whatever you want to put on the badge
+      // content: number, letter or whatever you want to put on the badge. 
+      // Default will enter the letter according type
       // type: type of promotion, basic/premium/deluxe
       // color (optional): sets a color, no matter which the type is
       // containerStyle: additional styling for the container (position, for example)

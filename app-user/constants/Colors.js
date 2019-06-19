@@ -2,6 +2,7 @@ const tintColor = 'rgba(229, 94, 36, 0.89)';
 
 export default {
   white:"white",
+  whiteTransparent:"#FFFFFFAA",
   black:"black",
   transparent:"transparent",
   darkGreen:"#609157",

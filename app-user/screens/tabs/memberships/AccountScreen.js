@@ -9,7 +9,7 @@ import CustomIcon from "../../../components/CustomIcon";
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
 import AuthService from '../../../services/AuthService';
-import AvailablePromotionsComponent from '../../../components/AvailablePromotionsComponent';
+import AvailableCouponsComponent from '../../../components/AvailableCouponsComponent';
 
 export default class AccountScreen extends React.Component {
 
@@ -105,13 +105,13 @@ export default class AccountScreen extends React.Component {
         </View>
         {/* Conditional rendering, depending if client has plan or not */}
         {
-          plan ? <this.PlanComponent/> : <this.NoPlanComponent/>
+          plan ? <this.NoPlanComponent/> : <this.NoPlanComponent/>
         }
         <View style={{flex:6}}>
           <View style={styles.availableDishesContainer}>
-            <AvailablePromotionsComponent type="deluxe" promotionsNumber={10}/>
-            <AvailablePromotionsComponent type="premium" promotionsNumber={10}/>
-            <AvailablePromotionsComponent type="basic" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="deluxe" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="premium" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="basic" promotionsNumber={10}/>
           </View>
         </View>
       </View>

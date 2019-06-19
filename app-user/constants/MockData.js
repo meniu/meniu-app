@@ -31,9 +31,10 @@ export default {
             uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
     ],
     memberships:[
-        {name:"Guerrero", price:210000, description:"Para ahorrar en grande", promotionTypes:{basic:20, premium:0, deluxe:0}},
-        {name:"Premium", price:250000, description:"Almuerza como alto ejecutivo", promotionTypes:{basic:0, premium:20, deluxe:0}},
-        {name:"Deluxe", price:290000, description:"Lo mejor de lo mejor, siempre", promotionTypes:{basic:0, premium:0, deluxe:20}},
-        {name:"Personalizado", price:270000, description:"A tu medida", promotionTypes:{basic:5, premium:5, deluxe:10}},
+        {name:"Guerrero", price:210000, description:"Para ahorrar en grande", coupons:[{type:"basic", quantity:20}]},
+        {name:"Premium", price:250000, description:"Almuerza como alto ejecutivo", coupons:[{type:"premium", quantity:20},]},
+        {name:"Deluxe", price:290000, description:"Lo mejor de lo mejor, siempre", coupons:[{type:"deluxe", quantity:20},]},
+        {name:"Personalizado", price:270000, description:"A tu medida", coupons:[
+            {type:"basic", quantity:10},{type:"premium", quantity:5},{type:"deluxe", quantity:5},]},
     ]
 }

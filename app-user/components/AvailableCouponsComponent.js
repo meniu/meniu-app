@@ -5,11 +5,11 @@ import Layout from '../constants/Layout';
 import CustomIcon from './CustomIcon';
 import BadgeComponent from './BadgeComponent';
 
-export default class AvailablePromotionsComponent extends Component {
+export default class AvailableCouponsComponent extends Component {
 
     constructor(props) {
-        // promotionsNumber: Qty of promotions available
-        // type: Type of promotion (deluxe,premium,basic)
+        // couponsNumber: Qty of coupons available
+        // type: Type of coupon (deluxe,premium,basic)
         super(props)
     
         this.state = {
@@ -33,7 +33,7 @@ export default class AvailablePromotionsComponent extends Component {
             </View>   
             <View style={styles.textContainer}>
                 <Text>Platos Disponibles:</Text>
-                <Text>{this.props.promotionsNumber || 0}</Text>
+                <Text>{this.props.couponsNumber || 0}</Text>
             </View>
         </View>
         )
