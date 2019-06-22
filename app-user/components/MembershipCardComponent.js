@@ -113,29 +113,39 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: "row",
       margin: 5,
+      borderWidth:1, 
+      borderColor:Colors.border,
+      borderRadius:5
     },
     gradient: {
-      flex: 1,
+      flex: 1.5,
+      justifyContent:"center",
+      alignItems:"stretch",
     },
     membershipTitle: {
       backgroundColor: Colors.whiteTransparent,
-      
+      fontStyle:"italic",
+      fontSize:12,    
+      textAlign:"center"
     },
     descriptionContainer: {
       flex: 4,
+      paddingLeft: 5,
     },
     priceText: {
       fontWeight:"bold",
       fontSize:15,
     },
     button: {
-      flex:1,
+      flex:1.2,
       alignItems: "center",
       justifyContent: "center",
+      borderLeftWidth:1, 
+      borderLeftColor:Colors.border,
     },
     couponBubble: {
       color:Colors.white,
-      padding:5,
+      padding:2,
       borderTopRightRadius: 10,
       borderBottomRightRadius: 10,
   }

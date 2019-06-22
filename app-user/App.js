@@ -70,10 +70,11 @@ export default class App extends React.Component {
   defaultFonts(){
     const customTextProps = {
       style: {
-        fontFamily: 'meniu'
+        fontFamily: 'meniu',
+        lineHeight: 18
       }
     }
-    setCustomText(customTextProps)
+    setCustomText({customTextProps})
   }
 
   render(){

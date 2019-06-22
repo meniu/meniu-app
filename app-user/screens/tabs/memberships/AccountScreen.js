@@ -105,7 +105,7 @@ export default class AccountScreen extends React.Component {
         </View>
         {/* Conditional rendering, depending if client has plan or not */}
         {
-          plan ? <this.NoPlanComponent/> : <this.NoPlanComponent/>
+          plan ? <this.PlanComponent/> : <this.NoPlanComponent/>
         }
         <View style={{flex:6}}>
           <View style={styles.availableDishesContainer}>
@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.yellowMeniu,
     justifyContent: "center",
     alignItems:"center",
-    alignContent:"center"
+    alignContent:"center",
+    borderRadius:10,
   },
   textButtonStyle: {
     color:Colors.black, 
