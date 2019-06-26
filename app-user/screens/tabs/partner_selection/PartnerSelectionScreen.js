@@ -12,7 +12,7 @@ import BadgeComponent from '../../../components/BadgeComponent';
 import FilterButtonComponent from '../../../components/FilterButtonComponent';
 import MockData from '../../../constants/MockData';
 import ImportantPromotionCardComponent from '../../../components/ImportantPromotionCardComponent';
-
+import PartnerService from "../../../services/PartnerService"
 /**
  * Restaurantes ordenados por ranking siempre.
  * Filtros por tag / localización
@@ -25,6 +25,8 @@ export default class PartnerSelectionScreen extends React.Component {
       text:"",
       //Layout: By icon or traditional
       layout:"icon",
+      partners: [],
+      promotions: []
     };
 
     this.handleRestaurantPress = this.handleRestaurantPress.bind(this);
@@ -40,6 +42,13 @@ export default class PartnerSelectionScreen extends React.Component {
     });
   }
 
+  componentDidMount(){
+    PartnerService.retrievePartners().then(response => response.json()).then(responseJSON => {
+      console.log('hecho');
+      console.log(responseJSON);
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -50,7 +59,7 @@ export default class PartnerSelectionScreen extends React.Component {
               <FlatList
                 horizontal={true}
                 keyExtractor={(item)=>item.name}
-                data={MockData.promotions}
+                data={this.state.promotions}
                 renderItem={({item})=>{
                   return <ImportantPromotionCardComponent name={item.name} type={item.type}
                   description={item.description} uri={item.uri} />
@@ -72,7 +81,7 @@ export default class PartnerSelectionScreen extends React.Component {
               numColumns={1}
               keyExtractor={(item)=>item.name}
               // onPressItem={this.handleRestaurantPress}
-              data={MockData.restaurants}
+              data={this.state.partners}
               renderItem={({item}) => {
                 return <RestaurantCardComponent entity={item} action={()=>this.handleRestaurantPress(item)}/>
               }}

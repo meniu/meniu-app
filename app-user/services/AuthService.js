@@ -2,16 +2,36 @@ import Config from "../constants/Config";
 import { AsyncStorage, Platform, ToastAndroid } from "react-native";
 
 export default class AuthService {
-  static logIn(email, password){
+  static logIn(username, password) {
     let objBody = {
-      email,
+      username,
       password
     }
     return fetch(`${Config.apiUrl}/api/Account/Login/User`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-type':'application/json'
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(objBody)
+    });
+  }
+
+  static externalLogIn(providerKey, loginProvider, email) {
+    const acceptTermsAndConditions = true;
+    const accountType = "User";
+    let objBody = {
+      email,
+      loginProvider,
+      providerKey,
+      accountType,
+      acceptTermsAndConditions
+    };
+    return fetch(`${Config.apiUrl}/api/Account/ExternalLogin`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
       },
       body: JSON.stringify(objBody)
     });
@@ -26,31 +46,30 @@ export default class AuthService {
       password,
       confirmPassword,
       accountType,
-      acceptTermsAndConditions,
-      token: "string"
+      acceptTermsAndConditions
     };
-    console.log("Se enviará", {objBody},`a la url: ${Config.apiUrl}/api/Account/Register`);
-    
+    console.log("Se enviará", { objBody }, `a la url: ${Config.apiUrl}/api/Account/Register`);
+
     return fetch(`${Config.apiUrl}/api/Account/Register`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-type':'application/json'
-        },
-        body: JSON.stringify(objBody)
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(objBody)
     });
   }
 
-  static saveUserLocally(user){
+  static saveUserLocally(user) {
     try {
       AsyncStorage.setItem('user', JSON.stringify(user));
-      if(Platform.OS === 'android')
+      if (Platform.OS === 'android')
         ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
       this.props.navigation.navigate("Main");
     } catch (error) {
       // Error saving data
-      console.log({error});
-      
+      console.log({ error });
+
     }
   }
 
