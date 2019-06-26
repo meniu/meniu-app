@@ -9,7 +9,7 @@ import CustomIcon from "../../../components/CustomIcon";
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
 import AuthService from '../../../services/AuthService';
-import AvailablePromotionsComponent from '../../../components/AvailablePromotionsComponent';
+import AvailableCouponsComponent from '../../../components/AvailableCouponsComponent';
 
 export default class AccountScreen extends React.Component {
 
@@ -109,9 +109,9 @@ export default class AccountScreen extends React.Component {
         }
         <View style={{flex:6}}>
           <View style={styles.availableDishesContainer}>
-            <AvailablePromotionsComponent type="deluxe" promotionsNumber={10}/>
-            <AvailablePromotionsComponent type="premium" promotionsNumber={10}/>
-            <AvailablePromotionsComponent type="basic" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="deluxe" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="premium" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="basic" promotionsNumber={10}/>
           </View>
         </View>
       </View>
@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.yellowMeniu,
     justifyContent: "center",
     alignItems:"center",
-    alignContent:"center"
+    alignContent:"center",
+    borderRadius:10,
   },
   textButtonStyle: {
     color:Colors.black, 

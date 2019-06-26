@@ -5,11 +5,11 @@ import Layout from '../constants/Layout';
 import CustomIcon from './CustomIcon';
 import BadgeComponent from './BadgeComponent';
 
-export default class AvailablePromotionsComponent extends Component {
+export default class AvailableCouponsComponent extends Component {
 
     constructor(props) {
-        // promotionsNumber: Qty of promotions available
-        // type: Type of promotion (deluxe,premium,basic)
+        // couponsNumber: Qty of coupons available
+        // type: Type of coupon (deluxe,premium,basic)
         super(props)
     
         this.state = {
@@ -22,18 +22,28 @@ export default class AvailablePromotionsComponent extends Component {
         return (
         <View style={styles.container}>
             <View style={styles.badgeContainer}>
-                <BadgeComponent type={this.props.type} />
+                <BadgeComponent 
+                    type={this.props.type} 
+                    badgeStyle={{
+                        width:Layout.window.width/12,
+                        height:Layout.window.width/12,
+                        borderRadius:500
+                    }}
+                    textStyle={{
+                        fontSize:18
+                    }}
+                    />
             </View>
             <View style={styles.talkBubble}>
                 <View style={[styles.talkBubbleTriangle,{borderRightColor:Colors[this.props.type]}]} />
                 <View style={[styles.talkBubbleSquare,{backgroundColor:Colors[this.props.type]}]}>
                     <CustomIcon name="no-plan" size={60} color={Colors.white} />
-                    <Text>{this.props.type}</Text>
+                    <Text style={{opacity:0.6}}>{this.props.type}</Text>
                 </View>
             </View>   
             <View style={styles.textContainer}>
-                <Text>Platos Disponibles:</Text>
-                <Text>{this.props.promotionsNumber || 0}</Text>
+                <Text style={{color:Colors[this.props.type], fontSize:16,}}>Platos Disponibles:</Text>
+                <Text style={{color:Colors[this.props.type], fontSize:32, fontWeight:"bold"}}>{this.props.couponsNumber || 0}</Text>
             </View>
         </View>
         )
@@ -43,13 +53,16 @@ export default class AvailablePromotionsComponent extends Component {
 const styles = StyleSheet.create({
     container:{
         flexDirection:"row",
+        alignItems:"stretch",
+        margin: 5,
     },
     badgeContainer:{
-        margin:10,
-        flex:1.9
+        flex:1.2,
+        justifyContent:"center",
+        alignItems:"center",
     },
     talkBubble: {
-        flex:2,
+        flex:3,
         backgroundColor: Colors.transparent,
         flexDirection: "row",
         alignItems:"center",
@@ -65,14 +78,17 @@ const styles = StyleSheet.create({
         borderBottomColor: Colors.transparent
     },
     talkBubbleSquare: {
-        flex:4,
+        flex:3.5,
         width: 120,
         height: 80,
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,
+        justifyContent:"center",
+        alignItems:"center"
     },
     textContainer:{
-        flex:6.2,
+        flex:6,
+        padding:5
     }
 })
 

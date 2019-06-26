@@ -30,10 +30,18 @@ export default {
         {name:"envuelto", description:"Delicioso envuelto", rating:5,discount:1000, type:"deluxe", transactionDate: "18-05-2019",
             uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
     ],
-    memberships:[
-        {name:"Guerrero", price:210000, description:"Para ahorrar en grande", promotionTypes:{basic:20, premium:0, deluxe:0}},
-        {name:"Premium", price:250000, description:"Almuerza como alto ejecutivo", promotionTypes:{basic:0, premium:20, deluxe:0}},
-        {name:"Deluxe", price:290000, description:"Lo mejor de lo mejor, siempre", promotionTypes:{basic:0, premium:0, deluxe:20}},
-        {name:"Personalizado", price:270000, description:"A tu medida", promotionTypes:{basic:5, premium:5, deluxe:10}},
-    ]
+    monthMemberships:[
+        {name:"Guerrero", price:210000, description:"Para ahorrar en grande", coupons:[{type:"basic", quantity:20}]},
+        {name:"Premium", price:250000, description:"Almuerza como alto ejecutivo", coupons:[{type:"premium", quantity:20},]},
+        {name:"Deluxe", price:290000, description:"Lo mejor de lo mejor, siempre", coupons:[{type:"deluxe", quantity:20},]},
+        {name:"Personalizado", price:270000, description:"A tu medida", coupons:[
+            {type:"basic", quantity:10},{type:"premium", quantity:5},{type:"deluxe", quantity:5},]},
+    ],
+    twoWeekMemberships:[
+        {name:"Guerrero", price:105000, description:"Para ahorrar en grande", coupons:[{type:"basic", quantity:10}]},
+        {name:"Premium", price:125000, description:"Almuerza como alto ejecutivo", coupons:[{type:"premium", quantity:10},]},
+        {name:"Deluxe", price:145000, description:"Lo mejor de lo mejor, siempre", coupons:[{type:"deluxe", quantity:10},]},
+        {name:"Personalizado", price:135000, description:"A tu medida", coupons:[
+            {type:"basic", quantity:5},{type:"premium", quantity:4},{type:"deluxe", quantity:6},]},
+    ],
 }
