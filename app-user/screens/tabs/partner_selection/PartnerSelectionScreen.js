@@ -44,8 +44,9 @@ export default class PartnerSelectionScreen extends React.Component {
 
   componentDidMount(){
     PartnerService.retrievePartners().then(response => response.json()).then(responseJSON => {
-      console.log('hecho');
-      console.log(responseJSON);
+      this.setState({
+        partners: responseJSON
+      })
     });
   }
 

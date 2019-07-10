@@ -17,14 +17,11 @@ export default class AuthService {
     });
   }
 
-  static externalLogIn(providerKey, loginProvider, email) {
+  static externalLogIn(authType, email) {
     const acceptTermsAndConditions = true;
-    const accountType = "User";
     let objBody = {
       email,
-      loginProvider,
-      providerKey,
-      accountType,
+      authType,
       acceptTermsAndConditions
     };
     return fetch(`${Config.apiUrl}/api/Account/ExternalLogin`, {
