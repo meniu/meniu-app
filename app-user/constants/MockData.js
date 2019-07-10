@@ -31,17 +31,39 @@ export default {
             uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'},
     ],
     monthMemberships:[
-        {name:"Guerrero", price:210000, description:"Para ahorrar en grande", coupons:[{type:"basic", quantity:20}]},
-        {name:"Premium", price:250000, description:"Almuerza como alto ejecutivo", coupons:[{type:"premium", quantity:20},]},
-        {name:"Deluxe", price:290000, description:"Lo mejor de lo mejor, siempre", coupons:[{type:"deluxe", quantity:20},]},
-        {name:"Personalizado", price:270000, description:"A tu medida", coupons:[
-            {type:"basic", quantity:10},{type:"premium", quantity:5},{type:"deluxe", quantity:5},]},
+        {
+            name:"Guerrero", price:210000, description:"Para ahorrar en grande", monthDuration:1,
+            coupons:[{type:"basic", quantity:20}]
+        },
+        {
+            name:"Premium", price:250000, description:"Almuerza como alto ejecutivo", monthDuration:1,
+            coupons:[{type:"premium", quantity:20},]
+        },
+        {
+            name:"Deluxe", price:290000, description:"Lo mejor de lo mejor, siempre", monthDuration:1,
+            coupons:[{type:"deluxe", quantity:20},]
+        },
+        {
+            name:"Personalizado", price:270000, description:"A tu medida", monthDuration:1,
+            coupons:[{type:"basic", quantity:10},{type:"premium", quantity:5},{type:"deluxe", quantity:5},]
+        },
     ],
     twoWeekMemberships:[
-        {name:"Guerrero", price:105000, description:"Para ahorrar en grande", coupons:[{type:"basic", quantity:10}]},
-        {name:"Premium", price:125000, description:"Almuerza como alto ejecutivo", coupons:[{type:"premium", quantity:10},]},
-        {name:"Deluxe", price:145000, description:"Lo mejor de lo mejor, siempre", coupons:[{type:"deluxe", quantity:10},]},
-        {name:"Personalizado", price:135000, description:"A tu medida", coupons:[
-            {type:"basic", quantity:5},{type:"premium", quantity:4},{type:"deluxe", quantity:6},]},
+        {
+            name:"Guerrero", price:105000, description:"Para ahorrar en grande", monthDuration:2,
+            coupons:[{type:"basic", quantity:10}]
+        },
+        {
+            name:"Premium", price:125000, description:"Almuerza como alto ejecutivo", monthDuration:2,
+            coupons:[{type:"premium", quantity:10},]
+        },
+        {
+            name:"Deluxe", price:145000, description:"Lo mejor de lo mejor, siempre", monthDuration:2,
+            coupons:[{type:"deluxe", quantity:10},]
+        },
+        {
+            name:"Personalizado", price:135000, description:"A tu medida", monthDuration:2,
+            coupons:[{type:"basic", quantity:5},{type:"premium", quantity:4},{type:"deluxe", quantity:6},]
+        },
     ],
 }

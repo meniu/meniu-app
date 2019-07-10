@@ -148,8 +148,9 @@ class RestaurantPlatesScreen extends Component {
             <Text>Horario de atención</Text>
             <View style={styles.badgesContainer}>
               <BadgeComponent type="basic" content="10"></BadgeComponent>
-              <BadgeComponent type="premium" content="15"></BadgeComponent>
+              <BadgeComponent type="premium" content="10"></BadgeComponent>
               <BadgeComponent type="deluxe" content="5"></BadgeComponent>
+              <BadgeComponent type="gold" content="5"></BadgeComponent>
             </View>
           </View>
           <View style={styles.locationContainer}>
@@ -167,6 +168,7 @@ class RestaurantPlatesScreen extends Component {
           <FilterButtonComponent type="basic"></FilterButtonComponent>
           <FilterButtonComponent type="premium"></FilterButtonComponent>
           <FilterButtonComponent type="deluxe"></FilterButtonComponent>
+          <FilterButtonComponent type="gold"></FilterButtonComponent>
           <Picker
             selectedValue={this.state.sorting}
             style={{ flex:1, height: 50, width: 100 }}
