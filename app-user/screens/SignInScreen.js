@@ -2,16 +2,17 @@
 
 import React, { Component } from 'react';
 import {
-  Button, Image, StyleSheet, View, Text, ToastAndroid,
+  Image, StyleSheet, View, Text, ToastAndroid,
   Platform, TextInput, KeyboardAvoidingView, Alert,
-  AsyncStorage
+  TouchableHighlight,
 } from 'react-native';
+import { Button } from 'react-native-elements';
 import Colors from "../constants/Colors";
+import Layout from '../constants/Layout';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
 import { LoginButton } from 'react-native-fbsdk';
 import AuthService from '../services/AuthService';
-
 class SignInScreen extends Component {
 
   constructor(props) {
@@ -134,52 +135,72 @@ class SignInScreen extends Component {
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <Text style={styles.subtitleText}>Ingresa con tu usuario</Text>
-        <TextInput
-          style={styles.input}
-          value={this.state.email}
-          placeholder="email"
-          placeholderTextColor={Colors.tintColor}
-          keyboardType="email-address"
-          onChangeText={(email) => this.setState({ email })}
-          returnKeyType="next"
-          onSubmitEditing={this.handleEmailInputSubmit}
-          blurOnSubmit={false}
-        />
-        <TextInput
-          ref={(input) => { this.passwordInput = input; }}
-          style={styles.input}
-          value={this.state.password}
-          placeholder="contraseña"
-          placeholderTextColor={Colors.tintColor}
-          onChangeText={(password) => this.setState({ password })}
-          secureTextEntry
-        />
-        <Button
-          style={styles.button}
-          title="Ingresa"
-          color={Colors.tintColor}
-          onPress={this.loginWithUser}
-        />
-        <Text>¿Olvidaste tu contraseña?</Text>
-        <View style={styles.buttons}>
-          <Icon.Button
-            name="google"
-            backgroundColor={Colors.google}
-            onPress={this.googleSignIn}
-            {...iconStyles}
-          >
-            Ingresa con Google
-        </Icon.Button>
-          <View style={styles.br}></View>
-          <Icon.Button
-            name="facebook"
-            backgroundColor={Colors.facebook}
-            onPress={this.facebookSignIn}
-            {...iconStyles}
-          >
-            Ingresa con Facebook
-        </Icon.Button>
+        <View style={styles.logoContainer}>
+          <Image 
+            source={require('../assets/images/M-sin-fondo.png')} 
+            style={styles.titleImage}/>
+          {/* <Text>Meniu</Text> */}
+        </View>
+        <View>
+          <View style={styles.formContainer}>
+            <View style={{justifyContent:"space-evenly", alignItems:"flex-start"}}>
+              <Text style={styles.subtitleText}>Email</Text>
+              <TextInput
+                style={styles.input}
+                value={this.state.email}
+                keyboardType="email-address"
+                onChangeText={(email) => this.setState({ email })}
+                returnKeyType="next"
+                onSubmitEditing={this.handleEmailInputSubmit}
+                blurOnSubmit={false}
+              />
+              <Text style={styles.subtitleText}>Contraseña</Text>
+              <TextInput
+                ref={(input) => this.passwordInput = input}
+                style={styles.input}
+                value={this.state.password}
+                onChangeText={(password) => this.setState({ password })}
+                secureTextEntry
+              />
+            </View>
+            <View style={{justifyContent:"space-around", alignItems:"center"}}>
+              <Button
+                buttonStyle={styles.button}
+                titleStyle={styles.textButton}
+                title="Iniciar sesión"
+                color={Colors.tintColor}
+                onPress={this.loginWithUser}
+              />
+              <TouchableHighlight onPress={()=>{}}>
+                <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
+              </TouchableHighlight>
+              <TouchableHighlight 
+                onPress={()=>this.props.navigation.navigate("SignUp")}
+              >
+                <Text style={styles.linkText}>Regístrate en meniu</Text>
+              </TouchableHighlight>
+              
+            </View>
+          </View>
+          <View style={styles.socialContainer}>
+            <Icon.Button
+              name="google"
+              backgroundColor={Colors.google}
+              onPress={this.googleSignIn}
+              {...iconStyles}
+            >
+              Ingresa con Google
+            </Icon.Button>
+            <View style={styles.br}></View>
+            <Icon.Button
+              name="facebook"
+              backgroundColor={Colors.facebook}
+              onPress={this.facebookSignIn}
+              {...iconStyles}
+            >
+              Ingresa con Facebook
+            </Icon.Button>
+          </View>
         </View>
       </KeyboardAvoidingView>
     );
@@ -196,25 +217,64 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
+    backgroundColor: Colors.darkBackgroundColor,
+  },
+  logoContainer: {
+    height:Layout.window.height * 0.2
+  },
+  titleImage: {
+    height:Layout.window.width * 0.5,
+    width:Layout.window.width * 0.3,
+    resizeMode:"contain"
+  },
+  formContainer: {
+    height:Layout.window.height * 0.35,
+    width: Layout.window.width * 0.9,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     backgroundColor: Colors.backgroundColor,
+    justifyContent:"space-around",
+    alignItems:"center",
+  },
+  socialContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'column',
+    width: Layout.window.width * 0.9,
+    paddingVertical: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    backgroundColor:Colors.yellowMeniu,
   },
   subtitleText: {
-    fontSize: 24,
+    fontSize: 16,
     color: "black",
-    textAlign: "center",
+    fontWeight: "bold",
+    textAlign: "left",
   },
   input: {
     backgroundColor: "white",
     width: 250,
   },
   button: {
-    width: 250,
+    flexDirection:"column",
+    width: "80%",
+    backgroundColor: Colors.yellowMeniu,
+    justifyContent: "center",
+    alignItems:"center",
+    alignContent:"center",
+    borderRadius:10,
   },
-  buttons: {
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    margin: 20,
-    marginBottom: 30,
+  linkText: {
+    margin:4,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.black,
+  },
+  textButton: {
+    color:Colors.black, 
+    textAlign:"center",
   },
   br: {
     height: 10

@@ -2,9 +2,12 @@ const tintColor = 'rgba(229, 94, 36, 0.89)';
 
 export default {
   white:"white",
+  whiteTransparent:"#FFFFFFAA",
   black:"black",
   transparent:"transparent",
   darkGreen:"#609157",
+  lightOrange:"#FDCF00",
+  darkOrange:"#FC8F00",
   transparent:"#ffffff00",
   tintColor,
   cardColor: "white",
@@ -17,6 +20,13 @@ export default {
   basic:"#3EC9C2",
   premium:"#4ECE4C",
   deluxe:"#E5A002",
+  gold:"#F7E200",
+  gradient: {
+    Guerrero: ["#3BE6EF", "#25A0FC"],
+    Premium: ["#B0F463", "#66D557"],
+    Deluxe: ["#FEDE00", "#FB8D4C"],
+    Personalizado: ["#F65EE5", "#BC25ED"],
+  },
   tabIconDefault: '#ccc',
   tabIconSelected: tintColor,
   tabBar: '#fefefe',

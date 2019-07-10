@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
-import { Text, TouchableHighlight, StyleSheet, View } from 'react-native'
+import { Text, TouchableHighlight, StyleSheet, View, FlatList } from 'react-native'
+import { LinearGradient } from "expo";
 import {Tooltip} from 'react-native-elements';
 import Colors from '../constants/Colors';
+import CustomIcon from './CustomIcon';
+import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
+import BadgeComponent from './BadgeComponent';
+import CouponListComponent from './CouponListComponent'
 
 export default class MembershipCardComponent extends Component {
 
   /**
    * 
    * @param {} props 
-   * membership- includes: name, price, description, promotionTypes
+   * membership- includes: name, price, description, coupons
    */
   constructor(props) {
     super(props)
@@ -21,10 +26,10 @@ export default class MembershipCardComponent extends Component {
   handleBuyPress(){
 
   }
+
   
-  renderPromotionTypes(){
-    let promotionTypes = this.props.membership.promotionTypes;
-    return (<Text>{JSON.stringify(promotionTypes)}</Text> );
+  renderCoupons(){
+    
   }
 
   render() {
@@ -32,19 +37,23 @@ export default class MembershipCardComponent extends Component {
     return (
       <View style={styles.container}>
         
-        <View style={styles.imageContainer}>
-          <Text>{this.props.membership.name}</Text>
-        </View>
+        <LinearGradient colors={Colors.gradient[this.props.membership.name]} style={styles.gradient}
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+          <CustomIcon name="no-plan" size={70} color={Colors.black} style={{textAlign:"center"}} />
+          <Text style={styles.membershipTitle}>{this.props.membership.name}</Text>
+        </LinearGradient>
         <View style={styles.descriptionContainer}>
-          <Text>{this.props.membership.price}</Text>
           <Text>{this.props.membership.description}</Text>
-          <View>{this.renderPromotionTypes()}</View>
+          <FormattedNumber
+            value={this.props.membership.price}
+            numberStyle="decimal"
+            style={styles.priceText}
+            />
+          <CouponListComponent coupons={this.props.membership.coupons}/>
         </View>
         <View style={styles.button}>
-        <TouchableHighlight onPress={()=>{}}>
-          <Tooltip popover={<Text>Disponible pronto</Text>}>
+        <TouchableHighlight onPress={this.props.action}>
             <Text>Comprar</Text>
-          </Tooltip>
         </TouchableHighlight>
         </View>
       </View>
@@ -57,18 +66,34 @@ const styles = StyleSheet.create({
       flex: 1,
       flexDirection: "row",
       margin: 5,
+      borderWidth:1, 
+      borderColor:Colors.border,
+      borderRadius:5
     },
-    imageContainer: {
-      flex: 1,
-      backgroundColor:Colors.darkBackgroundColor,
-      justifyContent:"flex-end"
+    gradient: {
+      flex: 1.5,
+      justifyContent:"center",
+      alignItems:"stretch",
+    },
+    membershipTitle: {
+      backgroundColor: Colors.whiteTransparent,
+      fontStyle:"italic",
+      fontSize:12,    
+      textAlign:"center"
     },
     descriptionContainer: {
       flex: 4,
+      paddingLeft: 5,
+    },
+    priceText: {
+      fontWeight:"bold",
+      fontSize:15,
     },
     button: {
-      flex:1,
+      flex:1.2,
       alignItems: "center",
       justifyContent: "center",
-    }
+      borderLeftWidth:1, 
+      borderLeftColor:Colors.border,
+    },
 })

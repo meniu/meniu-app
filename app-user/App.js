@@ -11,6 +11,7 @@ import Colors from "./constants/Colors.js";
 
 import { Font } from 'expo';
 import { setCustomText } from 'react-native-global-props';
+import { FormattedProvider } from 'react-native-globalize';
 
 const AppNavigator = createStackNavigator({
   Home: {
@@ -21,9 +22,15 @@ const AppNavigator = createStackNavigator({
   },
   SignUp: {
     screen: SignUpScreen,
+    navigationOptions: ({navigation}) =>({
+      header: null,
+    }),
   },
   SignIn: {
     screen: SignInScreen,
+    navigationOptions: ({navigation}) =>({
+      header: null,
+    }),
   },
   Main: {
     screen: MainScreen,
@@ -35,7 +42,7 @@ const AppNavigator = createStackNavigator({
     screen: OrderScreen,
   }
 }, {
-    initialRouteName: "Home",
+    initialRouteName: "SignIn",
     /* header default config is here */
     defaultNavigationOptions: {
       headerStyle: {
@@ -69,13 +76,18 @@ export default class App extends React.Component {
   defaultFonts(){
     const customTextProps = {
       style: {
-        fontFamily: 'meniu'
+        fontFamily: 'meniu',
+        lineHeight: 18
       }
     }
-    setCustomText(customTextProps)
+    setCustomText({customTextProps})
   }
 
   render(){
-    return this.state.fontLoaded ? <AppContainer/> : null;
+    return this.state.fontLoaded ?
+      <FormattedProvider locale="es-419">
+        <AppContainer/>
+      </FormattedProvider> 
+      : null;
   }
 }
