@@ -4,6 +4,7 @@ import { ButtonGroup } from 'react-native-elements';
 import Colors from '../../../constants/Colors';
 import MockData from '../../../constants/MockData';
 import MembershipCardComponent from '../../../components/MembershipCardComponent';
+import ComboService from "../../../services/ComboService";
 
 export default class MembershipsScreen extends Component {
 
@@ -31,6 +32,16 @@ export default class MembershipsScreen extends Component {
         this.props.navigation.navigate("PurchaseConfirmation",{
             plan
         });    
+    }
+
+    componentDidMount(){
+        ComboService.retrieveCombos().then(response => response.json()).then(responseJSON => {
+            console.log('wtf combos')
+            console.log(responseJSON);/* 
+            this.setState({
+              spentPromotions: responseJSON.promotionCoupons
+            }); */
+          });
     }
 
     render() {

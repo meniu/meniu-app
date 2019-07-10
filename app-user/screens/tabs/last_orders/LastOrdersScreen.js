@@ -13,6 +13,7 @@ import ImportantPastPromotionCardComponent  from "../../../components/ImportantP
 import moment from "moment";
 import Accordion from "react-native-collapsible/Accordion"
 import { AntDesign } from '@expo/vector-icons';
+import PromotionService from "../../../services/PromotionService";
 
 export default class LastOrdersScreen extends Component {
 
@@ -34,7 +35,13 @@ export default class LastOrdersScreen extends Component {
 
   componentDidMount() {
     this.getLocalUser();
-    this.setState({spentPromotions:MockData.spentPromotions});
+    PromotionService.retrievePromotionsByPartner(123456789).then(response => response.json()).then(responseJSON => {
+      console.log('wtf')
+      console.log(responseJSON);
+      this.setState({
+        spentPromotions: responseJSON.promotionCoupons
+      });
+    });
   }
 
   async getLocalUser(){
@@ -45,7 +52,7 @@ export default class LastOrdersScreen extends Component {
         // We have data!!
         
         this.setState({
-          user 
+          user: user.applicationUser
         });
       }
     } catch (error) {

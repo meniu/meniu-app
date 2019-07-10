@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import OrderModalComponent from '../../../components/OrderModalComponent';
 import FilterButtonComponent from '../../../components/FilterButtonComponent';
 import BadgeComponent from '../../../components/BadgeComponent';
+import PromotionService from "../../../services/PromotionService";
 
 class RestaurantPlatesScreen extends Component {
   
@@ -21,7 +22,11 @@ class RestaurantPlatesScreen extends Component {
     super(props);
 
     const { navigation } = this.props;
+    console.log('Aquí va el navigation object');
+    console.log(navigation);
     this.restaurant = navigation.getParam('restaurant', 'Sin Restaurante');
+    console.log('Aquí va restauranty');
+    console.log(this.restaurant);
     // Available sorting values: 
     this.state = {
       sorting:"AZ",
@@ -30,7 +35,6 @@ class RestaurantPlatesScreen extends Component {
       failureModalVisible:false,
       promotionList:[],
     };
-
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -40,8 +44,13 @@ class RestaurantPlatesScreen extends Component {
   };
   
   componentDidMount() {
-    let promotionsFetch = MockData.promotions;
-    this.setState({promotionList: this.sortPromotions(this.state.sorting, promotionsFetch)});
+    PromotionService.retrievePromotionsByPartner(this.restaurant.identification).then(response => response.json()).then(responseJSON => {
+      console.log('wtf')
+      console.log(responseJSON);
+      this.setState({
+        promotionList: responseJSON.promotionCoupons
+      });
+    });
   }
 
   /**

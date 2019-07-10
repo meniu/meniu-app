@@ -17,9 +17,8 @@ export default class AccountScreen extends React.Component {
     super(props)
   
     this.state = {
-       
+      user: {}  
     }
-
   }
 
   static navigationOptions = {

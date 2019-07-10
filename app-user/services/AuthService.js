@@ -70,8 +70,8 @@ export default class AuthService {
     }
   }
 
-  static retrieveUser() {
-
+  static async retrieveUser() {
+    return JSON.parse(await AsyncStorage.getItem('user'));
   }
 
   /**
