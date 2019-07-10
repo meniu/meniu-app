@@ -11,6 +11,8 @@ import MembershipsScreen from "./tabs/memberships/MembershipsScreen.js"
 import Colors from "../constants/Colors";
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomIcon from '../components/CustomIcon.js';
+import PurchaseConfirmationScreen from './tabs/memberships/PurchaseConfirmationScreen.js';
+import PostPurchaseScreen from './tabs/memberships/PostPurchaseScreen.js';
 
 const PartnerSelectionStack = createStackNavigator({
   PartnerSelection: PartnerSelectionScreen,
@@ -51,7 +53,9 @@ LastOrdersStack.navigationOptions = {
 
 const MembershipsStack = createStackNavigator({
   Account : AccountScreen,
-  Memberships : MembershipsScreen
+  Memberships : MembershipsScreen,
+  PurchaseConfirmation : PurchaseConfirmationScreen,
+  PostPurchase: PostPurchaseScreen,
 },{
   defaultNavigationOptions:{
     headerStyle: {

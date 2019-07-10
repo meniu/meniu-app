@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {
   Image, StyleSheet, View, Text, ToastAndroid,
   Platform, TextInput, KeyboardAvoidingView, Alert,
-  AsyncStorage
+  TouchableHighlight,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import Colors from "../constants/Colors";
@@ -127,7 +127,10 @@ import AuthService from '../services/AuthService';
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <View style={styles.logoContainer}>
-          <Text>Meniu</Text>
+          <Image 
+            source={require('../assets/images/M-sin-fondo.png')} 
+            style={styles.titleImage}/>
+          {/* <Text>Meniu</Text> */}
         </View>
         <View>
           <View style={styles.formContainer}>
@@ -159,8 +162,15 @@ import AuthService from '../services/AuthService';
                 color={Colors.tintColor}
                 onPress={this.loginWithUser}
               />
-              <Text>¿Olvidaste tu contraseña?</Text>
-              <Text>Regístrate en meniu</Text>
+              <TouchableHighlight onPress={()=>{}}>
+                <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
+              </TouchableHighlight>
+              <TouchableHighlight 
+                onPress={()=>this.props.navigation.navigate("SignUp")}
+              >
+                <Text style={styles.linkText}>Regístrate en meniu</Text>
+              </TouchableHighlight>
+              
             </View>
           </View>
           <View style={styles.socialContainer}>
@@ -203,6 +213,11 @@ const styles = StyleSheet.create({
   logoContainer: {
     height:Layout.window.height * 0.2
   },
+  titleImage: {
+    height:Layout.window.width * 0.5,
+    width:Layout.window.width * 0.3,
+    resizeMode:"contain"
+  },
   formContainer: {
     height:Layout.window.height * 0.35,
     width: Layout.window.width * 0.9,
@@ -240,7 +255,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.yellowMeniu,
     justifyContent: "center",
     alignItems:"center",
-    alignContent:"center"
+    alignContent:"center",
+    borderRadius:10,
+  },
+  linkText: {
+    margin:4,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.black,
   },
   textButton: {
     color:Colors.black, 

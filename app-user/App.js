@@ -22,9 +22,15 @@ const AppNavigator = createStackNavigator({
   },
   SignUp: {
     screen: SignUpScreen,
+    navigationOptions: ({navigation}) =>({
+      header: null,
+    }),
   },
   SignIn: {
     screen: SignInScreen,
+    navigationOptions: ({navigation}) =>({
+      header: null,
+    }),
   },
   Main: {
     screen: MainScreen,
@@ -36,7 +42,7 @@ const AppNavigator = createStackNavigator({
     screen: OrderScreen,
   }
 }, {
-    initialRouteName: "Home",
+    initialRouteName: "SignIn",
     /* header default config is here */
     defaultNavigationOptions: {
       headerStyle: {

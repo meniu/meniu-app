@@ -27,8 +27,10 @@ export default class MembershipsScreen extends Component {
         this.setState({timeIndex})
     }
 
-    handleMembershipPress = () => {
-
+    handleMembershipPress = (plan) => {
+        this.props.navigation.navigate("PurchaseConfirmation",{
+            plan
+        });    
     }
 
     render() {
@@ -64,7 +66,7 @@ export default class MembershipsScreen extends Component {
                     onPressItem={this.handleMembershipPress}
                     data={this.state.timeIndex === 0 ? MockData.monthMemberships : MockData.twoWeekMemberships}
                     renderItem={({item}) => {
-                        return <MembershipCardComponent membership={item}/>
+                        return <MembershipCardComponent membership={item} action={()=>this.handleMembershipPress(item)}/>
                     }}
                     />
                 </ScrollView>

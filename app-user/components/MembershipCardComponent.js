@@ -6,6 +6,7 @@ import Colors from '../constants/Colors';
 import CustomIcon from './CustomIcon';
 import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
 import BadgeComponent from './BadgeComponent';
+import CouponListComponent from './CouponListComponent'
 
 export default class MembershipCardComponent extends Component {
 
@@ -26,55 +27,9 @@ export default class MembershipCardComponent extends Component {
 
   }
 
-  renderGradientColors() {
-    let colors = [];
-    switch (this.props.membership.name) {
-      case "Guerrero":
-        colors = ["#3BE6EF", "#25A0FC"]  ;
-        break;
-      case "Premium":
-        colors = ["#B0F463", "#66D557"];
-        break;
-      case "Deluxe":
-        colors = ["#FEDE00", "#FB8D4C"];
-        break;
-      case "Personalizado":
-        colors = ["#F65EE5", "#BC25ED"];
-        break;   
-      default:
-        colors = ["#3BE6EF", "#25A0FC"];
-        break;
-    }
-    return colors;
-  }
   
   renderCoupons(){
-    let coupons = this.props.membership.coupons;
-    let manyPromotions = coupons.length > 1;
-    if(manyPromotions) {
-      return (
-      <View style={{flexDirection:"row", justifyContent:"flex-start"}}>
-        <FlatList
-          horizontal={true}
-          keyExtractor={(item)=>item.type}
-          data={coupons}
-          renderItem={({item}) => <BadgeComponent type={item.type}/>}
-        />
-      </View>
-      );
-    }
-    else {
-      let coupon = coupons[0];
-      return (
-      <View style={{flexDirection:"row", justifyContent:"flex-start", alignItems:"center"}}>
-        <BadgeComponent type={coupon.type} color={Colors.backgroundColor} 
-        />
-        <Text style={[styles.couponBubble, {backgroundColor:Colors[coupon.type]}]}>
-          {`${coupon.quantity} ${coupon.type}`}
-          </Text>
-      </View>
-      );
-    }
+    
   }
 
   render() {
@@ -82,9 +37,9 @@ export default class MembershipCardComponent extends Component {
     return (
       <View style={styles.container}>
         
-        <LinearGradient colors={this.renderGradientColors()} style={styles.gradient}
+        <LinearGradient colors={Colors.gradient[this.props.membership.name]} style={styles.gradient}
           start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-          <CustomIcon name="no-plan" size={70} color={Colors.black} />
+          <CustomIcon name="no-plan" size={70} color={Colors.black} style={{textAlign:"center"}} />
           <Text style={styles.membershipTitle}>{this.props.membership.name}</Text>
         </LinearGradient>
         <View style={styles.descriptionContainer}>
@@ -94,13 +49,11 @@ export default class MembershipCardComponent extends Component {
             numberStyle="decimal"
             style={styles.priceText}
             />
-          {this.renderCoupons()}
+          <CouponListComponent coupons={this.props.membership.coupons}/>
         </View>
         <View style={styles.button}>
-        <TouchableHighlight onPress={()=>{}}>
-          <Tooltip popover={<Text>Disponible pronto</Text>}>
+        <TouchableHighlight onPress={this.props.action}>
             <Text>Comprar</Text>
-          </Tooltip>
         </TouchableHighlight>
         </View>
       </View>
@@ -143,10 +96,4 @@ const styles = StyleSheet.create({
       borderLeftWidth:1, 
       borderLeftColor:Colors.border,
     },
-    couponBubble: {
-      color:Colors.white,
-      padding:2,
-      borderTopRightRadius: 10,
-      borderBottomRightRadius: 10,
-  }
 })
