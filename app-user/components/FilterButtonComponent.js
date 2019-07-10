@@ -6,7 +6,7 @@ import Colors from '../constants/Colors';
 export default class FilterButtonComponent extends Component {
     constructor(props) {
       super(props);
-    // type: "basic", "medium" or "deluxe"
+    // type: "basic", "medium", "deluxe" or "gold"
     // selected: boolean. If true, badge will be white and background of type color
       this.state = {
          selected: false

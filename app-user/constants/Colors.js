@@ -20,6 +20,7 @@ export default {
   basic:"#3EC9C2",
   premium:"#4ECE4C",
   deluxe:"#E5A002",
+  gold:"#F7E200",
   gradient: {
     Guerrero: ["#3BE6EF", "#25A0FC"],
     Premium: ["#B0F463", "#66D557"],

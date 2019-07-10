@@ -62,6 +62,7 @@ export default class PartnerSelectionScreen extends React.Component {
               <FilterButtonComponent type="basic"></FilterButtonComponent>
               <FilterButtonComponent type="premium"></FilterButtonComponent>
               <FilterButtonComponent type="deluxe"></FilterButtonComponent>
+              <FilterButtonComponent type="gold"></FilterButtonComponent>
           </View>
         </View>
         <View style={{flex:5, backgroundColor:Colors.white}}>
