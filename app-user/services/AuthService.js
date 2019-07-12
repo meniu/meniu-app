@@ -74,6 +74,10 @@ export default class AuthService {
     return JSON.parse(await AsyncStorage.getItem('user'));
   }
 
+  static retrieveUserPromise() {
+    return AsyncStorage.getItem('user');
+  }
+
   /**
    * Erases user from local storage. after this, use callback
    * component takes care of navigation to homescreen through callback

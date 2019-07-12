@@ -59,29 +59,29 @@ export default class PurchaseConfirmationScreen extends Component {
             <View style={styles.container}>
                 <View style={styles.mainContainer}>
                     <this.CloseButton/>
-                    <LinearGradient colors={Colors.gradient[this.plan.name]} style={styles.gradient}
+                    <LinearGradient colors={Colors.gradient[this.plan.combo.type]} style={styles.gradient}
                         start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                         <CustomIcon name="no-plan" size={70} color={Colors.white} style={{textAlign:"center"}} />
-                        <Text style={styles.membershipTitle}>{this.plan.name}</Text>
+                        <Text style={styles.membershipTitle}>{this.plan.combo.type}</Text>
                     </LinearGradient>
 
                     <Text style={{fontSize:26}}>Confirma tu compra</Text>
 
                     <View style={{width:"80%", alignItems:"flex-start"}}>
                         <Text style={styles.headerText}>Tipo de plan:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.name}</Text>
+                        <Text style={styles.subtitleText}>{this.plan.combo.type}</Text>
 
                         <Text style={styles.headerText}>Platos:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.monthDuration} Platos</Text>
+                        <Text style={styles.subtitleText}>{this.plan.foodQuantity} platos</Text>
                         
                         <Text style={styles.headerText}>Precio:</Text>
                         <Text style={[styles.subtitleText,{fontWeight:"900"}]}>$ {this.plan.price}</Text>
 
                         <Text style={styles.headerText}>Incluye:</Text>
-                        <CouponListComponent coupons={this.plan.coupons}/>
+                        <CouponListComponent coupons={[{ type: this.plan.couponPlan.coupon.type, foodQuantity: this.plan.foodQuantity }]}/>
 
                         <Text style={styles.headerText}>Válido:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.monthDuration} Meses</Text>
+                        <Text style={styles.subtitleText}>{this.plan.couponPlan.plan.validityInDays} días</Text>
                     </View>
 
                     <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}

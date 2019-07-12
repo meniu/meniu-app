@@ -63,7 +63,7 @@ export default class PromotionCardComponent extends Component {
                 >
                 <View style={{justifyContent:"center", alignItems:"center"}}>
                     <Text>
-                        {"-$ " + this.props.entity.discount}
+                        {"-$ " + this.props.entity.saving}
                     </Text>
                 </View>
             </Card>

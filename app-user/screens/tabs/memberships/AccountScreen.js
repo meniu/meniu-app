@@ -17,7 +17,7 @@ export default class AccountScreen extends React.Component {
     super(props)
   
     this.state = {
-      user: {}  
+      user: {applicationUser: {}}
     }
   }
 
@@ -36,6 +36,17 @@ export default class AccountScreen extends React.Component {
 
   handleGetPlanClick = ()=> {
     this.props.navigation.navigate("Memberships");
+  }
+
+  componentDidMount(){
+    console.log('aquí va la promsesa');
+    AuthService.retrieveUserPromise().then(user => {
+      console.log('aquí va user');
+      console.log(user);
+      this.setState({
+        user: JSON.parse(user)
+      });
+    });
   }
 
   PlanComponent= (props) => {
@@ -84,8 +95,8 @@ export default class AccountScreen extends React.Component {
 }
 
   render() {
-    let user = this.props.navigation.getParam("user",{});
-    let plan = Math.random() > 0.5;
+
+    let plan = this.state.user.activeCombo;
     return (
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>
@@ -94,8 +105,8 @@ export default class AccountScreen extends React.Component {
             source={{uri: "https://facebook.github.io/react-native/docs/assets/favicon.png"}}
           />
           <View style={{justifyContent:"center", alignItems:"flex-start", marginVertical:10}}>
-            <Text style={{flex:1,fontWeight:"bold"}}>Fabio López</Text>
-            <Text style={{flex:1}}>fabio.a.lopez@outlook.com</Text>
+            <Text style={{flex:1,fontWeight:"bold"}}>{this.state.user.name+' '+this.state.user.lastName}</Text>
+            <Text style={{flex:1}}>{this.state.user.applicationUser.email}</Text>
             <View style={{flex:2,flexDirection:"row", justifyContent:"flex-start", alignItems:"center"}}>
               <Button buttonStyle={[styles.buttonStyle, {backgroundColor:Colors.white, height:"80%"}]} 
                 titleStyle={styles.textButtonStyle} title="Salir" onPress={this.handleLogOutClick}/>
@@ -108,9 +119,9 @@ export default class AccountScreen extends React.Component {
         }
         <View style={{flex:6}}>
           <View style={styles.availableDishesContainer}>
-            <AvailableCouponsComponent type="deluxe" promotionsNumber={10}/>
-            <AvailableCouponsComponent type="premium" promotionsNumber={10}/>
-            <AvailableCouponsComponent type="basic" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="Deluxe" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="Premium" promotionsNumber={10}/>
+            <AvailableCouponsComponent type="Basic" promotionsNumber={10}/>
           </View>
         </View>
       </View>

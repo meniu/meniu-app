@@ -25,7 +25,7 @@ const CouponListComponent = (props) => {
         <BadgeComponent type={coupon.type} color={Colors.backgroundColor} 
         />
         <Text style={[styles.couponBubble, {backgroundColor:Colors[coupon.type]}]}>
-          {`${coupon.quantity} ${coupon.type}`}
+          {`${coupon.foodQuantity} ${coupon.type}`}
           </Text>
       </View>
       );
