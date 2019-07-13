@@ -48,9 +48,13 @@ export default class AccountScreen extends React.Component {
       console.log(user);
       let user = JSON.parse(userResponse);
       let couponsLeft = {}
-      for(let coupon of user.comboCouponPlan.couponPlans){
-        couponsLeft[coupon.coupon.type] = coupon.foodQuantity;
+
+      if (user.activeCombo) {
+        for (let coupon of user.comboCouponPlan.couponPlans) {
+          couponsLeft[coupon.coupon.type] = coupon.foodQuantity;
+        }
       }
+
 
       this.setState({
         user,
