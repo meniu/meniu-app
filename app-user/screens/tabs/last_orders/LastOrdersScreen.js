@@ -77,7 +77,7 @@ export default class LastOrdersScreen extends Component {
   }
 
   getDiscountSum(array) {
-    let sum = array.map(prom => prom.discount).reduce((a, b) =>
+    let sum = array.map(prom => prom.saving).reduce((a, b) =>
       a + b
       , 0);
     return sum;

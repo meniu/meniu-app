@@ -44,7 +44,6 @@ export default class PartnerSelectionScreen extends React.Component {
 
   componentDidMount(){
     PartnerService.retrievePartners().then(response => response.json()).then(responseJSON => {
-      console.log(responseJSON);
       this.setState({
         partners: responseJSON
       });
@@ -70,19 +69,18 @@ export default class PartnerSelectionScreen extends React.Component {
             </ScrollView>
           </View>
           <View style={styles.typeFilterView}>
-              <FilterButtonComponent type="basic"></FilterButtonComponent>
-              <FilterButtonComponent type="premium"></FilterButtonComponent>
-              <FilterButtonComponent type="deluxe"></FilterButtonComponent>
-              <FilterButtonComponent type="gold"></FilterButtonComponent>
+              <FilterButtonComponent type="Basic"></FilterButtonComponent>
+              <FilterButtonComponent type="Premium"></FilterButtonComponent>
+              <FilterButtonComponent type="Deluxe"></FilterButtonComponent>
+              <FilterButtonComponent type="Gold"></FilterButtonComponent>
           </View>
         </View>
         <View style={{flex:5, backgroundColor:Colors.white}}>
           <ScrollView style={{flex:1}} >
             <FlatList 
               style={{flex:1}}
-              key={(this.state.layout)}
               numColumns={1}
-              keyExtractor={(item)=>item.name}
+              keyExtractor={(item)=>item.partner.identification}
               // onPressItem={this.handleRestaurantPress}
               data={this.state.partners}
               renderItem={({item}) => {

@@ -6,7 +6,7 @@ import CustomIcon from '../../../components/CustomIcon'
 import CouponListComponent from '../../../components/CouponListComponent';
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
-
+import { WebBrowser } from 'expo';
 
 export default class PurchaseConfirmationScreen extends Component {
 
@@ -48,10 +48,13 @@ export default class PurchaseConfirmationScreen extends Component {
      * Buys plan (Pay U flow)
      * Once confirmed, redirects to PostPurchase Screen
      */
-    handleGetPlanClick = () =>{
-        this.props.navigation.navigate("PostPurchase",{
+    handleGetPlanClick = async (pDescription, pReferenceCode, pAmount) =>{
+        let result = await WebBrowser.openBrowserAsync(`http://192.168.0.34:3000/buy?description=${pDescription}&amount=${pAmount}&referenceCode=${pReferenceCode}`);
+        console.log('result:');
+        console.log(result);
+        /* this.props.navigation.navigate("PostPurchase",{
             plan: this.plan
-        });
+        }); */
     }
 
     render() {
@@ -71,21 +74,21 @@ export default class PurchaseConfirmationScreen extends Component {
                         <Text style={styles.headerText}>Tipo de plan:</Text>
                         <Text style={styles.subtitleText}>{this.plan.combo.type}</Text>
 
-                        <Text style={styles.headerText}>Platos:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.foodQuantity} platos</Text>
+                        {/* <Text style={styles.headerText}>Platos:</Text>
+                        <Text style={styles.subtitleText}>{this.plan.foodQuantity} platos</Text> */}
                         
                         <Text style={styles.headerText}>Precio:</Text>
-                        <Text style={[styles.subtitleText,{fontWeight:"900"}]}>$ {this.plan.price}</Text>
+                        <Text style={[styles.subtitleText,{fontWeight:"900"}]}>$ {this.plan.combo.price}</Text>
 
                         <Text style={styles.headerText}>Incluye:</Text>
-                        <CouponListComponent coupons={[{ type: this.plan.couponPlan.coupon.type, foodQuantity: this.plan.foodQuantity }]}/>
+                        <CouponListComponent coupons={this.plan.couponPlans} combo = {this.plan.combo}/>
 
                         <Text style={styles.headerText}>Válido:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.couponPlan.plan.validityInDays} días</Text>
+                        <Text style={styles.subtitleText}>{this.plan.couponPlans[0].plan.validityInDays} días</Text>
                     </View>
 
                     <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
-                        title="Confirmar" onPress={this.handleGetPlanClick}/>
+                        title="Confirmar" onPress={() => this.handleGetPlanClick(this.plan.combo.type, this.plan.combo.type, this.plan.combo.price)}/>
                 </View>
             </View>
         )

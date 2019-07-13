@@ -39,12 +39,12 @@ class RestaurantPlatesScreen extends Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('restaurant', 'Platos de Restaurante').name,
+      title: navigation.getParam('restaurant', 'Platos de Restaurante').partner.name,
     };
   };
   
   componentDidMount() {
-    PromotionService.retrievePromotionsByPartner(this.restaurant.identification).then(response => response.json()).then(responseJSON => {
+    PromotionService.retrievePromotionsByPartner(this.restaurant.partner.identification).then(response => response.json()).then(responseJSON => {
       console.log('wtf')
       console.log(responseJSON);
       this.setState({
@@ -156,10 +156,10 @@ class RestaurantPlatesScreen extends Component {
             <Text style={styles.restaurantTitle}>{this.restaurant.name}</Text>
             <Text>Horario de atención</Text>
             <View style={styles.badgesContainer}>
-              <BadgeComponent type="basic" content="10"></BadgeComponent>
-              <BadgeComponent type="premium" content="10"></BadgeComponent>
-              <BadgeComponent type="deluxe" content="5"></BadgeComponent>
-              <BadgeComponent type="gold" content="5"></BadgeComponent>
+              <BadgeComponent type="Basic" content="10"></BadgeComponent>
+              <BadgeComponent type="Premium" content="10"></BadgeComponent>
+              <BadgeComponent type="Deluxe" content="5"></BadgeComponent>
+              <BadgeComponent type="Gold" content="5"></BadgeComponent>
             </View>
           </View>
           <View style={styles.locationContainer}>
@@ -174,10 +174,10 @@ class RestaurantPlatesScreen extends Component {
           </View>
         </View>
         <View style={styles.horizontalView}>
-          <FilterButtonComponent type="basic"></FilterButtonComponent>
-          <FilterButtonComponent type="premium"></FilterButtonComponent>
-          <FilterButtonComponent type="deluxe"></FilterButtonComponent>
-          <FilterButtonComponent type="gold"></FilterButtonComponent>
+          <FilterButtonComponent type="Basic"></FilterButtonComponent>
+          <FilterButtonComponent type="Premium"></FilterButtonComponent>
+          <FilterButtonComponent type="Deluxe"></FilterButtonComponent>
+          <FilterButtonComponent type="Gold"></FilterButtonComponent>
           <Picker
             selectedValue={this.state.sorting}
             style={{ flex:1, height: 50, width: 100 }}
@@ -190,7 +190,7 @@ class RestaurantPlatesScreen extends Component {
           <ScrollView style={{flex:1}}>
             <FlatList
               style={{flex:1}}
-              keyExtractor={(item)=>item.name}
+              keyExtractor={(item)=>(item.name)}
               data={this.state.promotionList}
               renderItem={({item}) => <PromotionCardComponent actionType="order" entity={item} action={()=>this.handlePlatePress(item)}/>}
             />

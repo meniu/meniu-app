@@ -6,14 +6,15 @@ import BadgeComponent from './BadgeComponent';
 const CouponListComponent = (props) => {
     let coupons = props.coupons;
     let manyPromotions = coupons.length > 1;
+    let combo = props.combo;
     if(manyPromotions) {
       return (
       <View style={{flexDirection:"row", justifyContent:"flex-start"}}>
         <FlatList
           horizontal={true}
-          keyExtractor={(item)=>item.type}
+          keyExtractor={(item)=>(item.coupon.type & item.coupon.id & combo.id)}
           data={coupons}
-          renderItem={({item}) => <BadgeComponent type={item.type}/>}
+          renderItem={({item}) => <BadgeComponent type={item.coupon.type}/>}
         />
       </View>
       );
@@ -22,10 +23,10 @@ const CouponListComponent = (props) => {
       let coupon = coupons[0];
       return (
       <View style={{flexDirection:"row", justifyContent:"flex-start", alignItems:"center"}}>
-        <BadgeComponent type={coupon.type} color={Colors.backgroundColor} 
+        <BadgeComponent type={coupon.coupon.type} color={Colors.backgroundColor} 
         />
-        <Text style={[styles.couponBubble, {backgroundColor:Colors[coupon.type]}]}>
-          {`${coupon.foodQuantity} ${coupon.type}`}
+        <Text style={[styles.couponBubble, {backgroundColor:Colors[coupon.coupon.type]}]}>
+          {`${coupon.foodQuantity} ${coupon.coupon.type}`}
           </Text>
       </View>
       );

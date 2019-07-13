@@ -21,6 +21,13 @@ class RestaurantCardComponent extends Component {
   }
 
   render() {
+
+    let badges = this.props.entity.couponSummaryModels.map((coupon,i)=> {
+      return(
+        <BadgeComponent key = {this.props.entity.partner.identification&coupon.type} type={coupon.type} content={coupon.quantity}></BadgeComponent>
+      );
+    });
+
     return (
       <TouchableHighlight onPress={this.props.action}>
         <View style={styles.container}>
@@ -32,11 +39,9 @@ class RestaurantCardComponent extends Component {
             />
           </View>
           <View style={styles.cardInfo}>
-            <Text style={styles.restaurantTitle}>{this.props.entity.name}</Text>
+            <Text style={styles.restaurantTitle}>{this.props.entity.partner.name}</Text>
             <View style={styles.badgesContainer}>
-              <BadgeComponent type="basic" content="10"></BadgeComponent>
-              <BadgeComponent type="premium" content="15"></BadgeComponent>
-              <BadgeComponent type="deluxe" content="5"></BadgeComponent>
+              {badges}
             </View>
           </View>
         </View>

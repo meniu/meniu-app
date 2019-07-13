@@ -73,9 +73,9 @@ export default class MembershipsScreen extends Component {
                     <ScrollView style={{ flex: 1 }} >
                         <FlatList
                             style={{ flex: 1 }}
-                            // key={(this.state.timeIndex)}
+                            /* key={(this.state.timeIndex)} */
                             numColumns={1}
-                            keyExtractor={(item) => item.id}
+                            keyExtractor={(item) => item.combo.id.toString()}
                             onPressItem={this.handleMembershipPress}
                             data={this.state.timeIndex === 0 ? this.state.combos[0].comboCouponPlans : this.state.combos[1].comboCouponPlans}
                             renderItem={({ item }) => {
