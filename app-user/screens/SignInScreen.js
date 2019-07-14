@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {
   Image, StyleSheet, View, Text, ToastAndroid,
   Platform, TextInput, KeyboardAvoidingView, Alert,
-  TouchableHighlight,
+  TouchableHighlight, ImageBackground
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import Colors from "../constants/Colors";
@@ -134,75 +134,81 @@ class SignInScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <View style={styles.logoContainer}>
-          <Image 
-            source={require('../assets/images/M-sin-fondo.png')} 
-            style={styles.titleImage}/>
-          {/* <Text>Meniu</Text> */}
-        </View>
-        <View>
-          <View style={styles.formContainer}>
-            <View style={{justifyContent:"space-evenly", alignItems:"flex-start"}}>
-              <Text style={styles.subtitleText}>Email</Text>
-              <TextInput
-                style={styles.input}
-                value={this.state.email}
-                keyboardType="email-address"
-                onChangeText={(email) => this.setState({ email })}
-                returnKeyType="next"
-                onSubmitEditing={this.handleEmailInputSubmit}
-                blurOnSubmit={false}
-              />
-              <Text style={styles.subtitleText}>Contraseña</Text>
-              <TextInput
-                ref={(input) => this.passwordInput = input}
-                style={styles.input}
-                value={this.state.password}
-                onChangeText={(password) => this.setState({ password })}
-                secureTextEntry
-              />
+      <ImageBackground
+          source={require('../assets/images/bn-login-background.jpg')} 
+          style={{resizeMode:"cover", width:Layout.window.width, height:Layout.window.height}}       
+      >
+        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+          <View style={styles.logoContainer}>
+            <Image 
+              source={require('../assets/images/logo-login.png')} 
+              style={styles.titleImage}/>
+            {/* <Text>Meniu</Text> */}
+          </View>
+          <View>
+            <View style={styles.formContainer}>
+              <View style={{justifyContent:"space-evenly", alignItems:"flex-start"}}>
+                <Text style={styles.subtitleText}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  value={this.state.email}
+                  keyboardType="email-address"
+                  onChangeText={(email) => this.setState({ email })}
+                  returnKeyType="next"
+                  onSubmitEditing={this.handleEmailInputSubmit}
+                  blurOnSubmit={false}
+                />
+                <Text style={styles.subtitleText}>Contraseña</Text>
+                <TextInput
+                  ref={(input) => this.passwordInput = input}
+                  style={styles.input}
+                  value={this.state.password}
+                  onChangeText={(password) => this.setState({ password })}
+                  secureTextEntry
+                />
+              </View>
+              <View style={{justifyContent:"space-around", alignItems:"center"}}>
+                <Button
+                  buttonStyle={styles.button}
+                  titleStyle={styles.textButton}
+                  title="Iniciar sesión"
+                  color={Colors.tintColor}
+                  onPress={this.loginWithUser}
+                />
+                <TouchableHighlight onPress={()=>{}}>
+                  <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
+                </TouchableHighlight>
+                <TouchableHighlight 
+                  onPress={()=>this.props.navigation.navigate("SignUp")}
+                >
+                  <Text style={styles.linkText}>Regístrate en meniu</Text>
+                </TouchableHighlight>
+                
+              </View>
             </View>
-            <View style={{justifyContent:"space-around", alignItems:"center"}}>
-              <Button
-                buttonStyle={styles.button}
-                titleStyle={styles.textButton}
-                title="Iniciar sesión"
-                color={Colors.tintColor}
-                onPress={this.loginWithUser}
-              />
-              <TouchableHighlight onPress={()=>{}}>
-                <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
-              </TouchableHighlight>
-              <TouchableHighlight 
-                onPress={()=>this.props.navigation.navigate("SignUp")}
+            <View style={styles.socialContainer}>
+              <Icon.Button
+                name="google"
+                backgroundColor={Colors.google}
+                onPress={this.googleSignIn}
+                {...iconStyles}
               >
-                <Text style={styles.linkText}>Regístrate en meniu</Text>
-              </TouchableHighlight>
-              
+                Ingresa con Google
+              </Icon.Button>
+              <View style={styles.br}></View>
+              <Icon.Button
+                name="facebook"
+                backgroundColor={Colors.facebook}
+                onPress={this.facebookSignIn}
+                {...iconStyles}
+              >
+                Ingresa con Facebook
+              </Icon.Button>
             </View>
           </View>
-          <View style={styles.socialContainer}>
-            <Icon.Button
-              name="google"
-              backgroundColor={Colors.google}
-              onPress={this.googleSignIn}
-              {...iconStyles}
-            >
-              Ingresa con Google
-            </Icon.Button>
-            <View style={styles.br}></View>
-            <Icon.Button
-              name="facebook"
-              backgroundColor={Colors.facebook}
-              onPress={this.facebookSignIn}
-              {...iconStyles}
-            >
-              Ingresa con Facebook
-            </Icon.Button>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+      
     );
   }
 }
@@ -217,14 +223,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: Colors.darkBackgroundColor,
   },
   logoContainer: {
     height:Layout.window.height * 0.2
   },
   titleImage: {
-    height:Layout.window.width * 0.5,
-    width:Layout.window.width * 0.3,
+    height:Layout.window.width * 0.5 * 0.8,
+    width:Layout.window.width * 0.694 * 0.8,
     resizeMode:"contain"
   },
   formContainer: {
