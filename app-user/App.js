@@ -1,7 +1,6 @@
 import React from "react";
 import { createAppContainer, createStackNavigator } from "react-navigation"; // Version can be specified in package.json
 
-import HomeScreen from "./screens/HomeScreen.js";
 import SignUpScreen from "./screens/SignUpScreen.js";
 import SignInScreen from "./screens/SignInScreen.js";
 import MainScreen from "./screens/MainScreen.js";
@@ -14,12 +13,6 @@ import { setCustomText } from 'react-native-global-props';
 import { FormattedProvider } from 'react-native-globalize';
 
 const AppNavigator = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: ({navigation}) =>({
-       header: null,
-     }),
-  },
   SignUp: {
     screen: SignUpScreen,
     navigationOptions: ({navigation}) =>({
