@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import OrderModalComponent from '../../../components/OrderModalComponent';
 import FilterButtonComponent from '../../../components/FilterButtonComponent';
 import BadgeComponent from '../../../components/BadgeComponent';
+import PromotionService from "../../../services/PromotionService";
 
 class RestaurantPlatesScreen extends Component {
   
@@ -21,7 +22,11 @@ class RestaurantPlatesScreen extends Component {
     super(props);
 
     const { navigation } = this.props;
+    console.log('Aquí va el navigation object');
+    console.log(navigation);
     this.restaurant = navigation.getParam('restaurant', 'Sin Restaurante');
+    console.log('Aquí va restauranty');
+    console.log(this.restaurant);
     // Available sorting values: 
     this.state = {
       sorting:"AZ",
@@ -30,18 +35,22 @@ class RestaurantPlatesScreen extends Component {
       failureModalVisible:false,
       promotionList:[],
     };
-
   }
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('restaurant', 'Platos de Restaurante').name,
+      title: navigation.getParam('restaurant', 'Platos de Restaurante').partner.name,
     };
   };
   
   componentDidMount() {
-    let promotionsFetch = MockData.promotions;
-    this.setState({promotionList: this.sortPromotions(this.state.sorting, promotionsFetch)});
+    PromotionService.retrievePromotionsByPartner(this.restaurant.partner.identification).then(response => response.json()).then(responseJSON => {
+      console.log('wtf')
+      console.log(responseJSON);
+      this.setState({
+        promotionList: responseJSON.promotionCoupons
+      });
+    });
   }
 
   /**
@@ -147,10 +156,10 @@ class RestaurantPlatesScreen extends Component {
             <Text style={styles.restaurantTitle}>{this.restaurant.name}</Text>
             <Text>Horario de atención</Text>
             <View style={styles.badgesContainer}>
-              <BadgeComponent type="basic" content="10"></BadgeComponent>
-              <BadgeComponent type="premium" content="10"></BadgeComponent>
-              <BadgeComponent type="deluxe" content="5"></BadgeComponent>
-              <BadgeComponent type="gold" content="5"></BadgeComponent>
+              <BadgeComponent type="Basic" content="10"></BadgeComponent>
+              <BadgeComponent type="Premium" content="10"></BadgeComponent>
+              <BadgeComponent type="Deluxe" content="5"></BadgeComponent>
+              <BadgeComponent type="Gold" content="5"></BadgeComponent>
             </View>
           </View>
           <View style={styles.locationContainer}>
@@ -165,10 +174,10 @@ class RestaurantPlatesScreen extends Component {
           </View>
         </View>
         <View style={styles.horizontalView}>
-          <FilterButtonComponent type="basic"></FilterButtonComponent>
-          <FilterButtonComponent type="premium"></FilterButtonComponent>
-          <FilterButtonComponent type="deluxe"></FilterButtonComponent>
-          <FilterButtonComponent type="gold"></FilterButtonComponent>
+          <FilterButtonComponent type="Basic"></FilterButtonComponent>
+          <FilterButtonComponent type="Premium"></FilterButtonComponent>
+          <FilterButtonComponent type="Deluxe"></FilterButtonComponent>
+          <FilterButtonComponent type="Gold"></FilterButtonComponent>
           <Picker
             selectedValue={this.state.sorting}
             style={{ flex:1, height: 50, width: 100 }}
@@ -181,7 +190,7 @@ class RestaurantPlatesScreen extends Component {
           <ScrollView style={{flex:1}}>
             <FlatList
               style={{flex:1}}
-              keyExtractor={(item)=>item.name}
+              keyExtractor={(item)=>(item.name)}
               data={this.state.promotionList}
               renderItem={({item}) => <PromotionCardComponent actionType="order" entity={item} action={()=>this.handlePlatePress(item)}/>}
             />

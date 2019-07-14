@@ -43,7 +43,7 @@ export default class AvailableCouponsComponent extends Component {
             </View>   
             <View style={styles.textContainer}>
                 <Text style={{color:Colors[this.props.type], fontSize:16,}}>Platos Disponibles:</Text>
-                <Text style={{color:Colors[this.props.type], fontSize:32, fontWeight:"bold"}}>{this.props.couponsNumber || 0}</Text>
+                <Text style={{color:Colors[this.props.type], fontSize:32, fontWeight:"bold"}}>{this.props.promotionsNumber || 0}</Text>
             </View>
         </View>
         )

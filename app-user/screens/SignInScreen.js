@@ -43,10 +43,11 @@ class SignInScreen extends Component {
       });
       console.log("user", result);
       if (result.type === "success") {
-        AuthService.externalLogIn(result.user.id, 'Google', result.user.email).then(response => response.json()).then(responseJSON => {
+        AuthService.externalLogIn('Google', result.user.email).then(response => response.json()).then(responseJSON => {
           console.log('ya respondió');
           console.log(responseJSON);
-          this.saveUserLocally(result.user);
+          let user = responseJSON;
+          this.saveUserLocally(user);
           // TODO: pass token to Backend
           this.props.navigation.navigate("Main");
         });
@@ -70,7 +71,7 @@ class SignInScreen extends Component {
         `https://graph.facebook.com/me?access_token=${token}`);
       const user = await response.json();
       console.log("user", user);
-      AuthService.externalLogIn(result.user.id, 'Facebook', result.user.email).then(response => response.json()).then(responseJSON => {
+      AuthService.externalLogIn('Facebook', result.user.email).then(response => response.json()).then(responseJSON => {
         console.log('ya respondió');
         console.log(responseJSON);
         this.saveUserLocally(result.user);

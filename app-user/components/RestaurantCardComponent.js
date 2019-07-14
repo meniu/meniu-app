@@ -21,6 +21,13 @@ class RestaurantCardComponent extends Component {
   }
 
   render() {
+
+    let badges = this.props.entity.couponSummaryModels.map((coupon,i)=> {
+      return(
+        <BadgeComponent key = {this.props.entity.partner.identification&coupon.type} type={coupon.type} content={coupon.quantity}></BadgeComponent>
+      );
+    });
+
     return (
       <TouchableHighlight onPress={this.props.action}>
         <View style={styles.container}>
@@ -28,15 +35,13 @@ class RestaurantCardComponent extends Component {
             <Image
               style={styles.circledImage}
               resizeMode={"center"}
-              source={{uri: this.props.entity.uri}}
+              source={{uri: "https://www.google.com/url?sa=i&source=images&cd=&ved=2ahUKEwiRtJ3nk43jAhVus1kKHaElAMYQjRx6BAgBEAU&url=https%3A%2F%2Fwww.colombia.com%2Fgastronomia%2Fnoticias%2Fsdi%2F70109%2Fhamburguesas-el-corral-inaugura-su-primer-restaurante-en-la-isla-de-san-andres&psig=AOvVaw2xoN7utahGB7F8R9fyd7Th&ust=1561844902558960"}}
             />
           </View>
           <View style={styles.cardInfo}>
-            <Text style={styles.restaurantTitle}>{this.props.entity.name}</Text>
+            <Text style={styles.restaurantTitle}>{this.props.entity.partner.name}</Text>
             <View style={styles.badgesContainer}>
-              <BadgeComponent type="basic" content="10"></BadgeComponent>
-              <BadgeComponent type="premium" content="15"></BadgeComponent>
-              <BadgeComponent type="deluxe" content="5"></BadgeComponent>
+              {badges}
             </View>
           </View>
         </View>

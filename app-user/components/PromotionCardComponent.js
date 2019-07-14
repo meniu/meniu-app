@@ -54,7 +54,7 @@ export default class PromotionCardComponent extends Component {
                 <Text>{"$ " + this.props.entity.discount}</Text>
             </View> */}
             <Card
-                image={{uri: this.props.entity.uri}}
+                image={{uri: this.props.entity.imagePath}}
                 imageStyle={{ width:'100%', height:55, }}
                 imageProps={{resizeMode:"cover"}}
                 imageWrapperStyle={{overflow:"hidden"}}
@@ -63,11 +63,11 @@ export default class PromotionCardComponent extends Component {
                 >
                 <View style={{justifyContent:"center", alignItems:"center"}}>
                     <Text>
-                        {"-$ " + this.props.entity.discount}
+                        {"-$ " + this.props.entity.saving}
                     </Text>
                 </View>
             </Card>
-            <BadgeComponent type={this.props.entity.type} containerStyle={styles.floatingBadge} />
+            <BadgeComponent type={this.props.entity.couponPlan.coupon.couponType} containerStyle={styles.floatingBadge} />
             <View style={styles.infoContainer} >
                 <Rating
                     imageSize={10}

@@ -30,16 +30,16 @@ export default class BadgeComponent extends Component {
     defaultContent() {
       let letter = "";
         switch (this.props.type) {
-            case "basic":
+            case "Basic":
               letter = "B";
               break;
-            case "premium":
+            case "Premium":
               letter = "P";
               break;
-            case "deluxe":
+            case "Deluxe":
               letter = "D";
               break;
-            case "gold":
+            case "Gold":
               letter = "G";
               break;
             default:
