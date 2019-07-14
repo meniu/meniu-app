@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, ScrollView, FlatList } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, FlatList,
+    ImageBackground,
+} from 'react-native'
 import { ButtonGroup } from 'react-native-elements';
 import Colors from '../../../constants/Colors';
 import MockData from '../../../constants/MockData';
@@ -49,15 +51,20 @@ export default class MembershipsScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.planDetail}>
-                    <View style={{ flex: 1 }}></View>
-                    <View style={{ flex: 4, alignItems: "flex-start" }}>
-                        <Text>{this.state.timeIndex === 0 ? "Plan Mensual" : "Plan semi mensual"}</Text>
-                        <Text>Disfruta platos y ahorra</Text>
-                        <Text>{this.state.timeIndex === 0 ? "Obten 20 platos" : "Obten 10 platos"}</Text>
-                        <Text>{this.state.timeIndex === 0 ? "Válido: 2 meses" : "Válido: 4 semanas"}</Text>
+                <ImageBackground
+                    source={require('../../../assets/images/planes-portrait.jpg')} 
+                    style={{resizeMode:"cover", flex:2}}
+                >
+                    <View style={styles.planDetail}>
+                        <View style={{ flex: 1 }}></View>
+                        <View style={{ flex: 4, alignItems: "flex-start" }}>
+                            <Text>{this.state.timeIndex === 0 ? "Plan Mensual" : "Plan semi mensual"}</Text>
+                            <Text>Disfruta platos y ahorra</Text>
+                            <Text>{this.state.timeIndex === 0 ? "Obten 20 platos" : "Obten 10 platos"}</Text>
+                            <Text>{this.state.timeIndex === 0 ? "Válido: 2 meses" : "Válido: 4 semanas"}</Text>
+                        </View>
                     </View>
-                </View>
+                </ImageBackground>
                 <View style={styles.timeFiltersContainer}>
                     <ButtonGroup
                         onPress={this.updateIndex}
@@ -95,7 +102,6 @@ const styles = StyleSheet.create({
     },
     planDetail: {
         flex: 2,
-        backgroundColor: Colors.darkBackgroundColor,
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",

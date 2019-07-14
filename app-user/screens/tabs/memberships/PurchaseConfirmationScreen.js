@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, TouchableHighlight } from 'react-native'
+import { Text, StyleSheet, View, TouchableHighlight,
+    ImageBackground,
+} from 'react-native'
 import { Button } from 'react-native-elements';
 import { LinearGradient } from "expo";
 import CustomIcon from '../../../components/CustomIcon'
@@ -59,38 +61,43 @@ export default class PurchaseConfirmationScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.mainContainer}>
-                    <this.CloseButton/>
-                    <LinearGradient colors={Colors.gradient[this.plan.combo.type]} style={styles.gradient}
-                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-                        <CustomIcon name="no-plan" size={70} color={Colors.white} style={{textAlign:"center"}} />
-                        <Text style={styles.membershipTitle}>{this.plan.combo.type}</Text>
-                    </LinearGradient>
+            <ImageBackground
+                source={require('../../../assets/images/confirmacion-compraplan-bg.jpg')} 
+                style={{resizeMode:"cover", width:Layout.window.width, height:Layout.window.height}}             
+            >
+                <View style={styles.container}>
+                    <View style={styles.mainContainer}>
+                        <this.CloseButton/>
+                        <LinearGradient colors={Colors.gradient[this.plan.combo.type]} style={styles.gradient}
+                            start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                            <CustomIcon name="no-plan" size={70} color={Colors.white} style={{textAlign:"center"}} />
+                            <Text style={styles.membershipTitle}>{this.plan.combo.type}</Text>
+                        </LinearGradient>
 
-                    <Text style={{fontSize:26}}>Confirma tu compra</Text>
+                        <Text style={{fontSize:26}}>Confirma tu compra</Text>
 
-                    <View style={{width:"80%", alignItems:"flex-start"}}>
-                        <Text style={styles.headerText}>Tipo de plan:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.combo.type}</Text>
+                        <View style={{width:"80%", alignItems:"flex-start"}}>
+                            <Text style={styles.headerText}>Tipo de plan:</Text>
+                            <Text style={styles.subtitleText}>{this.plan.combo.type}</Text>
 
-                        {/* <Text style={styles.headerText}>Platos:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.foodQuantity} platos</Text> */}
-                        
-                        <Text style={styles.headerText}>Precio:</Text>
-                        <Text style={[styles.subtitleText,{fontWeight:"900"}]}>$ {this.plan.combo.price}</Text>
+                            {/* <Text style={styles.headerText}>Platos:</Text>
+                            <Text style={styles.subtitleText}>{this.plan.foodQuantity} platos</Text> */}
+                            
+                            <Text style={styles.headerText}>Precio:</Text>
+                            <Text style={[styles.subtitleText,{fontWeight:"900"}]}>$ {this.plan.combo.price}</Text>
 
-                        <Text style={styles.headerText}>Incluye:</Text>
-                        <CouponListComponent coupons={this.plan.couponPlans} combo = {this.plan.combo}/>
+                            <Text style={styles.headerText}>Incluye:</Text>
+                            <CouponListComponent coupons={this.plan.couponPlans} combo = {this.plan.combo}/>
 
-                        <Text style={styles.headerText}>Válido:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.couponPlans[0].plan.validityInDays} días</Text>
+                            <Text style={styles.headerText}>Válido:</Text>
+                            <Text style={styles.subtitleText}>{this.plan.couponPlans[0].plan.validityInDays} días</Text>
+                        </View>
+
+                        <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
+                            title="Confirmar" onPress={() => this.handleGetPlanClick(this.plan.combo.type, this.plan.combo.type, this.plan.combo.price)}/>
                     </View>
-
-                    <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
-                        title="Confirmar" onPress={() => this.handleGetPlanClick(this.plan.combo.type, this.plan.combo.type, this.plan.combo.price)}/>
                 </View>
-            </View>
+            </ImageBackground>  
         )
     }
 }
@@ -100,7 +107,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "space-around",
-        backgroundColor: Colors.darkBackgroundColor,
     },
     mainContainer: {
         height:Layout.window.height * 0.7,
