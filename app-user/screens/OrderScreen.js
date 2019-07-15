@@ -10,6 +10,7 @@ import { Button, Rating } from 'react-native-elements';
 
 import Colors from "../constants/Colors";
 import PromotionService from "../services/PromotionService";
+import Config from "../constants/Config";
 
 
 class OrderScreen extends Component {
@@ -73,7 +74,7 @@ class OrderScreen extends Component {
           <View style={styles.QRBorder}>
             <Image
               style={styles.QRStyle}
-              source={this.state.QRgenerated.codePath ? { uri: "https://meniustorage.blob.core.windows.net/meniu/" + this.state.QRgenerated.codePath } : require('../assets/images/qr-sample.png')}
+              source={this.state.QRgenerated.codePath ? { uri: Config.azureStorageUrl + this.state.QRgenerated.codePath } : require('../assets/images/qr-sample.png')}
               resizeMode="contain"
             />
           </View>

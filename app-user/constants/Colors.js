@@ -27,7 +27,7 @@ export default {
     Executive: ["#B0F463", "#66D557"],
     Elite: ["#FEDE00", "#FB8D4C"],
     Balanced: ["#F65EE5", "#BC25ED"],
-    Smart: ["#3BE6EF", "#BC25ED"],
+    Smart: ["#FE0000","#A51C30"],
     Express: ["#3BE6EF", "#25A0FC"],
     Adventure: ["#B0F463", "#66D557"],
     Complete: ["#FEDE00", "#FB8D4C"],
