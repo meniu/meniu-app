@@ -38,7 +38,9 @@ export default class AccountScreen extends React.Component {
   }
 
   handleGetPlanClick = () => {
-    this.props.navigation.navigate("Memberships");
+    this.props.navigation.navigate("Memberships", {
+      user : this.state.user
+    });
   }
 
   componentDidMount() {
