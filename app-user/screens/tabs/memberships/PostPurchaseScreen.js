@@ -58,9 +58,6 @@ export default class PostPurchaseScreen extends Component {
                         <Text style={styles.headerText}>Tipo de plan:</Text>
                         <Text style={styles.subtitleText}>{this.plan.combo.type}</Text>
 
-                        <Text style={styles.headerText}>Platos:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.foodQuantity} platos</Text>
-
                         <Text style={styles.headerText}>Precio:</Text>
                         <Text style={[styles.subtitleText, { fontWeight: "900" }]}>$ {this.plan.price}</Text>
 

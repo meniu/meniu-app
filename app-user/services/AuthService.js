@@ -17,6 +17,17 @@ export default class AuthService {
     });
   }
 
+  static async retrieveUser() {
+    let user = await AuthService.retrieveUser();
+    return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
+      headers: {
+        'Authorization': 'Bearer ' + user.applicationUser.token,
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      }
+    });
+  }
+
   static externalLogIn(authType, email) {
     const acceptTermsAndConditions = true;
     let objBody = {

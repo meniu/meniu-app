@@ -4,7 +4,7 @@ import AuthService from './AuthService';
 
 export default class PaymentService {
 
-    static async initiatePayment(comboType) {
+    static async initiatePayment(type) {
         let user = await AuthService.retrieveUser();
         let objBody = {
             userEmail: {
@@ -14,7 +14,7 @@ export default class PaymentService {
             },
             comboCouponPlan: {
                 combo: {
-                    comboType
+                    type
                 }
             }
         };

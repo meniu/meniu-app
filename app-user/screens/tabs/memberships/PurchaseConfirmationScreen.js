@@ -13,6 +13,7 @@ import { WebBrowser } from 'expo';
 import Config from '../../../constants/Config';
 import base64 from 'react-native-base64';
 import PaymentService from '../../../services/PaymentService';
+import AuthService from '../../../services/AuthService';
 
 export default class PurchaseConfirmationScreen extends Component {
 
@@ -51,6 +52,23 @@ export default class PurchaseConfirmationScreen extends Component {
         return allCoupons.quantity;
     }
 
+    openBrowser = async (object64) => {
+        let result = await WebBrowser.openBrowserAsync(Config.payUpageUrl + `buy?${object64}`);
+        console.log('result:');
+        console.log(result);
+        AuthService.retrieveUser().then(response => response.json()).then(responseJSON => {
+            AuthService.saveUserLocally(responseJSON);
+            if (responseJSON.activeCombo && !this.user.activeCombo) {
+                this.props.navigation.navigate("PostPurchase", {
+                    plan: this.plan
+                });
+            }
+            else{
+                this.user = responseJSON;
+            }
+        });
+    }
+
     /**
      * Buys plan (Pay U flow)
      * Once confirmed, redirects to PostPurchase Screen
@@ -73,19 +91,15 @@ export default class PurchaseConfirmationScreen extends Component {
                 }
                 console.log(object);
                 let object64 = base64.encode(JSON.stringify(object));
-                let result = await WebBrowser.openBrowserAsync(Config.payUpageUrl + `buy?${object64}`);
-                console.log('result:');
-                console.log(result);
+                this.openBrowser(object64);
             }
-            else{
+            else {
                 let error = responseJSON._message;
                 console.log(error);
             }
         });
 
-        /* this.props.navigation.navigate("PostPurchase",{
-            plan: this.plan
-        }); */
+        /*  */
     }
 
     render() {
