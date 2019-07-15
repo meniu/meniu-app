@@ -32,6 +32,27 @@ export default class MembershipCardComponent extends Component {
 
   }
 
+  /**
+   * Translator. If plan name comes in spanish this shouldn't be necessary
+   */
+  getIconByPlanName(planName) {
+    let plan = planName.toLowerCase();
+
+    switch (plan) {
+      case "warrior": return "guerrero";
+      case "corporate": return "ejecutivo";
+      case "elite": return "elite";
+      case "balanced": return "balanceado";
+      case "smart": return "smart";
+      case "express": return "express";
+      case "adventure": return "aventura";
+      case "complete": return "completo";
+      // Personalizado
+      default: return "planpersonalizado";
+    }
+
+  }
+
   render() {
 
     return (
@@ -39,7 +60,7 @@ export default class MembershipCardComponent extends Component {
 
         <LinearGradient colors={Colors.gradient[this.props.membership.combo.type]} style={styles.gradient}
           start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-          <CustomIcon name="no-plan" size={70} color={Colors.black} style={{ textAlign: "center" }} />
+          <CustomIcon name={this.getIconByPlanName(this.props.membership.combo.type)} size={70} color={Colors.black} style={{ textAlign: "center" }} />
           <Text style={styles.membershipTitle}>{this.props.membership.combo.type}</Text>
         </LinearGradient>
         <View style={styles.descriptionContainer}>

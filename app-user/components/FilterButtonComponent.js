@@ -8,9 +8,7 @@ export default class FilterButtonComponent extends Component {
       super(props);
     // type: "basic", "medium", "deluxe" or "gold"
     // selected: boolean. If true, badge will be white and background of type color
-      this.state = {
-         selected: false
-      }
+
     }
 
     toggleSelected = () => {
@@ -19,13 +17,13 @@ export default class FilterButtonComponent extends Component {
     }
 
     getBackgroundColor = () => {
-        return this.state.selected ? 
+        return this.props.selected ? 
             Colors[this.props.type]:
             Colors.white;
     }
 
     getBadgeColor = () => {
-        return this.state.selected ? 
+        return this.props.selected ? 
             Colors.white:
             Colors[this.props.type];
     }
@@ -33,7 +31,7 @@ export default class FilterButtonComponent extends Component {
     render() {
         
         return (
-            <TouchableHighlight style={{flex:1}} onPress={this.toggleSelected}>
+            <TouchableHighlight style={{flex:1}} onPress={this.props.toggleSelected}>
                 <View style={{...styles.container, backgroundColor: this.getBackgroundColor()}}>
                     <BadgeComponent type={this.props.type} color = {this.getBadgeColor()}></BadgeComponent>
                     <Text>{this.props.type}</Text>

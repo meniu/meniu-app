@@ -22,12 +22,19 @@ export default class PartnerSelectionScreen extends React.Component {
   constructor(props) {
     super(props);
   
+    this.allPartners = [];
     this.state = {
       text:"",
       //Layout: By icon or traditional
       layout:"icon",
       partners: [],
-      promotions: []
+      promotions: [],
+      selectedFilters:{
+        Basic:false,
+        Premium:false,
+        Deluxe:false,
+        Gold:false,
+      }
     };
 
   }
@@ -36,16 +43,43 @@ export default class PartnerSelectionScreen extends React.Component {
       title: 'Restaurantes',
   };
 
+  componentDidMount(){
+    PartnerService.retrievePartners().then(response => response.json()).then(responseJSON => {
+      this.allPartners = responseJSON;
+      this.setState({
+        partners: responseJSON
+      });
+    });
+  }
+
   handleRestaurantPress = (restaurant) => {
     this.props.navigation.navigate("RestaurantPlates",{
       restaurant
     });
   }
 
-  componentDidMount(){
-    PartnerService.retrievePartners().then(response => response.json()).then(responseJSON => {
-      this.setState({
-        partners: responseJSON
+  filterPartners = () => {
+    // Filters by selected values
+    let filters = this.state.selectedFilters;
+    let partnersFiltered = this.allPartners;
+    Object.keys(filters).forEach(type => {
+      if(!filters[type])
+        partnersFiltered = partnersFiltered.filter(partner => {
+          // couponPlan coupon type
+          return partner.couponSummaryModels.every(coupon => coupon.type !== type);
+        });
+    });
+    return partnersFiltered;
+  }
+
+  toggleSelected = (type) => {
+    console.log("all partners", this.allPartners);
+    this.setState((state)=>{
+      let newSelected = state.selectedFilters;
+      newSelected[type] = !state.selectedFilters[type];
+      return ({
+        selectedFilters:newSelected,
+        partners: this.filterPartners(),
       });
     });
   }
@@ -73,10 +107,10 @@ export default class PartnerSelectionScreen extends React.Component {
             </ScrollView>
           </View>
           <View style={styles.typeFilterView}>
-              <FilterButtonComponent type="Basic"></FilterButtonComponent>
-              <FilterButtonComponent type="Premium"></FilterButtonComponent>
-              <FilterButtonComponent type="Deluxe"></FilterButtonComponent>
-              <FilterButtonComponent type="Gold"></FilterButtonComponent>
+              <FilterButtonComponent type="Basic" selected={this.state.selectedFilters.Basic} toggleSelected={()=>this.toggleSelected("Basic")}></FilterButtonComponent>
+              <FilterButtonComponent type="Premium" selected={this.state.selectedFilters.Premium} toggleSelected={()=>this.toggleSelected("Premium")}></FilterButtonComponent>
+              <FilterButtonComponent type="Deluxe" selected={this.state.selectedFilters.Deluxe} toggleSelected={()=>this.toggleSelected("Deluxe")}></FilterButtonComponent>
+              <FilterButtonComponent type="Gold" selected={this.state.selectedFilters.Gold} toggleSelected={()=>this.toggleSelected("Gold")}></FilterButtonComponent>
           </View>
         </View>
         <View style={{flex:5, backgroundColor:Colors.white,}}>

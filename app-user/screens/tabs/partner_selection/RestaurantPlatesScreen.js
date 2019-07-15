@@ -28,19 +28,26 @@ class RestaurantPlatesScreen extends Component {
     this.restaurant = navigation.getParam('restaurant', 'Sin Restaurante');
     console.log('Aquí va restauranty');
     console.log(this.restaurant);
-    // Available sorting values: 
+    
+    this.allPromotions = [];
     this.state = {
       sorting:"AZ",
       selectedPlate:null,
       successModalVisible:false,
       failureModalVisible:false,
       promotionList:[],
+      selectedFilters:{
+        Basic:false,
+        Premium:false,
+        Deluxe:false,
+        Gold:false,
+      }
     };
   }
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('restaurant', 'Platos de Restaurante').partner.name,
+      title: "meniu",
     };
   };
   
@@ -48,8 +55,10 @@ class RestaurantPlatesScreen extends Component {
     PromotionService.retrievePromotionsByPartner(this.restaurant.partner.identification).then(response => response.json()).then(responseJSON => {
       console.log('wtf')
       console.log(responseJSON);
+      // All Promotions saved for future filtering
+      this.allPromotions = responseJSON.promotionCoupons;
       this.setState({
-        promotionList: responseJSON.promotionCoupons
+        promotionList: this.allPromotions
       });
     });
   }
@@ -79,8 +88,30 @@ class RestaurantPlatesScreen extends Component {
     return promotions;
   }
 
-  filterPromotions = (_filtering="type", _promotionList) => {
+  filterPromotions = () => {
     // Filters by selected values
+    let filters = this.state.selectedFilters;
+    let promotionsFiltered = this.allPromotions;
+    Object.keys(filters).forEach(type => {
+      if(!filters[type])
+        promotionsFiltered = promotionsFiltered.filter(promotion => {
+          // couponPlan coupon type
+          return promotion.couponPlan.coupon.type !== type;
+        });
+    });
+    return promotionsFiltered;
+  }
+
+  toggleSelected = (type) => {
+    
+    this.setState((state)=>{
+      let newSelected = state.selectedFilters;
+      newSelected[type] = !state.selectedFilters[type];
+      return ({
+        selectedFilters:newSelected,
+        promotionList: this.filterPromotions(),
+      });
+    });
   }
 
   handlePickerSelect = (itemValue) => {
@@ -158,8 +189,8 @@ class RestaurantPlatesScreen extends Component {
               resizeMode="contain"
             />
             <View style={styles.partnerDetails}>
-              <Text style={styles.restaurantTitle}>{this.restaurant.name}</Text>
-              <Text>Horario de atención</Text>
+              <Text style={[styles.restaurantTitle,styles.whiteTextShadow]}>{this.restaurant.partner.name}</Text>
+              <Text style={styles.whiteTextShadow}>Horario de atención</Text>
               <View style={styles.badgesContainer}>
                 <BadgeComponent type="Basic" content="10"></BadgeComponent>
                 <BadgeComponent type="Premium" content="10"></BadgeComponent>
@@ -180,10 +211,10 @@ class RestaurantPlatesScreen extends Component {
           </View>
         </ImageBackground>
         <View style={styles.horizontalView}>
-          <FilterButtonComponent type="Basic"></FilterButtonComponent>
-          <FilterButtonComponent type="Premium"></FilterButtonComponent>
-          <FilterButtonComponent type="Deluxe"></FilterButtonComponent>
-          <FilterButtonComponent type="Gold"></FilterButtonComponent>
+          <FilterButtonComponent type="Basic" selected={this.state.selectedFilters.Basic} toggleSelected={()=>this.toggleSelected("Basic")}></FilterButtonComponent>
+          <FilterButtonComponent type="Premium" selected={this.state.selectedFilters.Premium} toggleSelected={()=>this.toggleSelected("Premium")}></FilterButtonComponent>
+          <FilterButtonComponent type="Deluxe" selected={this.state.selectedFilters.Deluxe} toggleSelected={()=>this.toggleSelected("Deluxe")}></FilterButtonComponent>
+          <FilterButtonComponent type="Gold" selected={this.state.selectedFilters.Gold} toggleSelected={()=>this.toggleSelected("Gold")}></FilterButtonComponent>
           <Picker
             selectedValue={this.state.sorting}
             style={{ flex:1, height: 50, width: 100 }}
@@ -194,7 +225,7 @@ class RestaurantPlatesScreen extends Component {
         </View>
         <View style={styles.flatListView}>
           {
-            this.state.promotionList.length <= 0 ?
+            this.allPromotions.length <= 0 ?
               <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
                 <Bubbles size={10} color={Colors.yellowMeniu} />
               </View> :
@@ -231,7 +262,6 @@ const styles = StyleSheet.create({
     width:"100%",
     height:"100%",
     resizeMode:"cover",
-
   },
   circledImage:{
     flex:1,
@@ -246,6 +276,12 @@ const styles = StyleSheet.create({
   },
   restaurantTitle:{
     fontSize: 18,
+  },
+  whiteTextShadow:{
+    color:Colors.lightBackgroundColor,
+    textShadowRadius:20,
+    shadowColor:Colors.black,
+    textShadowOffset: {width: -1, height: 1},
   },
   locationContainer:{
     flex:2,
