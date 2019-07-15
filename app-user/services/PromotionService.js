@@ -37,4 +37,25 @@ export default class PromotionService {
             }
         });
     }
+
+    static async generateQR(couponType, partnerIdentification, promotionCouponId){        
+        let user = await AuthService.retrieveUser();
+        let objBody = {
+            userEmail: user.applicationUser.email,
+            couponType,
+            planType: user.comboCouponPlan.couponPlans[0].plan.type,
+            partnerIdentification,
+            promotionCouponId,
+            comboType: user.comboCouponPlan.combo.type
+        }
+        return fetch(`${Config.apiUrl}/api/Promotion/Generate/Code`, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + user.applicationUser.token,
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(objBody)
+        });
+    }
 }
