@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, ScrollView, FlatList,
     ImageBackground,
 } from 'react-native'
 import { ButtonGroup } from 'react-native-elements';
+import { Bars } from 'react-native-loader';
 import Colors from '../../../constants/Colors';
 import MockData from '../../../constants/MockData';
 import MembershipCardComponent from '../../../components/MembershipCardComponent';
@@ -77,19 +78,25 @@ export default class MembershipsScreen extends Component {
                     />
                 </View>
                 <View style={styles.planList}>
-                    <ScrollView style={{ flex: 1 }} >
-                        <FlatList
-                            style={{ flex: 1 }}
-                            /* key={(this.state.timeIndex)} */
-                            numColumns={1}
-                            keyExtractor={(item) => item.combo.id.toString()}
-                            onPressItem={this.handleMembershipPress}
-                            data={this.state.timeIndex === 0 ? this.state.combos[0].comboCouponPlans : this.state.combos[1].comboCouponPlans}
-                            renderItem={({ item }) => {
-                                return <MembershipCardComponent membership={item} action={() => this.handleMembershipPress(item)} />
-                            }}
-                        />
-                    </ScrollView>
+                    {
+                        this.state.combos.length <= 0 ?
+                            <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+                                <Bars size={10} color={Colors.yellowMeniu} />
+                            </View> :
+                        <ScrollView style={{ flex: 1 }} >
+                            <FlatList
+                                style={{ flex: 1 }}
+                                /* key={(this.state.timeIndex)} */
+                                numColumns={1}
+                                keyExtractor={(item) => item.combo.id.toString()}
+                                onPressItem={this.handleMembershipPress}
+                                data={this.state.timeIndex === 0 ? this.state.combos[0].comboCouponPlans : this.state.combos[1].comboCouponPlans}
+                                renderItem={({ item }) => {
+                                    return <MembershipCardComponent membership={item} action={() => this.handleMembershipPress(item)} />
+                                }}
+                            />
+                        </ScrollView>
+                    }
                 </View>
             </View>
         )

@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { ToastAndroid, Platform, Image, StyleSheet,  
   TextInput, Picker, FlatList, View, Text,
   ScrollView, Button, TouchableHighlight } from 'react-native';
+import { Bubbles } from 'react-native-loader';
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
 import { StackActions, NavigationActions } from "react-navigation";
@@ -29,14 +30,13 @@ export default class PartnerSelectionScreen extends React.Component {
       promotions: []
     };
 
-    this.handleRestaurantPress = this.handleRestaurantPress.bind(this);
   }
 
   static navigationOptions = {
       title: 'Restaurantes',
   };
 
-  handleRestaurantPress(restaurant){
+  handleRestaurantPress = (restaurant) => {
     this.props.navigation.navigate("RestaurantPlates",{
       restaurant
     });
@@ -52,6 +52,10 @@ export default class PartnerSelectionScreen extends React.Component {
 
   render() {
     return (
+      this.state.partners.length <= 0 ?
+        <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+          <Bubbles size={10} color={Colors.yellowMeniu} />
+        </View> :
       <View style={styles.container}>
         <View style={styles.upperView}>
           <View style={{flex:1}}></View>
@@ -75,7 +79,7 @@ export default class PartnerSelectionScreen extends React.Component {
               <FilterButtonComponent type="Gold"></FilterButtonComponent>
           </View>
         </View>
-        <View style={{flex:5, backgroundColor:Colors.white}}>
+        <View style={{flex:5, backgroundColor:Colors.white,}}>
           <ScrollView style={{flex:1}} >
             <FlatList 
               style={{flex:1}}

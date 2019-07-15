@@ -10,6 +10,7 @@ import {
   ScrollView, FlatList, Text, ImageBackground,
 } from 'react-native';
 import { Tooltip } from 'react-native-elements';
+import { Bubbles } from 'react-native-loader';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import OrderModalComponent from '../../../components/OrderModalComponent';
 import FilterButtonComponent from '../../../components/FilterButtonComponent';
@@ -192,14 +193,20 @@ class RestaurantPlatesScreen extends Component {
           </Picker>
         </View>
         <View style={styles.flatListView}>
-          <ScrollView style={{flex:1}}>
-            <FlatList
-              style={{flex:1}}
-              keyExtractor={(item)=>(item.name)}
-              data={this.state.promotionList}
-              renderItem={({item}) => <PromotionCardComponent actionType="order" entity={item} action={()=>this.handlePlatePress(item)}/>}
-            />
-          </ScrollView>
+          {
+            this.state.promotionList.length <= 0 ?
+              <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+                <Bubbles size={10} color={Colors.yellowMeniu} />
+              </View> :
+            <ScrollView style={{flex:1}}>
+              <FlatList
+                style={{flex:1}}
+                keyExtractor={(item)=>(item.name)}
+                data={this.state.promotionList}
+                renderItem={({item}) => <PromotionCardComponent actionType="order" entity={item} action={()=>this.handlePlatePress(item)}/>}
+              />
+            </ScrollView>
+          }
         </View>
       </View>
     );
