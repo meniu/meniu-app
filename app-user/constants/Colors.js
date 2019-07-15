@@ -4,6 +4,7 @@ export default {
   white:"white",
   whiteTransparent:"#FFFFFFAA",
   black:"black",
+  blackShadow:"rgba(0, 0, 0, 0.75)",
   transparent:"transparent",
   darkGreen:"#609157",
   lightOrange:"#FDCF00",

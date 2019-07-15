@@ -40,7 +40,7 @@ class RestaurantPlatesScreen extends Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam('restaurant', 'Platos de Restaurante').partner.name,
+      title: "meniu",
     };
   };
   
@@ -158,8 +158,8 @@ class RestaurantPlatesScreen extends Component {
               resizeMode="contain"
             />
             <View style={styles.partnerDetails}>
-              <Text style={styles.restaurantTitle}>{this.restaurant.name}</Text>
-              <Text>Horario de atención</Text>
+              <Text style={[styles.restaurantTitle,styles.whiteTextShadow]}>{this.restaurant.partner.name}</Text>
+              <Text style={styles.whiteTextShadow}>Horario de atención</Text>
               <View style={styles.badgesContainer}>
                 <BadgeComponent type="Basic" content="10"></BadgeComponent>
                 <BadgeComponent type="Premium" content="10"></BadgeComponent>
@@ -231,7 +231,6 @@ const styles = StyleSheet.create({
     width:"100%",
     height:"100%",
     resizeMode:"cover",
-
   },
   circledImage:{
     flex:1,
@@ -246,6 +245,12 @@ const styles = StyleSheet.create({
   },
   restaurantTitle:{
     fontSize: 18,
+  },
+  whiteTextShadow:{
+    color:Colors.lightBackgroundColor,
+    textShadowRadius:20,
+    shadowColor:Colors.black,
+    textShadowOffset: {width: -1, height: 1},
   },
   locationContainer:{
     flex:2,

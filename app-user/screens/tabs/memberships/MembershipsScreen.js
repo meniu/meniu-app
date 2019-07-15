@@ -59,10 +59,16 @@ export default class MembershipsScreen extends Component {
                     <View style={styles.planDetail}>
                         <View style={{ flex: 1 }}></View>
                         <View style={{ flex: 4, alignItems: "flex-start" }}>
-                            <Text>{this.state.timeIndex === 0 ? "Plan Mensual" : "Plan semi mensual"}</Text>
-                            <Text>Disfruta platos y ahorra</Text>
-                            <Text>{this.state.timeIndex === 0 ? "Obten 20 platos" : "Obten 10 platos"}</Text>
-                            <Text>{this.state.timeIndex === 0 ? "Válido: 2 meses" : "Válido: 4 semanas"}</Text>
+                            <Text style={{backgroundColor:Colors.lightBackgroundColor, padding:5}}>
+                                {this.state.timeIndex === 0 ? "Plan Mensual" : "Plan semi mensual"}
+                            </Text>
+                            <Text style={styles.whiteTextShadow}>Disfruta nuevos platos y ahorra</Text>
+                            <Text style={styles.whiteTextShadow}>
+                                {this.state.timeIndex === 0 ? "Obten 20 platos" : "Obten 10 platos"}
+                            </Text>
+                            <Text style={{backgroundColor:Colors.lightOrange, color:Colors.lightBackgroundColor, borderRadius:15, padding:5}}>
+                                {this.state.timeIndex === 0 ? "Válido: 2 meses" : "Válido: 4 semanas"}
+                            </Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -112,6 +118,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",
+    },
+    whiteTextShadow:{
+        color:Colors.lightBackgroundColor,
+        textShadowRadius:20,
+        shadowColor:Colors.black,
+        textShadowOffset: {width: -1, height: 1},
     },
     timeFiltersContainer: {
         flex: 1,
