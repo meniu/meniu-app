@@ -154,6 +154,18 @@ class RestaurantPlatesScreen extends Component {
     this.props.navigation.navigate("MembershipsStack");
   }
 
+  renderPartnerCouponSummary = () => {
+    return (
+      <View style={styles.badgesContainer}>
+        {
+          this.restaurant.couponSummaryModels.map(coupon =>
+            <BadgeComponent type={coupon.type} content={coupon.quantity}></BadgeComponent>
+          )
+        }
+      </View>
+    );
+  }
+
   renderModal = (_type) => {
     return this.state.selectedPlate ? (
       <OrderModalComponent 
@@ -190,13 +202,10 @@ class RestaurantPlatesScreen extends Component {
             />
             <View style={styles.partnerDetails}>
               <Text style={[styles.restaurantTitle,styles.whiteTextShadow]}>{this.restaurant.partner.name}</Text>
-              <Text style={styles.whiteTextShadow}>Horario de atención</Text>
-              <View style={styles.badgesContainer}>
-                <BadgeComponent type="Basic" content="10"></BadgeComponent>
-                <BadgeComponent type="Premium" content="10"></BadgeComponent>
-                <BadgeComponent type="Deluxe" content="5"></BadgeComponent>
-                <BadgeComponent type="Gold" content="5"></BadgeComponent>
-              </View>
+              <Text style={styles.whiteTextShadow}>{this.restaurant.partner.preferredLocation.referenceAddress}</Text>
+              {
+                this.renderPartnerCouponSummary()
+              }
             </View>
             <View style={styles.locationContainer}>
               <Tooltip popover={<Text>Ir al restaurante</Text>}>

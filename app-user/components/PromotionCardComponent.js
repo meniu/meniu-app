@@ -67,7 +67,7 @@ export default class PromotionCardComponent extends Component {
                     </Text>
                 </View>
             </Card>
-            <BadgeComponent type={this.props.entity.couponPlan.coupon.couponType} containerStyle={styles.floatingBadge} />
+            <BadgeComponent type={this.props.entity.couponPlan.coupon.type} containerStyle={styles.floatingBadge} />
             <View style={styles.infoContainer} >
                 <Rating
                     imageSize={10}
