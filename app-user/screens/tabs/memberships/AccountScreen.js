@@ -33,7 +33,7 @@ export default class AccountScreen extends React.Component {
 
   handleLogOutClick = () => {
     AuthService.logOut(() => {
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("SignIn");
     })
   }
 

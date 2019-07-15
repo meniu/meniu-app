@@ -4,15 +4,17 @@ import React, { Component } from 'react';
 import {
   Image, StyleSheet, View, Text, ToastAndroid,
   Platform, TextInput, KeyboardAvoidingView, Alert,
-  TouchableHighlight,
+  TouchableHighlight, ImageBackground
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import Colors from "../constants/Colors";
 import Layout from '../constants/Layout';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
 import { LoginButton } from 'react-native-fbsdk';
 import AuthService from '../services/AuthService';
+import CustomIcon from '../components/CustomIcon';
+
 class SignInScreen extends Component {
 
   constructor(props) {
@@ -134,82 +136,101 @@ class SignInScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <View style={styles.logoContainer}>
-          <Image 
-            source={require('../assets/images/M-sin-fondo.png')} 
-            style={styles.titleImage}/>
-          {/* <Text>Meniu</Text> */}
-        </View>
-        <View>
-          <View style={styles.formContainer}>
-            <View style={{justifyContent:"space-evenly", alignItems:"flex-start"}}>
-              <Text style={styles.subtitleText}>Email</Text>
-              <TextInput
-                style={styles.input}
-                value={this.state.email}
-                keyboardType="email-address"
-                onChangeText={(email) => this.setState({ email })}
-                returnKeyType="next"
-                onSubmitEditing={this.handleEmailInputSubmit}
-                blurOnSubmit={false}
-              />
-              <Text style={styles.subtitleText}>Contraseña</Text>
-              <TextInput
-                ref={(input) => this.passwordInput = input}
-                style={styles.input}
-                value={this.state.password}
-                onChangeText={(password) => this.setState({ password })}
-                secureTextEntry
-              />
+      <ImageBackground
+          source={require('../assets/images/bn-login-background.jpg')} 
+          style={{resizeMode:"cover", width:Layout.window.width, height:Layout.window.height}}       
+      >
+        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+          <View style={styles.logoContainer}>
+            <Image 
+              source={require('../assets/images/logo-login.png')} 
+              style={styles.titleImage}/>
+            {/* <Text>Meniu</Text> */}
+          </View>
+          <View>
+            <View style={styles.formContainer}>
+              <View style={{justifyContent:"space-evenly", alignItems:"flex-start"}}>
+                <Text style={styles.subtitleText}>Email</Text>
+                <TextInput
+                  style={styles.input}
+                  value={this.state.email}
+                  keyboardType="email-address"
+                  onChangeText={(email) => this.setState({ email })}
+                  returnKeyType="next"
+                  onSubmitEditing={this.handleEmailInputSubmit}
+                  blurOnSubmit={false}
+                />
+                <Text style={styles.subtitleText}>Contraseña</Text>
+                <TextInput
+                  ref={(input) => this.passwordInput = input}
+                  style={styles.input}
+                  value={this.state.password}
+                  onChangeText={(password) => this.setState({ password })}
+                  secureTextEntry
+                />
+              </View>
+              <View style={{justifyContent:"space-around", alignItems:"center"}}>
+                <Button
+                  buttonStyle={styles.button}
+                  titleStyle={styles.textButton}
+                  title="Iniciar sesión"
+                  color={Colors.tintColor}
+                  onPress={this.loginWithUser}
+                />
+                {/* <TouchableHighlight onPress={()=>{}}>
+                  <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
+                </TouchableHighlight> */}
+                <TouchableHighlight 
+                  onPress={()=>this.props.navigation.navigate("SignUp")}
+                >
+                  <Text style={styles.linkText}>Regístrate en meniu</Text>
+                </TouchableHighlight>
+                
+              </View>
             </View>
-            <View style={{justifyContent:"space-around", alignItems:"center"}}>
+            <View style={styles.socialContainer}>
               <Button
-                buttonStyle={styles.button}
-                titleStyle={styles.textButton}
-                title="Iniciar sesión"
-                color={Colors.tintColor}
-                onPress={this.loginWithUser}
+                icon={
+                  <CustomIcon
+                    name="facebook"
+                    size={30}
+                    color={Colors.facebook}
+                  />
+                }
+                onPress={this.facebookSignIn}
+                containerStyle={{width:'80%'}}
+                buttonStyle={styles.socialButton}
+                titleStyle={styles.socialButtonTitle}
+                iconContainerStyle={iconStyles}
+                title="Ingresa con Facebook"
               />
-              <TouchableHighlight onPress={()=>{}}>
-                <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
-              </TouchableHighlight>
-              <TouchableHighlight 
-                onPress={()=>this.props.navigation.navigate("SignUp")}
-              >
-                <Text style={styles.linkText}>Regístrate en meniu</Text>
-              </TouchableHighlight>
-              
+              <View style={styles.br}></View>
+              <Button
+                icon={
+                  <FontAwesome
+                    name="google"
+                    size={25}
+                    color={Colors.google}
+                  />
+                }
+                onPress={this.googleSignIn}
+                containerStyle={{width:'80%'}}
+                buttonStyle={styles.socialButton}
+                titleStyle={styles.socialButtonTitle}
+                iconContainerStyle={iconStyles}
+                title="   Ingresa con Google"
+              />
             </View>
           </View>
-          <View style={styles.socialContainer}>
-            <Icon.Button
-              name="google"
-              backgroundColor={Colors.google}
-              onPress={this.googleSignIn}
-              {...iconStyles}
-            >
-              Ingresa con Google
-            </Icon.Button>
-            <View style={styles.br}></View>
-            <Icon.Button
-              name="facebook"
-              backgroundColor={Colors.facebook}
-              onPress={this.facebookSignIn}
-              {...iconStyles}
-            >
-              Ingresa con Facebook
-            </Icon.Button>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+      
     );
   }
 }
 
 const iconStyles = {
-  borderRadius: 10,
-  iconStyle: { paddingVertical: 5 },
+  paddingVertical: 5,
 };
 
 const styles = StyleSheet.create({
@@ -217,14 +238,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: Colors.darkBackgroundColor,
   },
   logoContainer: {
     height:Layout.window.height * 0.2
   },
   titleImage: {
-    height:Layout.window.width * 0.5,
-    width:Layout.window.width * 0.3,
+    height:Layout.window.width * 0.5 * 0.8,
+    width:Layout.window.width * 0.694 * 0.8,
     resizeMode:"contain"
   },
   formContainer: {
@@ -247,6 +267,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     backgroundColor:Colors.yellowMeniu,
+  },
+  socialButton: {
+    backgroundColor: Colors.backgroundColor,
+    borderRadius:15,
+    // width:'80%',
+  },
+  socialButtonTitle: {
+    color:"grey",
   },
   subtitleText: {
     fontSize: 16,
