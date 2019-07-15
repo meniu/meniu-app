@@ -9,7 +9,7 @@ import {
 import { Button, Rating } from 'react-native-elements';
 
 import Colors from "../constants/Colors";
-import Layout from "../constants/Layout";
+import PromotionService from "../services/PromotionService";
 
 
 class OrderScreen extends Component {
@@ -21,30 +21,41 @@ class OrderScreen extends Component {
     const { navigation } = this.props;
     this.restaurant = navigation.getParam('restaurant', '(Sin Restaurante)');
     this.plate = navigation.getParam('plate', '(Sin Plato)');
-
-    this.state = {};
+    console.log(this.restaurant);
+    console.log(this.plate);
+    this.state = {
+      QRgenerated: {}
+    };
   }
 
   static navigationOptions = {
     title: 'Tu orden',
   };
 
+  componentDidMount() {
+    PromotionService.generateQR(this.plate.couponPlan.coupon.type, this.restaurant.partner.identification, this.plate.id).then(response => response.json()).then(responseJSON => {
+      console.log('QR GENERATED');
+      console.log(responseJSON);
+      this.setState({ QRgenerated: responseJSON });
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.horizontalView}> 
+        <View style={styles.horizontalView}>
           <View>
             <Image
               style={styles.imageStyle}
-              source={{uri: this.plate.uri}}
+              source={{ uri: this.plate.uri }}
             />
             <Rating
               imageSize={10}
               readonly
               startingValue={this.plate.rating}
-              style={{position:"absolute", bottom:25, left:2,}}
+              style={{ position: "absolute", bottom: 25, left: 2, }}
             />
-            <Text style={{marginTop:3}}>{this.restaurant.name}</Text>
+            <Text style={{ marginTop: 3 }}>{this.restaurant.name}</Text>
           </View>
           <View>
             <Text style={styles.textTitle}>Nombre del plato:</Text>
@@ -58,20 +69,20 @@ class OrderScreen extends Component {
           </View>
         </View>
         <View style={styles.QRContainer}>
-          <Text style={{fontSize:25, color:Colors.darkGreen}}>¡Código QR generado!</Text>
+          <Text style={{ fontSize: 25, color: Colors.darkGreen }}>¡Código QR generado!</Text>
           <View style={styles.QRBorder}>
             <Image
               style={styles.QRStyle}
-              source={require('../assets/images/qr-sample.png')}
+              source={this.state.QRgenerated.codePath ? { uri: "https://meniustorage.blob.core.windows.net/meniu/" + this.state.QRgenerated.codePath } : require('../assets/images/qr-sample.png')}
               resizeMode="contain"
             />
           </View>
-          <View style={{alignItems:"center"}}>
-            <Text style={{fontWeight:"bold", color:Colors.darkGreen}}>Bon Appetit</Text>
-            <Text style={{color:Colors.darkGreen}}>Ahora puedes ir a reclamar tu pedido</Text>
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontWeight: "bold", color: Colors.darkGreen }}>Bon Appetit</Text>
+            <Text style={{ color: Colors.darkGreen }}>Ahora puedes ir a reclamar tu pedido</Text>
           </View>
-          <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle} 
-            title="Ir a restaurante" onPress={()=>{}}  />
+          <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
+            title="Ir a restaurante" onPress={() => { }} />
         </View>
       </View>
     );
@@ -79,75 +90,75 @@ class OrderScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  container:{ 
-    flex: 1, 
-    alignItems: "stretch", 
+  container: {
+    flex: 1,
+    alignItems: "stretch",
     justifyContent: "space-between",
     backgroundColor: Colors.backgroundColor,
   },
-  horizontalView:{
-    flex:2,
-    margin:5,
-    flexDirection:"row",
+  horizontalView: {
+    flex: 2,
+    margin: 5,
+    flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems:"center",
+    alignItems: "center",
     backgroundColor: Colors.backgroundColor,
-    borderStyle:"dashed",
-    borderColor:Colors.darkGreen,
-    borderWidth:2,
-    borderRadius:5,
+    borderStyle: "dashed",
+    borderColor: Colors.darkGreen,
+    borderWidth: 2,
+    borderRadius: 5,
   },
-  textTitle:{
-    color:Colors.darkGreen,
-    fontWeight:"bold",
+  textTitle: {
+    color: Colors.darkGreen,
+    fontWeight: "bold",
   },
-  textSubTitle:{
-    color:Colors.darkBackgroundColor,
+  textSubTitle: {
+    color: Colors.darkBackgroundColor,
   },
-  imageStyle:{
-    width: 120, 
+  imageStyle: {
+    width: 120,
     height: 96,
-    borderColor:Colors.darkGreen,
-    borderWidth:1,
-    borderRadius:5,
+    borderColor: Colors.darkGreen,
+    borderWidth: 1,
+    borderRadius: 5,
   },
-  centralText:{
-    flex:1,
-    alignItems:"center",
-    justifyContent:"center",
-    fontSize:20,
+  centralText: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 20,
   },
-  QRContainer:{
-    flex:4,
+  QRContainer: {
+    flex: 4,
     backgroundColor: Colors.backgroundColor,
-    justifyContent:"space-around",
-    alignItems:"center",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   QRBorder: {
-    width:170,
-    height:170,
-    justifyContent:"center",
-    alignItems:"center",
-    borderColor:Colors.darkGreen,
-    borderWidth:1,
-    borderRadius:5,
+    width: 170,
+    height: 170,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: Colors.darkGreen,
+    borderWidth: 1,
+    borderRadius: 5,
   },
-  QRStyle: { 
-    width: 150, 
+  QRStyle: {
+    width: 150,
     height: 150,
     resizeMode: "contain",
   },
   buttonStyle: {
-    flexDirection:"column",
+    flexDirection: "column",
     width: "80%",
     backgroundColor: Colors.yellowMeniu,
     justifyContent: "center",
-    alignItems:"center",
-    alignContent:"center"
+    alignItems: "center",
+    alignContent: "center"
   },
   textButtonStyle: {
-      color:Colors.black, 
-      textAlign:"center",
+    color: Colors.black,
+    textAlign: "center",
   }
 });
 

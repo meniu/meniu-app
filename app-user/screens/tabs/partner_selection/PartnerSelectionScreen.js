@@ -12,7 +12,7 @@ import BadgeComponent from '../../../components/BadgeComponent';
 import FilterButtonComponent from '../../../components/FilterButtonComponent';
 import MockData from '../../../constants/MockData';
 import ImportantPromotionCardComponent from '../../../components/ImportantPromotionCardComponent';
-import PartnerService from "../../../services/PartnerService"
+import PartnerService from "../../../services/PartnerService";
 /**
  * Restaurantes ordenados por ranking siempre.
  * Filtros por tag / localización
