@@ -37,13 +37,13 @@ export default class AvailableCouponsComponent extends Component {
             <View style={styles.talkBubble}>
                 <View style={[styles.talkBubbleTriangle,{borderRightColor:Colors[this.props.type]}]} />
                 <View style={[styles.talkBubbleSquare,{backgroundColor:Colors[this.props.type]}]}>
-                    <CustomIcon name="no-plan" size={60} color={Colors.white} />
+                    <CustomIcon name={this.props.type.toLowerCase()} size={60} color={Colors.white} />
                     <Text style={{opacity:0.6}}>{this.props.type}</Text>
                 </View>
             </View>   
             <View style={styles.textContainer}>
                 <Text style={{color:Colors[this.props.type], fontSize:16,}}>Platos Disponibles:</Text>
-                <Text style={{color:Colors[this.props.type], fontSize:32, fontWeight:"bold"}}>{this.props.promotionsNumber || 0}</Text>
+                <Text style={{color:Colors[this.props.type], fontSize:28, fontWeight:"bold"}}>{this.props.promotionsNumber || 0}</Text>
             </View>
         </View>
         )
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     },
     talkBubbleSquare: {
         flex:3.5,
-        width: 120,
-        height: 80,
+        width: 105,
+        height: 70,
         borderTopLeftRadius: 10,
         borderBottomLeftRadius: 10,
         justifyContent:"center",

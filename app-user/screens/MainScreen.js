@@ -94,8 +94,7 @@ const TabNavigator = createBottomTabNavigator({
             iconName = 'orders';
             break;
           case 'MembershipsStack':
-            IconComponent = MaterialCommunityIcons;
-            iconName = 'face-profile';
+            iconName = 'account';
             break;
           default:
             iconName = 'home';

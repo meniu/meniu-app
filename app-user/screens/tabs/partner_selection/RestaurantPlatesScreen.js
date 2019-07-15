@@ -7,9 +7,10 @@ import PromotionCardComponent from "../../../components/PromotionCardComponent";
 import MockData from "../../../constants/MockData";
 import {
   StyleSheet,  View, Image, Picker,
-  ScrollView, FlatList, Text
+  ScrollView, FlatList, Text, ImageBackground,
 } from 'react-native';
 import { Tooltip } from 'react-native-elements';
+import { Bubbles } from 'react-native-loader';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import OrderModalComponent from '../../../components/OrderModalComponent';
 import FilterButtonComponent from '../../../components/FilterButtonComponent';
@@ -141,38 +142,43 @@ class RestaurantPlatesScreen extends Component {
       <View style={styles.container}>
         {this.renderModal("success")}
         {this.renderModal("failure")}
-        <View style={styles.partnerContainer}>
-          <Image
-            style={styles.backgroundImage}
-            source={{uri:this.restaurant.backgroundUri}}
-          >
-          </Image>
-          <Image
-            style={styles.circledImage}
-            source={{uri:this.restaurant.uri}}
-            resizeMode="contain"
-          />
-          <View style={styles.partnerDetails}>
-            <Text style={styles.restaurantTitle}>{this.restaurant.name}</Text>
-            <Text>Horario de atención</Text>
-            <View style={styles.badgesContainer}>
-              <BadgeComponent type="Basic" content="10"></BadgeComponent>
-              <BadgeComponent type="Premium" content="10"></BadgeComponent>
-              <BadgeComponent type="Deluxe" content="5"></BadgeComponent>
-              <BadgeComponent type="Gold" content="5"></BadgeComponent>
+        <ImageBackground
+          source={require('../../../assets/images/restaurant1-portrait.jpg')} 
+          style={{resizeMode:"cover", flex:2}}
+        >
+          <View style={styles.partnerContainer}>
+            <Image
+              style={styles.backgroundImage}
+              source={{uri:this.restaurant.backgroundUri}}
+            >
+            </Image>
+            <Image
+              style={styles.circledImage}
+              source={{uri:this.restaurant.uri}}
+              resizeMode="contain"
+            />
+            <View style={styles.partnerDetails}>
+              <Text style={styles.restaurantTitle}>{this.restaurant.name}</Text>
+              <Text>Horario de atención</Text>
+              <View style={styles.badgesContainer}>
+                <BadgeComponent type="Basic" content="10"></BadgeComponent>
+                <BadgeComponent type="Premium" content="10"></BadgeComponent>
+                <BadgeComponent type="Deluxe" content="5"></BadgeComponent>
+                <BadgeComponent type="Gold" content="5"></BadgeComponent>
+              </View>
+            </View>
+            <View style={styles.locationContainer}>
+              <Tooltip popover={<Text>Ir al restaurante</Text>}>
+                <Icon.Button
+                  name="location-pin"
+                  backgroundColor={Colors.yellowMeniu}
+                  color={"black"}
+                  iconStyle={{marginRight:0}}
+                ></Icon.Button>
+              </Tooltip>
             </View>
           </View>
-          <View style={styles.locationContainer}>
-            <Tooltip popover={<Text>Ir al restaurante</Text>}>
-              <Icon.Button
-                name="location-pin"
-                backgroundColor={Colors.yellowMeniu}
-                color={"black"}
-                iconStyle={{marginRight:0}}
-              ></Icon.Button>
-            </Tooltip>
-          </View>
-        </View>
+        </ImageBackground>
         <View style={styles.horizontalView}>
           <FilterButtonComponent type="Basic"></FilterButtonComponent>
           <FilterButtonComponent type="Premium"></FilterButtonComponent>
@@ -187,14 +193,20 @@ class RestaurantPlatesScreen extends Component {
           </Picker>
         </View>
         <View style={styles.flatListView}>
-          <ScrollView style={{flex:1}}>
-            <FlatList
-              style={{flex:1}}
-              keyExtractor={(item)=>(item.name)}
-              data={this.state.promotionList}
-              renderItem={({item}) => <PromotionCardComponent actionType="order" entity={item} action={()=>this.handlePlatePress(item)}/>}
-            />
-          </ScrollView>
+          {
+            this.state.promotionList.length <= 0 ?
+              <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+                <Bubbles size={10} color={Colors.yellowMeniu} />
+              </View> :
+            <ScrollView style={{flex:1}}>
+              <FlatList
+                style={{flex:1}}
+                keyExtractor={(item)=>(item.name)}
+                data={this.state.promotionList}
+                renderItem={({item}) => <PromotionCardComponent actionType="order" entity={item} action={()=>this.handlePlatePress(item)}/>}
+              />
+            </ScrollView>
+          }
         </View>
       </View>
     );

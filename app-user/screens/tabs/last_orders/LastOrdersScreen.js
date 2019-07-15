@@ -7,6 +7,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import { Text } from 'react-native-elements';
+import { Bubbles } from 'react-native-loader';
 import Colors from "../../../constants/Colors";
 import MockData from '../../../constants/MockData';
 import Layout from '../../../constants/Layout';
@@ -91,9 +92,10 @@ export default class LastOrdersScreen extends Component {
   }
 
   renderLoading() {
-    return (<View>
-      <Text>Loading...</Text>
-    </View>);
+    return (
+      <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+        <Bubbles size={10} color={Colors.yellowMeniu} />
+      </View>);
   }
 
   renderSectionHeader = (section, index, isActive) => {
@@ -184,7 +186,7 @@ export default class LastOrdersScreen extends Component {
   }
 
   render() {
-    if (!this.state.user)
+    if (!this.state.user || this.state.spentPromotions.length <= 0)
       return this.renderLoading();
     else
       this.checkSignIn();
