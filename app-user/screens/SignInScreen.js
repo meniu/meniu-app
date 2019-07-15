@@ -9,10 +9,12 @@ import {
 import { Button } from 'react-native-elements';
 import Colors from "../constants/Colors";
 import Layout from '../constants/Layout';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
 import { LoginButton } from 'react-native-fbsdk';
 import AuthService from '../services/AuthService';
+import CustomIcon from '../components/CustomIcon';
+
 class SignInScreen extends Component {
 
   constructor(props) {
@@ -175,9 +177,9 @@ class SignInScreen extends Component {
                   color={Colors.tintColor}
                   onPress={this.loginWithUser}
                 />
-                <TouchableHighlight onPress={()=>{}}>
+                {/* <TouchableHighlight onPress={()=>{}}>
                   <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
-                </TouchableHighlight>
+                </TouchableHighlight> */}
                 <TouchableHighlight 
                   onPress={()=>this.props.navigation.navigate("SignUp")}
                 >
@@ -187,23 +189,37 @@ class SignInScreen extends Component {
               </View>
             </View>
             <View style={styles.socialContainer}>
-              <Icon.Button
-                name="google"
-                backgroundColor={Colors.google}
-                onPress={this.googleSignIn}
-                {...iconStyles}
-              >
-                Ingresa con Google
-              </Icon.Button>
-              <View style={styles.br}></View>
-              <Icon.Button
-                name="facebook"
-                backgroundColor={Colors.facebook}
+              <Button
+                icon={
+                  <CustomIcon
+                    name="facebook"
+                    size={30}
+                    color={Colors.facebook}
+                  />
+                }
                 onPress={this.facebookSignIn}
-                {...iconStyles}
-              >
-                Ingresa con Facebook
-              </Icon.Button>
+                containerStyle={{width:'80%'}}
+                buttonStyle={styles.socialButton}
+                titleStyle={styles.socialButtonTitle}
+                iconContainerStyle={iconStyles}
+                title="Ingresa con Facebook"
+              />
+              <View style={styles.br}></View>
+              <Button
+                icon={
+                  <FontAwesome
+                    name="google"
+                    size={25}
+                    color={Colors.google}
+                  />
+                }
+                onPress={this.googleSignIn}
+                containerStyle={{width:'80%'}}
+                buttonStyle={styles.socialButton}
+                titleStyle={styles.socialButtonTitle}
+                iconContainerStyle={iconStyles}
+                title="   Ingresa con Google"
+              />
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -214,8 +230,7 @@ class SignInScreen extends Component {
 }
 
 const iconStyles = {
-  borderRadius: 10,
-  iconStyle: { paddingVertical: 5 },
+  paddingVertical: 5,
 };
 
 const styles = StyleSheet.create({
@@ -252,6 +267,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     backgroundColor:Colors.yellowMeniu,
+  },
+  socialButton: {
+    backgroundColor: Colors.backgroundColor,
+    borderRadius:15,
+    // width:'80%',
+  },
+  socialButtonTitle: {
+    color:"grey",
   },
   subtitleText: {
     fontSize: 16,
