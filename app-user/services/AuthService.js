@@ -1,6 +1,6 @@
 import Config from "../constants/Config";
 import { AsyncStorage, Platform, ToastAndroid } from "react-native";
-import { NetInfo } from "react-native";
+import { NetInfo, Alert } from "react-native";
 
 export default class AuthService {
   static logIn(username, password) {
@@ -117,6 +117,7 @@ export default class AuthService {
 
     if(state.type === 'none'){
       //acá iría lo que cambie de screen o muestre el modal
+      Alert.alert("No tienes internet");
       return {};
     }
 
