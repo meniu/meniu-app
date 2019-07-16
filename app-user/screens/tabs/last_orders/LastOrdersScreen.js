@@ -17,6 +17,7 @@ import moment from "moment";
 import Accordion from "react-native-collapsible/Accordion"
 import { AntDesign } from '@expo/vector-icons';
 import PromotionService from "../../../services/PromotionService";
+import OrderModalComponent from '../../../components/OrderModalComponent';
 
 export default class LastOrdersScreen extends Component {
 
@@ -29,6 +30,9 @@ export default class LastOrdersScreen extends Component {
       sorting: "all",
       spentPromotions: [],
       activeSections: [],
+      selectedPlate:null,
+      successModalVisible:false,
+      failureModalVisible:false,
     };
   }
 
@@ -85,10 +89,14 @@ export default class LastOrdersScreen extends Component {
   }
 
   handlePlatePress(plate) {
-    this.props.navigation.navigate("Order", {
-      plate: plate,
-      restaurant: {}
-    });
+    // this.props.navigation.navigate("Order", {
+    //   plate: plate,
+    //   restaurant: {}
+    // });
+    this.setState({
+      successModalVisible: true,
+      selectedPlate: plate
+    }); 
   }
 
   renderLoading() {
@@ -96,6 +104,23 @@ export default class LastOrdersScreen extends Component {
       <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
         <Bubbles size={10} color={Colors.yellowMeniu} />
       </View>);
+  }
+
+  renderModal = (_type) => {
+    return this.state.selectedPlate ? (
+      <OrderModalComponent 
+        type={_type} 
+        visible={_type === "success" ? this.state.successModalVisible : this.state.failureModalVisible}
+        promotionEntity={this.state.selectedPlate} 
+        restaurantEntity={this.state.selectedPlate.partner}
+        toggleVisible={this.disableModals}
+        buttonAction={_type === "success" ? 
+          ()=>this.setState({
+            successModalVisible: false,
+            failureModalVisible: true,
+          }) : 
+          this.navigateMemberShips}/>
+    ): null;
   }
 
   renderSectionHeader = (section, index, isActive) => {
@@ -192,6 +217,8 @@ export default class LastOrdersScreen extends Component {
       this.checkSignIn();
     return (
       <View style={styles.container}>
+        {this.renderModal("success")}
+        {this.renderModal("failure")}
         <View style={styles.horizontalView}>
           <View style={styles.userView}>
             <Text style={{ fontWeight: "bold" }}>Felicitaciones, {this.state.user.name}!</Text>

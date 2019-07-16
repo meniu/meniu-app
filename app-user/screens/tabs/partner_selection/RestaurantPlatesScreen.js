@@ -122,16 +122,10 @@ class RestaurantPlatesScreen extends Component {
   }
 
   handlePlatePress = (plate) => {
-    if(Math.random() > 0.5)
       this.setState({
         successModalVisible: true,
         selectedPlate: plate
-      });
-    else 
-      this.setState({
-        failureModalVisible: true,
-        selectedPlate: plate
-      });
+      }); 
   }
 
   disableModals = () => {
@@ -175,7 +169,10 @@ class RestaurantPlatesScreen extends Component {
         restaurantEntity={this.restaurant}
         toggleVisible={this.disableModals}
         buttonAction={_type === "success" ? 
-          ()=>this.navigateOrder(this.state.selectedPlate, this.restaurant) : 
+          ()=>this.setState({
+            successModalVisible: false,
+            failureModalVisible: true,
+          }) : 
           this.navigateMemberShips}/>
     ): null;
   }
