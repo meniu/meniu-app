@@ -1,9 +1,11 @@
 
 import React, { Component } from 'react';
 
-import { ToastAndroid, Platform, Image, StyleSheet,  
+import {
+  ToastAndroid, Platform, Image, StyleSheet,
   TextInput, Picker, FlatList, View, Text,
-  ScrollView, Button, TouchableHighlight } from 'react-native';
+  ScrollView, Button, TouchableHighlight
+} from 'react-native';
 import { Bubbles } from 'react-native-loader';
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
@@ -22,34 +24,34 @@ import PromotionService from "../../../services/PromotionService";
 export default class PartnerSelectionScreen extends React.Component {
   constructor(props) {
     super(props);
-  
+
     this.allPartners = [];
     this.state = {
-      text:"",
+      text: "",
       //Layout: By icon or traditional
-      layout:"icon",
+      layout: "icon",
       partners: [],
       promotions: [],
-      selectedFilters:{
-        Basic:false,
-        Premium:false,
-        Deluxe:false,
-        Gold:false,
+      selectedFilters: {
+        Basic: false,
+        Premium: false,
+        Deluxe: false,
+        Gold: false,
       }
     };
 
   }
 
   static navigationOptions = {
-      title: 'Restaurantes',
+    title: 'Restaurantes',
   };
 
-  async componentDidMount(){
+  async componentDidMount() {
 
     let responsePromotions = await PromotionService.retrievePromotionsByUser().then(response => response.json());
-    responsePromotions = responsePromotions.slice(0,5);
+    responsePromotions = responsePromotions.slice(0, 5);
     let responseAllPartners = await PartnerService.retrievePartners().then(response => response.json());
-
+    console.log('pasó');
     this.setState({
       partners: responseAllPartners,
       promotions: responsePromotions,
@@ -57,7 +59,7 @@ export default class PartnerSelectionScreen extends React.Component {
   }
 
   handleRestaurantPress = (restaurant) => {
-    this.props.navigation.navigate("RestaurantPlates",{
+    this.props.navigation.navigate("RestaurantPlates", {
       restaurant
     });
   }
@@ -67,7 +69,7 @@ export default class PartnerSelectionScreen extends React.Component {
     let filters = this.state.selectedFilters;
     let partnersFiltered = this.allPartners;
     Object.keys(filters).forEach(type => {
-      if(!filters[type])
+      if (!filters[type])
         partnersFiltered = partnersFiltered.filter(partner => {
           // couponPlan coupon type
           return partner.couponSummaryModels.every(coupon => coupon.type !== type);
@@ -78,11 +80,11 @@ export default class PartnerSelectionScreen extends React.Component {
 
   toggleSelected = (type) => {
     console.log("all partners", this.allPartners);
-    this.setState((state)=>{
+    this.setState((state) => {
       let newSelected = state.selectedFilters;
       newSelected[type] = !state.selectedFilters[type];
       return ({
-        selectedFilters:newSelected,
+        selectedFilters: newSelected,
         partners: this.filterPartners(),
       });
     });
@@ -91,79 +93,80 @@ export default class PartnerSelectionScreen extends React.Component {
   render() {
     return (
       this.state.partners.length <= 0 ?
-        <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+        <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
           <Bubbles size={10} color={Colors.yellowMeniu} />
         </View> :
-      <View style={styles.container}>
-        <View style={styles.upperView}>
-          <View style={{flex:1}}></View>
-          <View style={{flex:3, backgroundColor:Colors.backgroundColor}}>
-            <ScrollView style={{flex:1}} horizontal={true}>
+        <View style={styles.container}>
+          <View style={styles.upperView}>
+            <View style={{ flex: 1 }}></View>
+            <View style={{ flex: 3, backgroundColor: Colors.backgroundColor }}>
+              <ScrollView style={{ flex: 1 }} horizontal={true}>
+                <FlatList
+                  horizontal={true}
+                  keyExtractor={(item) => item.name}
+                  data={this.state.promotions}
+                  renderItem={({ item }) => {
+                    return <ImportantPromotionCardComponent name={item.name} type={item.type}
+                      description={item.description} imagePath={item.imagePath} />
+                  }}
+                />
+              </ScrollView>
+            </View>
+            <View style={styles.typeFilterView}>
+              <FilterButtonComponent type="Basic" selected={this.state.selectedFilters.Basic} toggleSelected={() => this.toggleSelected("Basic")}></FilterButtonComponent>
+              <FilterButtonComponent type="Premium" selected={this.state.selectedFilters.Premium} toggleSelected={() => this.toggleSelected("Premium")}></FilterButtonComponent>
+              <FilterButtonComponent type="Deluxe" selected={this.state.selectedFilters.Deluxe} toggleSelected={() => this.toggleSelected("Deluxe")}></FilterButtonComponent>
+              <FilterButtonComponent type="Gold" selected={this.state.selectedFilters.Gold} toggleSelected={() => this.toggleSelected("Gold")}></FilterButtonComponent>
+            </View>
+          </View>
+          <View style={{ flex: 5, backgroundColor: Colors.white, }}>
+            <ScrollView style={{ flex: 1 }} >
               <FlatList
-                horizontal={true}
-                keyExtractor={(item)=>item.name}
-                data={this.state.promotions}
-                renderItem={({item})=>{
-                  return <ImportantPromotionCardComponent name={item.name} type={item.type}
-                  description={item.description} uri={item.uri} />
+                style={{ flex: 1 }}
+                numColumns={1}
+                keyExtractor={(item) => item.partner.identification + ""}
+                // onPressItem={this.handleRestaurantPress}
+                data={this.state.partners}
+                renderItem={({ item }) => {
+                  return <RestaurantCardComponent entity={item} action={() => this.handleRestaurantPress(item)} />
                 }}
               />
             </ScrollView>
           </View>
-          <View style={styles.typeFilterView}>
-              <FilterButtonComponent type="Basic" selected={this.state.selectedFilters.Basic} toggleSelected={()=>this.toggleSelected("Basic")}></FilterButtonComponent>
-              <FilterButtonComponent type="Premium" selected={this.state.selectedFilters.Premium} toggleSelected={()=>this.toggleSelected("Premium")}></FilterButtonComponent>
-              <FilterButtonComponent type="Deluxe" selected={this.state.selectedFilters.Deluxe} toggleSelected={()=>this.toggleSelected("Deluxe")}></FilterButtonComponent>
-              <FilterButtonComponent type="Gold" selected={this.state.selectedFilters.Gold} toggleSelected={()=>this.toggleSelected("Gold")}></FilterButtonComponent>
-          </View>
         </View>
-        <View style={{flex:5, backgroundColor:Colors.white,}}>
-          <ScrollView style={{flex:1}} >
-            <FlatList 
-              style={{flex:1}}
-              numColumns={1}
-              keyExtractor={(item)=>item.partner.identification + ""}
-              // onPressItem={this.handleRestaurantPress}
-              data={this.state.partners}
-              renderItem={({item}) => {
-                return <RestaurantCardComponent entity={item} action={()=>this.handleRestaurantPress(item)}/>
-              }}
-            />
-          </ScrollView>
-        </View>
-      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container:{ 
-    flex: 1, 
+  container: {
+    flex: 1,
     height: 50,
-    alignItems: "stretch", 
+    alignItems: "stretch",
     justifyContent: "space-between",
     backgroundColor: Colors.white,
+    marginRight: 5
   },
-  userView:{
-    alignItems:"center",
+  userView: {
+    alignItems: "center",
   },
-  upperView:{
-    flex:5,
+  upperView: {
+    flex: 5,
     justifyContent: "space-evenly",
-    alignItems:"center",
+    alignItems: "center",
     backgroundColor: Colors.lightBackgroundColor,
   },
-  horizontalImageView:{
-    flex:1,
-    flexDirection:"row",
+  horizontalImageView: {
+    flex: 1,
+    flexDirection: "row",
     backgroundColor: Colors.backgroundColor,
-    height:110,
+    height: 110,
   },
   typeFilterView: {
     backgroundColor: Colors.white,
     flexDirection: "row",
     justifyContent: "space-around",
   },
-  
+
 });
 

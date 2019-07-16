@@ -4,6 +4,7 @@ import Colors from '../constants/Colors';
 import BadgeComponent from './BadgeComponent';
 import { Rating, Tile, Card } from 'react-native-elements';
 import Layout from "../constants/Layout";
+import Config from "../constants/Config";
 
 export default class PromotionCardComponent extends Component {
     
@@ -54,7 +55,7 @@ export default class PromotionCardComponent extends Component {
                 <Text>{"$ " + this.props.entity.discount}</Text>
             </View> */}
             <Card
-                image={{uri: this.props.entity.imagePath}}
+                image={{uri: Config.azureStorageUrl + this.props.entity.imagePath}}
                 imageStyle={{ width:'100%', height:55, }}
                 imageProps={{resizeMode:"cover"}}
                 imageWrapperStyle={{overflow:"hidden"}}

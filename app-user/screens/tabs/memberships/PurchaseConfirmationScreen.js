@@ -53,7 +53,7 @@ export default class PurchaseConfirmationScreen extends Component {
     }
 
     openBrowser = async (object64) => {
-        let result = await WebBrowser.openBrowserAsync(Config.payUpageUrl + `buy?${object64}`);
+        let result = await WebBrowser.openBrowserAsync(Config.payUpageUrl + `?${object64}`);
         console.log('result:');
         console.log(result);
         AuthService.retrieveUser().then(response => response.json()).then(responseJSON => {

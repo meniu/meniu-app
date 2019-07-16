@@ -5,6 +5,7 @@ import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import BadgeComponent from './BadgeComponent';
 import { Rating } from 'react-native-elements';
+import Config from '../constants/Config';
 
 export default class ImportantPastPromotionCardComponent extends Component {
 
@@ -27,7 +28,7 @@ export default class ImportantPastPromotionCardComponent extends Component {
         <View style={styles.imageContainer}>
             <Image
               style={styles.cardImage}
-              source={{uri: this.props.entity.uri}}
+              source={{uri: Config.azureStorageUrl + this.props.entity.imagePath}}
             />
         </View>
         <View style={styles.floating}>
