@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     flex:1,
     flexDirection:"column",
     margin:5,
-    minWidth: Layout.window.width/2,
+    minWidth: Layout.window.width * 0.5,
+    maxWidth: Layout.window.width * 0.7,
 },
   floatingBadge:{
     position:"absolute",
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
   imageContainer:{
       flex:3,
-      backgroundColor:Colors.backgroundColor,
+      backgroundColor:Colors.blackTransparent,
       justifyContent:"center",
       alignItems:"center",
   },
@@ -76,5 +77,6 @@ const styles = StyleSheet.create({
       flex:1,
       backgroundColor:Colors.yellowMeniu,
       opacity: 0.5,
+      overflow:"hidden",
   }
 })

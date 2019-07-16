@@ -15,8 +15,8 @@
     "facebookAppId": "1056365824552520",
     "facebookDisplayName": "Meniu-user",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
