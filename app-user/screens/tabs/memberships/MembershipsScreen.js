@@ -13,7 +13,10 @@ import CustomIcon from '../../../components/CustomIcon';
 export default class MembershipsScreen extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
+
+        const { navigation } = this.props;
+        this.user = navigation.getParam('user', 'Sin User');
 
         //   timeIndex: determines whether week or month is selected
         //   0: mensual, 1: dos semanas
@@ -35,7 +38,8 @@ export default class MembershipsScreen extends Component {
 
     handleMembershipPress = (plan) => {
         this.props.navigation.navigate("PurchaseConfirmation", {
-            plan
+            plan,
+            user: this.user
         });
     }
 

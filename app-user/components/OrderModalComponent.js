@@ -37,11 +37,11 @@ export default class OrderModalComponent extends Component {
             <View style={{justifyContent:"flex-end", alignItems:"center", marginTop:20}}>
                 <Image
                     style={{height: Layout.window.width/4, width: Layout.window.width/3, resizeMode:"contain"}}
-                    source={{uri:this.props.promotionEntity.uri}}
+                    source={{uri:this.props.promotionEntity.imagePath}}
                 />
                 <Image
                     style={styles.circledImage}
-                    source={{uri:this.props.restaurantEntity.uri}}
+                    source={{uri:this.props.restaurantEntity.imagePath}}
                 />
                 <Text style={styles.headerText}>{this.props.restaurantEntity.name}</Text>
             </View>
