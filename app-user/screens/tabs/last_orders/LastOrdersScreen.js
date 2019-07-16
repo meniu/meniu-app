@@ -111,6 +111,15 @@ export default class LastOrdersScreen extends Component {
     this.props.navigation.navigate("MembershipsStack");
   }
 
+  navigateOrder = (plate, restaurant, codePath) => {
+    this.disableModals();
+    this.props.navigation.navigate("Order", {
+      plate,
+      restaurant,
+      codePath
+    });
+  }
+
   renderLoading() {
     return (
       <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
