@@ -76,7 +76,9 @@ class SignInScreen extends Component {
       AuthService.externalLogIn('Facebook', result.user.email).then(response => response.json()).then(responseJSON => {
         console.log('ya respondió');
         console.log(responseJSON);
+        
         this.saveUserLocally(result.user);
+
         // TODO: pass token to Backend
         this.props.navigation.navigate("Main");
       });
@@ -89,7 +91,15 @@ class SignInScreen extends Component {
   }
 
   async saveUserLocally(user) {
-    AuthService.saveUserLocally(user);
+    await AuthService.saveUserLocally(user);
+  }
+
+  async saveTokenLocally(token) {
+    await AuthService.saveTokenLocally(token);
+  }
+
+  async saveCredentialsLocally(email, password){
+    await AuthService.saveCredentialsLocally(email, password);
   }
 
   handleEmailInputSubmit() {
@@ -108,7 +118,9 @@ class SignInScreen extends Component {
         console.log(user);
         // Token se guarda en user.token
         if (user.applicationUser.token) {
-          AuthService.saveUserLocally(user);
+          this.saveCredentialsLocally(email, password);
+          this.saveTokenLocally(user.applicationUser.token);
+          this.saveUserLocally(user);
           this.props.navigation.navigate("Main");
         }
         else throw Error("Login inválido");

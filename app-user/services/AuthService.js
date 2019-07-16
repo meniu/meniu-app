@@ -17,6 +17,17 @@ export default class AuthService {
     });
   }
 
+  static async retrieveUser() {
+    let user = await AuthService.retrieveUser();
+    return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
+      headers: {
+        'Authorization': 'Bearer ' + user.applicationUser.token,
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      }
+    });
+  }
+
   static externalLogIn(authType, email) {
     const acceptTermsAndConditions = true;
     let objBody = {
@@ -70,8 +81,69 @@ export default class AuthService {
     }
   }
 
+  static saveTokenLocally(token) {
+    try {
+      AsyncStorage.setItem('token', token);
+    } catch (error) {
+      // Error saving data
+      console.log({ error });
+
+    }
+  }
+
+  static saveCredentialsLocally(email, password) {
+    try {
+      AsyncStorage.setItem('credentials', JSON.stringify({ email, password }));
+    } catch (error) {
+      // Error saving data
+      console.log({ error });
+
+    }
+  }
+
   static async retrieveUser() {
     return JSON.parse(await AsyncStorage.getItem('user'));
+  }
+
+  static async retrieveCredentials() {
+    return JSON.parse(await AsyncStorage.getItem('credentials'));
+  }
+
+  static async retrieveToken() {
+    let token = await AsyncStorage.getItem('token');
+    /* let response = await fetch(`${Config.apiUrl}/api/CheckToken`, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({ token })
+    }); */
+    let response = await fetch(`${Config.apiUrl}/api/Combo`, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      }
+    });
+    if (response.status === 200) {
+      return token;
+    } else {
+      let credentials = JSON.parse(await AsyncStorage.getItem('credentials'));
+      let user = await (await this.logIn(credentials.email, credentials.password)).json();
+
+      console.log(user);
+      // Token se guarda en user.token
+      if (user.applicationUser.token) {
+        this.saveCredentialsLocally(email, password);
+        this.saveTokenLocally(user.applicationUser.token);
+        this.saveUserLocally(user);
+        return user.applicationUser.token;
+      }
+      else {
+        // User changed password
+        this.props.navigation.navigate("SignIn");
+      }
+    }
   }
 
   static retrieveUserPromise() {

@@ -5,10 +5,10 @@ import AuthService from './AuthService';
 export default class PartnerService {
   
     static async retrievePartners(){
-        let user = await AuthService.retrieveUser();
+        let token = await AuthService.retrieveToken();
         return fetch(`${Config.apiUrl}/api/Partner`,{
             headers: {
-                'Authorization': 'Bearer '+ user.applicationUser.token,
+                'Authorization': 'Bearer '+ token,
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
               }

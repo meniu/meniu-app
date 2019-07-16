@@ -22,24 +22,18 @@ class OrderScreen extends Component {
     const { navigation } = this.props;
     this.restaurant = navigation.getParam('restaurant', '(Sin Restaurante)');
     this.plate = navigation.getParam('plate', '(Sin Plato)');
+    this.codePath = navigation.getParam('codePath', '(Sin QR)')
     console.log(this.restaurant);
     console.log(this.plate);
+    console.log(this.codePath);
     this.state = {
-      QRgenerated: {}
+
     };
   }
 
   static navigationOptions = {
     title: 'Tu orden',
   };
-
-  componentDidMount() {
-    PromotionService.generateQR(this.plate.couponPlan.coupon.type, this.restaurant.partner.identification, this.plate.id).then(response => response.json()).then(responseJSON => {
-      console.log('QR GENERATED');
-      console.log(responseJSON);
-      this.setState({ QRgenerated: responseJSON });
-    });
-  }
 
   render() {
     return (
@@ -74,7 +68,7 @@ class OrderScreen extends Component {
           <View style={styles.QRBorder}>
             <Image
               style={styles.QRStyle}
-              source={this.state.QRgenerated.codePath ? { uri: Config.azureStorageUrl + this.state.QRgenerated.codePath } : require('../assets/images/qr-sample.png')}
+              source={{ uri: Config.azureStorageUrl + this.codePath }}
               resizeMode="contain"
             />
           </View>
