@@ -1,5 +1,6 @@
 import Config from "../constants/Config";
 import { AsyncStorage, Platform, ToastAndroid } from "react-native";
+import { NetInfo } from "react-native";
 
 export default class AuthService {
   static logIn(username, password) {
@@ -110,6 +111,15 @@ export default class AuthService {
   }
 
   static async retrieveToken() {
+
+    let state = await NetInfo.getConnectionInfo();
+    console.log("Connection type", state.type);
+
+    if(state.type === 'none'){
+      //acá iría lo que cambie de screen o muestre el modal
+      return {};
+    }
+
     let token = await AsyncStorage.getItem('token');
     /* let response = await fetch(`${Config.apiUrl}/api/CheckToken`, {
       headers: {
@@ -141,6 +151,9 @@ export default class AuthService {
       }
       else {
         // User changed password
+        await AsyncStorage.removeItem('credentials');
+        await AsyncStorage.removeItem('user');
+        await AsyncStorage.removeItem('token');
         this.props.navigation.navigate("SignIn");
       }
     }
@@ -155,6 +168,8 @@ export default class AuthService {
    * component takes care of navigation to homescreen through callback
    */
   static logOut(callBack) {
+    AsyncStorage.removeItem('credentials');
+    AsyncStorage.removeItem('token');
     AsyncStorage.removeItem("user", callBack);
   }
 
