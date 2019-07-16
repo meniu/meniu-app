@@ -30,9 +30,9 @@ export default class LastOrdersScreen extends Component {
       sorting: "all",
       spentPromotions: [],
       activeSections: [],
-      selectedPlate:null,
-      successModalVisible:false,
-      failureModalVisible:false,
+      selectedPlate: null,
+      successModalVisible: false,
+      failureModalVisible: false,
     };
   }
 
@@ -96,7 +96,7 @@ export default class LastOrdersScreen extends Component {
     this.setState({
       successModalVisible: true,
       selectedPlate: plate
-    }); 
+    });
   }
 
   disableModals = () => {
@@ -108,26 +108,37 @@ export default class LastOrdersScreen extends Component {
 
   renderLoading() {
     return (
-      <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+      <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
         <Bubbles size={10} color={Colors.yellowMeniu} />
       </View>);
   }
 
   renderModal = (_type) => {
     return this.state.selectedPlate ? (
-      <OrderModalComponent 
-        type={_type} 
+      <OrderModalComponent
+        type={_type}
         visible={_type === "success" ? this.state.successModalVisible : this.state.failureModalVisible}
-        promotionEntity={this.state.selectedPlate} 
+        promotionEntity={this.state.selectedPlate}
         restaurantEntity={this.state.selectedPlate.partner}
         toggleVisible={this.disableModals}
-        buttonAction={_type === "success" ? 
-          ()=>this.setState({
-            successModalVisible: false,
-            failureModalVisible: true,
-          }) : 
-          this.navigateMemberShips}/>
-    ): null;
+        buttonAction={_type === "success" ?
+          () => {
+            PromotionService.generateQR(this.state.selectedPlate.couponPlan.coupon.type, this.state.selectedPlate.partner.identification, this.state.selectedPlate.id).then(response => response.json()).then(responseJSON => {
+
+              if (responseJSON.codePath) {
+                console.log('QR GENERATED');
+                this.navigateOrder(this.state.selectedPlate, { partner: this.state.selectedPlate.partner }, responseJSON.codePath);
+              }
+              else {
+                this.setState({
+                  successModalVisible: false,
+                  failureModalVisible: true,
+                });
+              }
+            });
+          } :
+          this.navigateMemberShips} />
+    ) : null;
   }
 
   renderSectionHeader = (section, index, isActive) => {
