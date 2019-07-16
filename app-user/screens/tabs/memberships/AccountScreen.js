@@ -96,7 +96,7 @@ export default class AccountScreen extends React.Component {
       <View style={styles.planContainer}>
         <LinearGradient colors={["#FA786B", "#EF3481"]} style={styles.gradient}
           start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-          <CustomIcon name="no-plan" size={70} color={Colors.white} />
+          <CustomIcon name="no-plan1" size={70} color={Colors.white} />
         </LinearGradient>
         <View style={{ flex: 2, justifyContent: "space-around", alignItems: "flex-start" }}>
           <Text>No tienes ningún plan disponible</Text>
@@ -115,10 +115,9 @@ export default class AccountScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>
-          <Image
-            style={styles.circledImage}
-            source={{ uri: "https://facebook.github.io/react-native/docs/assets/favicon.png" }}
-          />
+          <View style={styles.circledImage}>
+            <CustomIcon name="usuario-hombre" size={70} color={Colors.white} />
+          </View>  
           <View style={{ justifyContent: "center", alignItems: "flex-start", marginVertical: 10 }}>
             <Text style={{ flex: 1, fontWeight: "bold" }}>{this.state.user.name + ' ' + this.state.user.lastName}</Text>
             <Text style={{ flex: 1 }}>{this.state.user.applicationUser.email}</Text>
@@ -180,7 +179,9 @@ const styles = StyleSheet.create({
     height: Layout.window.width / 4,
     borderRadius: 500,
     margin: 10,
-    resizeMode: "cover",
+    backgroundColor: Colors.darkBackgroundColor,
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonStyle: {
     flexDirection: "column",

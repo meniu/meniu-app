@@ -5,6 +5,7 @@ export default {
   whiteTransparent:"#FFFFFFAA",
   black:"black",
   blackShadow:"rgba(0, 0, 0, 0.75)",
+  brownTransparent:"#A64B0199",
   transparent:"transparent",
   darkGreen:"#609157",
   lightOrange:"#FDCF00",

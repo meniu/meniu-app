@@ -8,6 +8,7 @@ import Colors from '../../../constants/Colors';
 import MockData from '../../../constants/MockData';
 import MembershipCardComponent from '../../../components/MembershipCardComponent';
 import ComboService from "../../../services/ComboService";
+import CustomIcon from '../../../components/CustomIcon';
 
 export default class MembershipsScreen extends Component {
 
@@ -57,7 +58,17 @@ export default class MembershipsScreen extends Component {
                     style={{resizeMode:"cover", flex:2}}
                 >
                     <View style={styles.planDetail}>
-                        <View style={{ flex: 1 }}></View>
+                        <View 
+                            style={{ 
+                                flex: 1, marginHorizontal:10, backgroundColor:Colors.brownTransparent, 
+                                borderColor:Colors.white, borderRadius:5, borderWidth: 2,
+                            }}>
+                            <CustomIcon 
+                                name={this.state.timeIndex === 0 ? "plan-mensual" : "plan-semimensual"}
+                                size={70} 
+                                color={Colors.white} 
+                            />                   
+                        </View>
                         <View style={{ flex: 4, alignItems: "flex-start" }}>
                             <Text style={{backgroundColor:Colors.lightBackgroundColor, padding:5}}>
                                 {this.state.timeIndex === 0 ? "Plan Mensual" : "Plan semi mensual"}
