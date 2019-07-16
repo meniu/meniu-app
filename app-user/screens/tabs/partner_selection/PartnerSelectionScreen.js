@@ -14,6 +14,7 @@ import FilterButtonComponent from '../../../components/FilterButtonComponent';
 import MockData from '../../../constants/MockData';
 import ImportantPromotionCardComponent from '../../../components/ImportantPromotionCardComponent';
 import PartnerService from "../../../services/PartnerService";
+import PromotionService from "../../../services/PromotionService";
 /**
  * Restaurantes ordenados por ranking siempre.
  * Filtros por tag / localización
@@ -43,12 +44,15 @@ export default class PartnerSelectionScreen extends React.Component {
       title: 'Restaurantes',
   };
 
-  componentDidMount(){
-    PartnerService.retrievePartners().then(response => response.json()).then(responseJSON => {
-      this.allPartners = responseJSON;
-      this.setState({
-        partners: responseJSON
-      });
+  async componentDidMount(){
+
+    let responsePromotions = await PromotionService.retrievePromotionsByUser().then(response => response.json());
+    responsePromotions = responsePromotions.slice(0,5);
+    let responseAllPartners = await PartnerService.retrievePartners().then(response => response.json());
+
+    this.setState({
+      partners: responseAllPartners,
+      promotions: responsePromotions,
     });
   }
 
