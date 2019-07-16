@@ -23,6 +23,7 @@ class SignInScreen extends Component {
     this.state = {
       email: "",
       password: "",
+      loaded: false,
     };
 
     this.handleEmailInputSubmit = this.handleEmailInputSubmit.bind(this);
@@ -32,6 +33,13 @@ class SignInScreen extends Component {
     this.googleSignIn = this.googleSignIn.bind(this);
   }
 
+  componentDidMount() {
+    AuthService.retrieveUser().then(user => {
+      user ? this.props.navigation.navigate("Main"):
+      this.setState({loaded:true});
+    });
+  }
+  
   static navigationOptions = {
     title: 'Ingresa',
   };
@@ -146,8 +154,22 @@ class SignInScreen extends Component {
     }
   }
 
-  render() {
+  renderLoading() {
     return (
+      <Image 
+        source={require('../assets/images/splash.png')}
+        style={{ 
+          width: '100%', height: '100%', resizeMode: "cover",
+          justifyContent: "center", alignItems: "center",
+        }}
+      />
+    );
+  }
+
+  render() {
+    if(!this.state.loaded)
+      return this.renderLoading();
+    else return (
       <ImageBackground
           source={require('../assets/images/bn-login-background.jpg')} 
           style={{resizeMode:"cover", width:Layout.window.width, height:Layout.window.height}}       
