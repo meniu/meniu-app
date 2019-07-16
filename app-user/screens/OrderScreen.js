@@ -50,7 +50,7 @@ class OrderScreen extends Component {
               startingValue={this.plate.rating}
               style={{ position: "absolute", bottom: 25, left: 2, }}
             />
-            <Text style={{ marginTop: 3 }}>{this.restaurant.name}</Text>
+            <Text style={{ marginTop: 3 }}>{this.restaurant.partner.name}</Text>
           </View>
           <View>
             <Text style={styles.textTitle}>Nombre del plato:</Text>
