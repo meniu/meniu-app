@@ -6,7 +6,7 @@ import Layout from "../../../constants/Layout";
 import PromotionCardComponent from "../../../components/PromotionCardComponent";
 import MockData from "../../../constants/MockData";
 import {
-  StyleSheet,  View, Image, Picker,
+  StyleSheet, View, Image, Picker,
   ScrollView, FlatList, Text, ImageBackground,
 } from 'react-native';
 import { Tooltip } from 'react-native-elements';
@@ -18,7 +18,7 @@ import BadgeComponent from '../../../components/BadgeComponent';
 import PromotionService from "../../../services/PromotionService";
 
 class RestaurantPlatesScreen extends Component {
-  
+
   constructor(props) {
     super(props);
 
@@ -28,19 +28,19 @@ class RestaurantPlatesScreen extends Component {
     this.restaurant = navigation.getParam('restaurant', 'Sin Restaurante');
     console.log('Aquí va restauranty');
     console.log(this.restaurant);
-    
+
     this.allPromotions = [];
     this.state = {
-      sorting:"AZ",
-      selectedPlate:null,
-      successModalVisible:false,
-      failureModalVisible:false,
-      promotionList:[],
-      selectedFilters:{
-        Basic:false,
-        Premium:false,
-        Deluxe:false,
-        Gold:false,
+      sorting: "AZ",
+      selectedPlate: null,
+      successModalVisible: false,
+      failureModalVisible: false,
+      promotionList: [],
+      selectedFilters: {
+        Basic: false,
+        Premium: false,
+        Deluxe: false,
+        Gold: false,
       }
     };
   }
@@ -50,7 +50,7 @@ class RestaurantPlatesScreen extends Component {
       title: "meniu",
     };
   };
-  
+
   componentDidMount() {
     PromotionService.retrievePromotionsByPartner(this.restaurant.partner.identification).then(response => response.json()).then(responseJSON => {
       console.log('wtf')
@@ -72,19 +72,19 @@ class RestaurantPlatesScreen extends Component {
     let promotions = _promotionList || this.state.promotionList;
     let sortFunction;
     // console.log({_sorting});
-    
+
     switch (_sorting) {
       case "AZ":
-        sortFunction =  (a,b)=>a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        sortFunction = (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase());
         break;
       case "ZA":
-        sortFunction =  (a,b)=>b.name.toLowerCase().localeCompare(a.name.toLowerCase());
+        sortFunction = (a, b) => b.name.toLowerCase().localeCompare(a.name.toLowerCase());
         break;
       default:
         break;
     }
     promotions = promotions.sort(sortFunction);
-    
+
     return promotions;
   }
 
@@ -93,7 +93,7 @@ class RestaurantPlatesScreen extends Component {
     let filters = this.state.selectedFilters;
     let promotionsFiltered = this.allPromotions;
     Object.keys(filters).forEach(type => {
-      if(!filters[type])
+      if (!filters[type])
         promotionsFiltered = promotionsFiltered.filter(promotion => {
           // couponPlan coupon type
           return promotion.couponPlan.coupon.type !== type;
@@ -103,12 +103,12 @@ class RestaurantPlatesScreen extends Component {
   }
 
   toggleSelected = (type) => {
-    
-    this.setState((state)=>{
+
+    this.setState((state) => {
       let newSelected = state.selectedFilters;
       newSelected[type] = !state.selectedFilters[type];
       return ({
-        selectedFilters:newSelected,
+        selectedFilters: newSelected,
         promotionList: this.filterPromotions(),
       });
     });
@@ -116,16 +116,16 @@ class RestaurantPlatesScreen extends Component {
 
   handlePickerSelect = (itemValue) => {
     this.setState({
-      promotionList:this.sortPromotions(itemValue),
-      sorting:itemValue,
+      promotionList: this.sortPromotions(itemValue),
+      sorting: itemValue,
     })
   }
 
   handlePlatePress = (plate) => {
-      this.setState({
-        successModalVisible: true,
-        selectedPlate: plate
-      }); 
+    this.setState({
+      successModalVisible: true,
+      selectedPlate: plate
+    });
   }
 
   disableModals = () => {
@@ -135,11 +135,12 @@ class RestaurantPlatesScreen extends Component {
     })
   }
 
-  navigateOrder =(plate, restaurant) => {
+  navigateOrder = (plate, restaurant, codePath) => {
     this.disableModals();
-    this.props.navigation.navigate("Order",{
-      plate: plate,
-      restaurant: restaurant
+    this.props.navigation.navigate("Order", {
+      plate,
+      restaurant,
+      codePath
     });
   }
 
@@ -162,19 +163,31 @@ class RestaurantPlatesScreen extends Component {
 
   renderModal = (_type) => {
     return this.state.selectedPlate ? (
-      <OrderModalComponent 
-        type={_type} 
+      <OrderModalComponent
+        type={_type}
         visible={_type === "success" ? this.state.successModalVisible : this.state.failureModalVisible}
-        promotionEntity={this.state.selectedPlate} 
+        promotionEntity={this.state.selectedPlate}
         restaurantEntity={this.restaurant}
         toggleVisible={this.disableModals}
-        buttonAction={_type === "success" ? 
-          ()=>this.setState({
-            successModalVisible: false,
-            failureModalVisible: true,
-          }) : 
-          this.navigateMemberShips}/>
-    ): null;
+        buttonAction={_type === "success" ?
+          () => {
+            PromotionService.generateQR(this.state.selectedPlate.couponPlan.coupon.type, this.restaurant.partner.identification, this.state.selectedPlate.id).then(response => response.json()).then(responseJSON => {
+
+              if (responseJSON.codePath) {
+                console.log('QR GENERATED');
+                this.navigateOrder(this.state.selectedPlate, this.restaurant, responseJSON.codePath);
+              }
+              else {
+                this.setState({
+                  successModalVisible: false,
+                  failureModalVisible: true,
+                });
+              }
+            });
+
+          } :
+          this.navigateMemberShips} />
+    ) : null;
   }
 
   render() {
@@ -183,22 +196,22 @@ class RestaurantPlatesScreen extends Component {
         {this.renderModal("success")}
         {this.renderModal("failure")}
         <ImageBackground
-          source={require('../../../assets/images/restaurant1-portrait.jpg')} 
-          style={{resizeMode:"cover", flex:2}}
+          source={require('../../../assets/images/restaurant1-portrait.jpg')}
+          style={{ resizeMode: "cover", flex: 2 }}
         >
           <View style={styles.partnerContainer}>
             <Image
               style={styles.backgroundImage}
-              source={{uri:this.restaurant.backgroundUri}}
+              source={{ uri: this.restaurant.backgroundUri }}
             >
             </Image>
             <Image
               style={styles.circledImage}
-              source={{uri:this.restaurant.uri}}
+              source={{ uri: this.restaurant.uri }}
               resizeMode="contain"
             />
             <View style={styles.partnerDetails}>
-              <Text style={[styles.restaurantTitle,styles.whiteTextShadow]}>{this.restaurant.partner.name}</Text>
+              <Text style={[styles.restaurantTitle, styles.whiteTextShadow]}>{this.restaurant.partner.name}</Text>
               <Text style={styles.whiteTextShadow}>{this.restaurant.partner.preferredLocation.referenceAddress}</Text>
               {
                 this.renderPartnerCouponSummary()
@@ -210,20 +223,20 @@ class RestaurantPlatesScreen extends Component {
                   name="location-pin"
                   backgroundColor={Colors.yellowMeniu}
                   color={"black"}
-                  iconStyle={{marginRight:0}}
+                  iconStyle={{ marginRight: 0 }}
                 ></Icon.Button>
               </Tooltip>
             </View>
           </View>
         </ImageBackground>
         <View style={styles.horizontalView}>
-          <FilterButtonComponent type="Basic" selected={this.state.selectedFilters.Basic} toggleSelected={()=>this.toggleSelected("Basic")}></FilterButtonComponent>
-          <FilterButtonComponent type="Premium" selected={this.state.selectedFilters.Premium} toggleSelected={()=>this.toggleSelected("Premium")}></FilterButtonComponent>
-          <FilterButtonComponent type="Deluxe" selected={this.state.selectedFilters.Deluxe} toggleSelected={()=>this.toggleSelected("Deluxe")}></FilterButtonComponent>
-          <FilterButtonComponent type="Gold" selected={this.state.selectedFilters.Gold} toggleSelected={()=>this.toggleSelected("Gold")}></FilterButtonComponent>
+          <FilterButtonComponent type="Basic" selected={this.state.selectedFilters.Basic} toggleSelected={() => this.toggleSelected("Basic")}></FilterButtonComponent>
+          <FilterButtonComponent type="Premium" selected={this.state.selectedFilters.Premium} toggleSelected={() => this.toggleSelected("Premium")}></FilterButtonComponent>
+          <FilterButtonComponent type="Deluxe" selected={this.state.selectedFilters.Deluxe} toggleSelected={() => this.toggleSelected("Deluxe")}></FilterButtonComponent>
+          <FilterButtonComponent type="Gold" selected={this.state.selectedFilters.Gold} toggleSelected={() => this.toggleSelected("Gold")}></FilterButtonComponent>
           <Picker
             selectedValue={this.state.sorting}
-            style={{ flex:1, height: 50, width: 100 }}
+            style={{ flex: 1, height: 50, width: 100 }}
             onValueChange={this.handlePickerSelect}>
             <Picker.Item label="A-Z" value="AZ" />
             <Picker.Item label="Z-A" value="ZA" />
@@ -232,17 +245,17 @@ class RestaurantPlatesScreen extends Component {
         <View style={styles.flatListView}>
           {
             this.allPromotions.length <= 0 ?
-              <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+              <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
                 <Bubbles size={10} color={Colors.yellowMeniu} />
               </View> :
-            <ScrollView style={{flex:1}}>
-              <FlatList
-                style={{flex:1}}
-                keyExtractor={(item)=>(item.name)}
-                data={this.state.promotionList}
-                renderItem={({item}) => <PromotionCardComponent actionType="order" entity={item} action={()=>this.handlePlatePress(item)}/>}
-              />
-            </ScrollView>
+              <ScrollView style={{ flex: 1 }}>
+                <FlatList
+                  style={{ flex: 1 }}
+                  keyExtractor={(item) => (item.name)}
+                  data={this.state.promotionList}
+                  renderItem={({ item }) => <PromotionCardComponent actionType="order" entity={item} action={() => this.handlePlatePress(item)} />}
+                />
+              </ScrollView>
           }
         </View>
       </View>
@@ -251,65 +264,65 @@ class RestaurantPlatesScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  container:{ 
-    flex: 1, 
-    alignItems: "stretch", 
+  container: {
+    flex: 1,
+    alignItems: "stretch",
     justifyContent: "space-between",
     backgroundColor: Colors.backgroundColor,
   },
-  partnerContainer:{
-    flex:2,
-    justifyContent:"flex-start",
+  partnerContainer: {
+    flex: 2,
+    justifyContent: "flex-start",
     flexDirection: "row",
-    alignItems:"center",
+    alignItems: "center",
   },
-  backgroundImage:{
-    position:"absolute",
-    width:"100%",
-    height:"100%",
-    resizeMode:"cover",
+  backgroundImage: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
-  circledImage:{
-    flex:1,
-    width: Layout.window.width/6, 
-    height: Layout.window.width/6, 
+  circledImage: {
+    flex: 1,
+    width: Layout.window.width / 6,
+    height: Layout.window.width / 6,
     borderRadius: 500,
     margin: 10,
   },
-  partnerDetails:{
-    flex:2,
-    flexDirection:"column",
+  partnerDetails: {
+    flex: 2,
+    flexDirection: "column",
   },
-  restaurantTitle:{
+  restaurantTitle: {
     fontSize: 18,
   },
-  whiteTextShadow:{
-    color:Colors.lightBackgroundColor,
-    textShadowRadius:20,
-    shadowColor:Colors.black,
-    textShadowOffset: {width: -1, height: 1},
+  whiteTextShadow: {
+    color: Colors.lightBackgroundColor,
+    textShadowRadius: 20,
+    shadowColor: Colors.black,
+    textShadowOffset: { width: -1, height: 1 },
   },
-  locationContainer:{
-    flex:2,
+  locationContainer: {
+    flex: 2,
     // flexDirection:"row",
-    justifyContent:"flex-end",
-    alignItems:"flex-end",
-    margin:5
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    margin: 5
   },
-  badgesContainer:{
+  badgesContainer: {
     flexDirection: "row",
     justifyContent: "space-around"
   },
-  horizontalView:{
-    flexDirection:"row",
+  horizontalView: {
+    flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     backgroundColor: Colors.white,
   },
-  flatListView:{
-    flex:6,
+  flatListView: {
+    flex: 6,
   },
-  
+
 
 });
 
