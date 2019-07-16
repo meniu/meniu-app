@@ -24,7 +24,7 @@ class RestaurantCardComponent extends Component {
 
     let badges = this.props.entity.couponSummaryModels.map((coupon,i)=> {
       return(
-        <BadgeComponent key = {this.props.entity.partner.identification&coupon.type} type={coupon.type} content={coupon.quantity}></BadgeComponent>
+        <BadgeComponent key = {this.props.entity.partner.identification + coupon.type} type={coupon.type} content={coupon.quantity}></BadgeComponent>
       );
     });
 
