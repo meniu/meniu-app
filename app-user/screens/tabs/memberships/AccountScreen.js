@@ -121,7 +121,7 @@ export default class AccountScreen extends React.Component {
 
   render() {
 
-    let plan = this.state.user.activeCombo;
+    let plan = this.state.user && this.state.user.activeCombo;
 
     if (!this.state.user || !this.state.couponsLeft)
       return this.renderLoading();
@@ -173,7 +173,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.backgroundColor,
   },
   gradient: {
-    flex: 1,
+    // flex: 1,
+    width:Layout.window.width * 0.25,
+    height:Layout.window.width * 0.25,
     margin: 8,
     borderRadius: 10,
     justifyContent: "center",
