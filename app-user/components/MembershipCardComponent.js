@@ -66,7 +66,7 @@ export default class MembershipCardComponent extends Component {
         <View style={styles.descriptionContainer}>
           <Text>{this.props.membership.combo.description}</Text>
           <FormattedNumber
-            value={this.props.membership.price}
+            value={this.props.membership.combo.price}
             numberStyle="decimal"
             style={styles.priceText}
           />
