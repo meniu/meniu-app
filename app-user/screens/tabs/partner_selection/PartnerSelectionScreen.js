@@ -122,7 +122,7 @@ export default class PartnerSelectionScreen extends React.Component {
             <FlatList 
               style={{flex:1}}
               numColumns={1}
-              keyExtractor={(item)=>item.partner.identification}
+              keyExtractor={(item)=>item.partner.identification + ""}
               // onPressItem={this.handleRestaurantPress}
               data={this.state.partners}
               renderItem={({item}) => {
