@@ -23,7 +23,7 @@ class SignInScreen extends Component {
     this.state = {
       email: "",
       password: "",
-      loaded: false,
+      loaded: true,
     };
 
     this.handleEmailInputSubmit = this.handleEmailInputSubmit.bind(this);
