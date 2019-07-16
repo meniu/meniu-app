@@ -99,6 +99,13 @@ export default class LastOrdersScreen extends Component {
     }); 
   }
 
+  disableModals = () => {
+    this.setState({
+      successModalVisible: false,
+      failureModalVisible: false
+    })
+  }
+
   renderLoading() {
     return (
       <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
