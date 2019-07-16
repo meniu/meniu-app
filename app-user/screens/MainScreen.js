@@ -94,7 +94,7 @@ const TabNavigator = createBottomTabNavigator({
             iconName = 'orders';
             break;
           case 'MembershipsStack':
-            iconName = 'account';
+            iconName = 'usuario-hombre';
             break;
           default:
             iconName = 'home';
