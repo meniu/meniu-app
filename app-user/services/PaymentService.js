@@ -5,6 +5,7 @@ import AuthService from './AuthService';
 export default class PaymentService {
 
     static async initiatePayment(type) {
+        let token = await AuthService.retrieveToken();
         let user = await AuthService.retrieveUser();
         let objBody = {
             userEmail: {
@@ -21,7 +22,7 @@ export default class PaymentService {
         return fetch(`${Config.apiUrl}/api/Payment`, {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + user.applicationUser.token,
+                'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             },

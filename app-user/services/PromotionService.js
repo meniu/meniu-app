@@ -5,10 +5,10 @@ import AuthService from './AuthService';
 export default class PromotionService {
 
     static async retrievePromotions() {
-        let user = await AuthService.retrieveUser();
+        let token = await AuthService.retrieveToken();
         return fetch(`${Config.apiUrl}/api/Promotion`, {
             headers: {
-                'Authorization': 'Bearer ' + user.applicationUser.token,
+                'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             }
@@ -16,11 +16,12 @@ export default class PromotionService {
     }
 
     static async retrievePromotionsByUser() {
+        let token = await AuthService.retrieveToken();
         let user = await AuthService.retrieveUser();
         console.log(`${Config.apiUrl}/api/Promotion?userEmail=${user.applicationUser.email}`);
         return fetch(`${Config.apiUrl}/api/Promotion?userEmail=${user.applicationUser.email}`, {
             headers: {
-                'Authorization': 'Bearer ' + user.applicationUser.token,
+                'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             }
@@ -28,17 +29,18 @@ export default class PromotionService {
     }
 
     static async retrievePromotionsByPartner(partnerId) {
-        let user = await AuthService.retrieveUser();
+        let token = await AuthService.retrieveToken();
         return fetch(`${Config.apiUrl}/api/Promotion/${partnerId}`, {
             headers: {
-                'Authorization': 'Bearer ' + user.applicationUser.token,
+                'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             }
         });
     }
 
-    static async generateQR(couponType, partnerIdentification, promotionCouponId){        
+    static async generateQR(couponType, partnerIdentification, promotionCouponId){  
+        let token = await AuthService.retrieveToken();      
         let user = await AuthService.retrieveUser();
         let objBody = {
             userEmail: user.applicationUser.email,
@@ -51,7 +53,7 @@ export default class PromotionService {
         return fetch(`${Config.apiUrl}/api/Promotion/Generate/Code`, {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + user.applicationUser.token,
+                'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
                 'Content-type': 'application/json'
             },
