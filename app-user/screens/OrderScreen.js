@@ -56,9 +56,9 @@ class OrderScreen extends Component {
             <Text style={styles.textTitle}>Nombre del plato:</Text>
             <Text style={styles.textSubTitle}>{this.plate.name}</Text>
             <Text style={styles.textTitle}>Categoria:</Text>
-            <Text style={styles.textSubTitle}>{this.plate.type}</Text>
+            <Text style={styles.textSubTitle}>{this.plate.couponPlan.coupon.type}</Text>
             <Text style={styles.textTitle}>Ahorraste:</Text>
-            <Text style={styles.textSubTitle}>$ {this.plate.discount}</Text>
+            <Text style={styles.textSubTitle}>$ {this.plate.saving}</Text>
             <Text style={styles.textTitle}>Incluye:</Text>
             <Text style={styles.textSubTitle}>{this.plate.description}</Text>
           </View>

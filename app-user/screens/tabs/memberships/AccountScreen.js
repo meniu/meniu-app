@@ -73,19 +73,19 @@ export default class AccountScreen extends React.Component {
           <CustomIcon name="no-plan" size={70} color={Colors.white} />
         </LinearGradient>
         <View style={{ flex: 3, justifyContent: "space-around", alignItems: "flex-start", paddingBottom: 8 }}>
-          <Text style={{ fontStyle: "italic", fontWeight: "bold", fontSize: 25 }}>Guerrero</Text>
+          <Text style={{ fontStyle: "italic", fontWeight: "bold", fontSize: 25 }}>{this.state.user.activeCombo.type}</Text>
           <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
             <View style={styles.flexCenter}>
               <Text style={{ fontWeight: "bold" }}>Tipo de plan</Text>
-              <Text>Mensual</Text>
+              <Text>{this.state.user.comboCouponPlan.couponPlans[0].plan.type}</Text>
             </View>
             <View style={styles.flexCenter}>
-              <Text style={{ fontWeight: "bold" }}>Estado</Text>
-              <Text>Activo</Text>
+              <Text style={{ fontWeight: "bold" }}>Fecha de compra</Text>
+              <Text>{this.state.user.activeCombo.createdOn.substring(0,10)}</Text>
             </View>
             <View style={styles.flexCenter}>
-              <Text style={{ fontWeight: "bold" }}>Válido hasta</Text>
-              <Text>11/08/2019</Text>
+              <Text style={{ fontWeight: "bold" }}>Válido durante</Text>
+              <Text>{this.state.user.comboCouponPlan.couponPlans[0].plan.validityInDays + " días"}</Text>
             </View>
           </View>
         </View>

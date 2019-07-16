@@ -52,11 +52,11 @@ export default class OrderModalComponent extends Component {
                 <Text style={styles.headerText}>Nombre del plato:</Text>
                 <Text style={styles.subtitleText}>{this.props.promotionEntity.name}</Text>
 
-                <Text style={styles.headerText}>Categoria:</Text>
-                <Text style={styles.subtitleText}>{this.props.promotionEntity.type}</Text>
+                <Text style={styles.headerText}>Categoría:</Text>
+                <Text style={styles.subtitleText}>{this.props.promotionEntity.couponPlan.coupon.type}</Text>
                 
                 <Text style={styles.headerText}>Ahorras:</Text>
-                <Text style={styles.subtitleText}>$ {this.props.promotionEntity.discount}</Text>
+                <Text style={styles.subtitleText}>$ {this.props.promotionEntity.saving}</Text>
 
                 <Text style={styles.headerText}>Incluye:</Text>
                 <Text style={styles.subtitleText}>{this.props.promotionEntity.description}</Text>
