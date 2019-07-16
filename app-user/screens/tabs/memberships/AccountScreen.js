@@ -20,8 +20,8 @@ export default class AccountScreen extends React.Component {
     super(props)
 
     this.state = {
-      user: { applicationUser: {} },
-      couponsLeft: {}
+      user: null,
+      couponsLeft: null
     }
   }
 
@@ -123,7 +123,7 @@ export default class AccountScreen extends React.Component {
 
     let plan = this.state.user.activeCombo;
 
-    if (!this.state.user || this.state.plan)
+    if (!this.state.user || !this.state.couponsLeft)
       return this.renderLoading();
     return (
       <View style={styles.container}>
