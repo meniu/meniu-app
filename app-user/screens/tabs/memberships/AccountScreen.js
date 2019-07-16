@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { LinearGradient } from "expo";
+import { Bubbles } from 'react-native-loader';
 import CustomIcon from "../../../components/CustomIcon";
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
@@ -65,6 +66,14 @@ export default class AccountScreen extends React.Component {
     });
   }
 
+  renderLoading() {
+    return (
+      <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+        <Bubbles size={10} color={Colors.yellowMeniu} />
+      </View>);
+  }
+
+
   PlanComponent = (props) => {
     return (
       <View style={styles.planContainer}>
@@ -114,6 +123,8 @@ export default class AccountScreen extends React.Component {
 
     let plan = this.state.user.activeCombo;
 
+    if (!this.state.user || this.state.plan)
+      return this.renderLoading();
     return (
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>

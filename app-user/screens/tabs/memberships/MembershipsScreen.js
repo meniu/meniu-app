@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, ScrollView, FlatList,
     ImageBackground,
 } from 'react-native'
 import { ButtonGroup } from 'react-native-elements';
-import { Bars } from 'react-native-loader';
+import { Bubbles } from 'react-native-loader';
 import Colors from '../../../constants/Colors';
 import MockData from '../../../constants/MockData';
 import MembershipCardComponent from '../../../components/MembershipCardComponent';
@@ -29,7 +29,7 @@ export default class MembershipsScreen extends Component {
 
 
     static navigationOptions = {
-        title: 'Membresías',
+        title: 'meniu',
     };
 
     updateIndex = (timeIndex) => {
@@ -102,7 +102,7 @@ export default class MembershipsScreen extends Component {
                     {
                         this.state.combos.length <= 0 ?
                             <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
-                                <Bars size={10} color={Colors.yellowMeniu} />
+                                <Bubbles size={10} color={Colors.yellowMeniu} />
                             </View> :
                         <ScrollView style={{ flex: 1 }} >
                             <FlatList
