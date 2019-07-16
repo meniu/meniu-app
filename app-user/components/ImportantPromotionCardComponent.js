@@ -4,6 +4,8 @@ import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import BadgeComponent from './BadgeComponent';
 import { Badge } from 'react-native-elements';
+import Config from '../constants/Config';
+
 export default class ImportantPromotionCardComponent extends Component {
 
     constructor(props) {
@@ -20,7 +22,7 @@ export default class ImportantPromotionCardComponent extends Component {
         <View style={styles.imageContainer}>
             <Image
               style={styles.cardImage}
-              source={{uri: this.props.uri}}
+              source={{uri: Config.azureStorageUrl + this.props.imagePath}}
             />
         </View>
         <Badge status="warning" badgeStyle={{backgroundColor:Colors.yellowMeniu}} containerStyle={styles.floatingBadge}></Badge>

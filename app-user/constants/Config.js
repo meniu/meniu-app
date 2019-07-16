@@ -4,5 +4,5 @@ export default {
   facebookUrl: "https://graph.facebook.com/",
   googleUrl: "",
   azureStorageUrl: "https://meniustorage.blob.core.windows.net/meniu/",
-  payUpageUrl: "http://192.168.0.34:3000/"
+  payUpageUrl: "https://meniuwebapi.azurewebsites.net/purchase/confirmation"
 };

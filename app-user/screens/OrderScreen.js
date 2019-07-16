@@ -42,7 +42,7 @@ class OrderScreen extends Component {
           <View>
             <Image
               style={styles.imageStyle}
-              source={{ uri: this.plate.uri }}
+              source={{ uri: Config.azureStorageUrl + this.plate.imagePath }}
             />
             <Rating
               imageSize={10}

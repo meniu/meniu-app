@@ -118,25 +118,27 @@ export default class AuthService {
     if(state.type === 'none'){
       //acá iría lo que cambie de screen o muestre el modal
       Alert.alert("No tienes internet");
-      return {};
     }
 
     let token = await AsyncStorage.getItem('token');
+
+    return token;
     /* let response = await fetch(`${Config.apiUrl}/api/CheckToken`, {
       headers: {
         'Accept': 'application/json',
         'Content-type': 'application/json'
       },
       body: JSON.stringify({ token })
-    }); */
+    });
     let response = await fetch(`${Config.apiUrl}/api/Combo`, {
       headers: {
         'Authorization': 'Bearer ' + token,
         'Accept': 'application/json',
         'Content-type': 'application/json'
       }
-    });
-    if (response.status === 200) {
+    }); */
+    
+    /* if (response.status === 200) {
       return token;
     } else {
       let credentials = JSON.parse(await AsyncStorage.getItem('credentials'));
@@ -157,7 +159,7 @@ export default class AuthService {
         await AsyncStorage.removeItem('token');
         this.props.navigation.navigate("SignIn");
       }
-    }
+    } */
   }
 
   static retrieveUserPromise() {

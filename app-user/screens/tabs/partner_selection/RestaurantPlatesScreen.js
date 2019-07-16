@@ -16,6 +16,7 @@ import OrderModalComponent from '../../../components/OrderModalComponent';
 import FilterButtonComponent from '../../../components/FilterButtonComponent';
 import BadgeComponent from '../../../components/BadgeComponent';
 import PromotionService from "../../../services/PromotionService";
+import Config from '../../../constants/Config';
 
 class RestaurantPlatesScreen extends Component {
 
@@ -154,7 +155,7 @@ class RestaurantPlatesScreen extends Component {
       <View style={styles.badgesContainer}>
         {
           this.restaurant.couponSummaryModels.map(coupon =>
-            <BadgeComponent type={coupon.type} content={coupon.quantity}></BadgeComponent>
+            <BadgeComponent key = {coupon.type}  type={coupon.type} content={coupon.quantity}></BadgeComponent>
           )
         }
       </View>
@@ -202,12 +203,12 @@ class RestaurantPlatesScreen extends Component {
           <View style={styles.partnerContainer}>
             <Image
               style={styles.backgroundImage}
-              source={{ uri: this.restaurant.backgroundUri }}
+              source={{ uri: Config.azureStorageUrl+ this.restaurant.backgroundImagePath }}
             >
             </Image>
             <Image
               style={styles.circledImage}
-              source={{ uri: this.restaurant.uri }}
+              source={{ uri: Config.azureStorageUrl+this.restaurant.imagePath }}
               resizeMode="contain"
             />
             <View style={styles.partnerDetails}>
