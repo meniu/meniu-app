@@ -136,9 +136,9 @@ const styles = StyleSheet.create({
     },
     whiteTextShadow:{
         color:Colors.lightBackgroundColor,
-        textShadowRadius:20,
-        shadowColor:Colors.black,
-        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 50,
+        textShadowColor: Colors.black,
+        textShadowOffset: { width: -1, height: 1 },    
     },
     timeFiltersContainer: {
         flex: 1,

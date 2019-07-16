@@ -12,7 +12,7 @@ const CouponListComponent = (props) => {
       <View style={{flexDirection:"row", justifyContent:"flex-start"}}>
         <FlatList
           horizontal={true}
-          keyExtractor={(item)=>(item.coupon.type & item.coupon.id & combo.id)}
+          keyExtractor={(item)=>(item.coupon.type + item.coupon.id + combo.id)}
           data={coupons}
           renderItem={({item}) => <BadgeComponent type={item.coupon.type}/>}
         />

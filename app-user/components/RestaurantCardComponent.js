@@ -95,11 +95,11 @@ const styles = StyleSheet.create({
   restaurantTitle: {
     flex: 3,
     textAlignVertical: "bottom",
-    marginBottom: 10,
+    marginHorizontal: 5,
     marginVertical: 10,
     color: Colors.lightBackgroundColor,
-    textShadowRadius: 20,
-    shadowColor: Colors.black,
+    textShadowRadius: 50,
+    textShadowColor: Colors.black,
     textShadowOffset: { width: -1, height: 1 },
   },
   badgesContainer: {
