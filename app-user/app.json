@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "meniu-app-user",
+    "name": "Meniu",
     "slug": "meniu-app-user",
     "privacy": "public",
     "sdkVersion": "31.0.0",
@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/M-sin-fondo.png",
     "facebookScheme": "fb1056365824552520",
@@ -31,7 +31,7 @@
     },
     "android": {
       "package": "com.meniu.meniu_app_user",
-      "versionCode": 2,
+      "versionCode": 3,
       "permissions": []
     },
     "description": "App de usuarios para Meniu"
