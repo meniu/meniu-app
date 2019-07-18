@@ -16,11 +16,16 @@ class SignUpScreen extends Component {
 
   constructor(props) {
     super(props);
+    
+    const { navigation } = this.props;
+    const email = navigation.getParam("email", "");
+    const firstName = navigation.getParam("firstName", "");
+    const lastName = navigation.getParam("lastName", "");
   
     this.state = {
-      firstName:"",
-      lastName:"",
-      email:"",
+      firstName:firstName,
+      lastName:lastName,
+      email:email,
       password:"",
       confirmedPassword:"",
       acceptTermsAndConditions:false,
@@ -50,7 +55,7 @@ class SignUpScreen extends Component {
       this.state.password, this.state.confirmedPassword, this.state.acceptTermsAndConditions)
       .then((response) => response.json())
       .then((responseJSON) => {
-        console.log(responseJSON);
+        // console.log(responseJSON);
         let user = responseJSON;
         // Token se guarda en user.token
         if(user.applicationUser.token) {
@@ -61,7 +66,7 @@ class SignUpScreen extends Component {
       })
       .catch((error)=>{
         Alert.alert("Hubo un error en registro, por favor intenta de nuevo");
-        console.log({error});
+        // console.log({error});
       });
   }
 
@@ -71,14 +76,16 @@ class SignUpScreen extends Component {
         isVisible={props.visible}
         onBackdropPress={() => this.setState({ showTC: false })}
       >
-        <Text style={{textAlign:"center", fontWeight:"bold"}}>Términos y Condiciones</Text>
-        <Text>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-          Nobis eum nihil vero? Fuga amet, fugit eveniet, explicabo recusandae 
-          tempora ex at delectus ipsam nihil non in deleniti dolore laborum quis.
-        </Text>
-        <Text style={{textAlign:"center", fontWeight:"bold"}}>Política de tratamiento de datos</Text>
-        <Text></Text>
+        <View>
+          <Text style={{textAlign:"center", fontWeight:"bold"}}>Términos y Condiciones</Text>
+          <Text>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
+            Nobis eum nihil vero? Fuga amet, fugit eveniet, explicabo recusandae 
+            tempora ex at delectus ipsam nihil non in deleniti dolore laborum quis.
+          </Text>
+          <Text style={{textAlign:"center", fontWeight:"bold"}}>Política de tratamiento de datos</Text>
+          <Text></Text>
+        </View>
       </Overlay>
     );
   }
