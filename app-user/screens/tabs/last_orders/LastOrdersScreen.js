@@ -44,8 +44,8 @@ export default class LastOrdersScreen extends Component {
     this.getLocalUser();
 
     PromotionService.retrievePromotionsByUser().then(response => response.json()).then(responseJSON => {
-      console.log('wtf real')
-      console.log(responseJSON);
+      // console.log('wtf real')
+      // console.log(responseJSON);
       this.setState({
         spentPromotions: responseJSON
       });
@@ -140,7 +140,7 @@ export default class LastOrdersScreen extends Component {
             PromotionService.generateQR(this.state.selectedPlate.couponPlan.coupon.type, this.state.selectedPlate.partner.identification, this.state.selectedPlate.id).then(response => response.json()).then(responseJSON => {
 
               if (responseJSON.codePath) {
-                console.log('QR GENERATED');
+                // console.log('QR GENERATED');
                 this.navigateOrder(this.state.selectedPlate, { partner: this.state.selectedPlate.partner }, responseJSON.codePath);
               }
               else {
@@ -221,7 +221,7 @@ export default class LastOrdersScreen extends Component {
               number: promotionMonthNumber,
               data: [spentPromotion],
             });
-          // console.log({promotionMonthNumber, existingMonth});
+          console.log({promotionMonthNumber, existingMonth});
         });
 
         // Render section list to show promotions inside each month. 

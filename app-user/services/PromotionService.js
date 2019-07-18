@@ -18,7 +18,7 @@ export default class PromotionService {
     static async retrievePromotionsByUser() {
         let token = await AuthService.retrieveToken();
         let user = await AuthService.retrieveUser();
-        console.log(`${Config.apiUrl}/api/Promotion?userEmail=${user.applicationUser.email}`);
+        // console.log(`${Config.apiUrl}/api/Promotion?userEmail=${user.applicationUser.email}`);
         return fetch(`${Config.apiUrl}/api/Promotion?userEmail=${user.applicationUser.email}`, {
             headers: {
                 'Authorization': 'Bearer ' + token,

@@ -34,7 +34,7 @@ class SignInScreen extends Component {
   }
 
   componentDidMount() {
-    AuthService.retrieveUser().then(user => {
+    AuthService.retrieveToken().then(user => {
       user ? this.props.navigation.navigate("Main"):
       this.setState({loaded:true});
     });
@@ -51,22 +51,54 @@ class SignInScreen extends Component {
         //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
         scopes: ["profile", "email"]
       });
-      console.log("user", result);
+      // console.log("user", result);
       if (result.type === "success") {
         AuthService.externalLogIn('Google', result.user.email).then(response => response.json()).then(responseJSON => {
-          console.log('ya respondió');
-          console.log(responseJSON);
+          // console.log('ya respondió');
+          // console.log(responseJSON);
+
+          switch (responseJSON._statusCode) {
+            case 400:
+              // No user given...
+              this.props.navigation.navigate("SignUp", {
+                email: result.user.email,
+                firstName: result.user.givenName,
+                lastName: result.user.familyName,
+              })
+              break;
+
+            case undefined:
+              // No status code should mean the object retrieved has the user
+              break;
+
+            case 200:
+              // best case
+              break;
+          
+            default:
+              // Any other error
+              break;
+          }
           let user = responseJSON;
-          this.saveUserLocally(user);
-          // TODO: pass token to Backend
-          this.props.navigation.navigate("Main");
+
+          if (user.applicationUser.token) {
+            // TODO Check if with social login credentials saved are needed
+            // this.saveCredentialsLocally(email, password);
+            this.saveTokenLocally(user.applicationUser.token);
+            this.saveUserLocally(user);
+            this.props.navigation.navigate("Main");
+          }
+          else throw Error("Login inválido");
+
         });
 
       } else {
-        console.log("cancelled")
+      Alert.alert("Ha habido un problema iniciando sesión con google");
+      // console.log("cancelled")
       }
     } catch (e) {
-      console.log("error", e)
+      Alert.alert("Ha habido un problema iniciando sesión con google");
+      // console.log("error", e)
     }
   }
 
@@ -78,22 +110,58 @@ class SignInScreen extends Component {
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
       const response = await fetch(
-        `https://graph.facebook.com/me?access_token=${token}`);
-      const user = await response.json();
-      console.log("user", user);
-      AuthService.externalLogIn('Facebook', result.user.email).then(response => response.json()).then(responseJSON => {
-        console.log('ya respondió');
-        console.log(responseJSON);
+        `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`);
+      const fbUser = await response.json();
+      // console.log({fbUser});
+      AuthService.externalLogIn('Facebook', fbUser.email).then(response => response.json())
+        .then(responseJSON => {
+        // console.log("fb ok ", {responseJSON});
         
-        this.saveUserLocally(result.user);
+        switch (responseJSON._statusCode) {
+          case 400:
+            // No user given...
+            this.props.navigation.navigate("SignUp", {
+              email: fbUser.email,
+              firstName: fbUser.name,
+            })
+            break;
+
+          case undefined:
+            // No status code should mean the object retrieved has the user
+            break;
+
+          case 200:
+            // best case
+            break;
+        
+          default:
+            // Any other error
+            break;
+        }
+        let user = responseJSON;
+
+        if (user.applicationUser.token) {
+          // TODO Check if with social login credentials saved are needed
+          // this.saveCredentialsLocally(email, password);
+          this.saveTokenLocally(user.applicationUser.token);
+          this.saveUserLocally(user);
+          this.props.navigation.navigate("Main");
+        }
+        else throw Error("Login inválido");
+        // this.saveUserLocally(result.user);
 
         // TODO: pass token to Backend
-        this.props.navigation.navigate("Main");
+        // this.props.navigation.navigate("Main");
+      })
+      .catch(error=>{
+        Alert.alert(`Hubo un problema con nuestros servidores`)
+        // console.log({error});
+        
       });
 
     }
     else {
-      Alert.alert('se recibe', type);
+      Alert.alert("Ha habido un problema iniciando sesión con facebook");
     }
     // this.props.navigation.navigate("Main");
   }
@@ -123,7 +191,7 @@ class SignInScreen extends Component {
       .then((response) => response.json())
       .then((responseJSON) => {
         let user = responseJSON;
-        console.log(user);
+        // console.log(user);
         // Token se guarda en user.token
         if (user.applicationUser.token) {
           this.saveCredentialsLocally(email, password);
@@ -135,7 +203,7 @@ class SignInScreen extends Component {
       })
       .catch((error) => {
         Alert.alert("Login inválido, por favor intenta de nuevo");
-        console.log({ error });
+        // console.log({ error });
       });
   }
 

@@ -24,11 +24,11 @@ class RestaurantPlatesScreen extends Component {
     super(props);
 
     const { navigation } = this.props;
-    console.log('Aquí va el navigation object');
-    console.log(navigation);
+    // console.log('Aquí va el navigation object');
+    // console.log(navigation);
     this.restaurant = navigation.getParam('restaurant', 'Sin Restaurante');
-    console.log('Aquí va restauranty');
-    console.log(this.restaurant);
+    // console.log('Aquí va restauranty');
+    // console.log(this.restaurant);
 
     this.allPromotions = [];
     this.state = {
@@ -54,8 +54,8 @@ class RestaurantPlatesScreen extends Component {
 
   componentDidMount() {
     PromotionService.retrievePromotionsByPartner(this.restaurant.partner.identification).then(response => response.json()).then(responseJSON => {
-      console.log('wtf')
-      console.log(responseJSON);
+      // console.log('wtf')
+      // console.log(responseJSON);
       // All Promotions saved for future filtering
       this.allPromotions = responseJSON.promotionCoupons;
       this.setState({
@@ -93,6 +93,10 @@ class RestaurantPlatesScreen extends Component {
     // Filters by selected values
     let filters = this.state.selectedFilters;
     let promotionsFiltered = this.allPromotions;
+
+    // if all are false, show me everything
+    if (Object.values(filters).every(filter=>!filter)) return promotionsFiltered;
+
     Object.keys(filters).forEach(type => {
       if (!filters[type])
         promotionsFiltered = promotionsFiltered.filter(promotion => {
@@ -175,7 +179,7 @@ class RestaurantPlatesScreen extends Component {
             PromotionService.generateQR(this.state.selectedPlate.couponPlan.coupon.type, this.restaurant.partner.identification, this.state.selectedPlate.id).then(response => response.json()).then(responseJSON => {
 
               if (responseJSON.codePath) {
-                console.log('QR GENERATED');
+                // console.log('QR GENERATED');
                 this.navigateOrder(this.state.selectedPlate, this.restaurant, responseJSON.codePath);
               }
               else {

@@ -44,10 +44,10 @@ export default class MembershipsScreen extends Component {
     }
 
     componentDidMount() {
-        console.log('im gonna');
+        // console.log('im gonna');
         ComboService.retrieveCombos().then(response => response.json()).then(responseJSON => {
-            console.log('wtf combos')
-            console.log('ya se tiene');
+            // console.log('wtf combos')
+            // console.log('ya se tiene');
             this.setState({
                 combos: responseJSON
             });

@@ -51,7 +51,8 @@ export default class PartnerSelectionScreen extends React.Component {
     let responsePromotions = await PromotionService.retrievePromotionsByUser().then(response => response.json());
     responsePromotions = responsePromotions.slice(0, 5);
     let responseAllPartners = await PartnerService.retrievePartners().then(response => response.json());
-    console.log('pasó');
+    this.allPartners = responseAllPartners;
+    // console.log('pasó');
     this.setState({
       partners: responseAllPartners,
       promotions: responsePromotions,
@@ -69,17 +70,17 @@ export default class PartnerSelectionScreen extends React.Component {
     let filters = this.state.selectedFilters;
     let partnersFiltered = this.allPartners;
     Object.keys(filters).forEach(type => {
-      if (!filters[type])
+      if (filters[type])
         partnersFiltered = partnersFiltered.filter(partner => {
           // couponPlan coupon type
-          return partner.couponSummaryModels.every(coupon => coupon.type !== type);
+          return partner.couponSummaryModels.some(coupon => coupon.type === type);
         });
     });
     return partnersFiltered;
   }
 
   toggleSelected = (type) => {
-    console.log("all partners", this.allPartners);
+
     this.setState((state) => {
       let newSelected = state.selectedFilters;
       newSelected[type] = !state.selectedFilters[type];
@@ -92,14 +93,14 @@ export default class PartnerSelectionScreen extends React.Component {
 
   render() {
     return (
-      this.state.partners.length <= 0 ?
+      this.allPartners <= 0 ?
         <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
           <Bubbles size={10} color={Colors.yellowMeniu} />
         </View> :
         <View style={styles.container}>
           <View style={styles.upperView}>
             <View style={{ flex: 1 }}></View>
-            <View style={{ flex: 3, backgroundColor: Colors.backgroundColor }}>
+            <View style={{ flex: 3, backgroundColor: Colors.backgroundColor }}>     
               <ScrollView style={{ flex: 1 }} horizontal={true}>
                 <FlatList
                   horizontal={true}
@@ -110,7 +111,7 @@ export default class PartnerSelectionScreen extends React.Component {
                       description={item.description} imagePath={item.imagePath} />
                   }}
                 />
-              </ScrollView>
+              </ScrollView>     
             </View>
             <View style={styles.typeFilterView}>
               <FilterButtonComponent type="Basic" selected={this.state.selectedFilters.Basic} toggleSelected={() => this.toggleSelected("Basic")}></FilterButtonComponent>
@@ -120,18 +121,24 @@ export default class PartnerSelectionScreen extends React.Component {
             </View>
           </View>
           <View style={{ flex: 5, backgroundColor: Colors.white, }}>
-            <ScrollView style={{ flex: 1 }} >
-              <FlatList
-                style={{ flex: 1 }}
-                numColumns={1}
-                keyExtractor={(item) => item.partner.identification + ""}
-                // onPressItem={this.handleRestaurantPress}
-                data={this.state.partners}
-                renderItem={({ item }) => {
-                  return <RestaurantCardComponent entity={item} action={() => this.handleRestaurantPress(item)} />
-                }}
-              />
-            </ScrollView>
+          {
+            this.state.partners.length <= 0 ?
+              <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
+                <Text>No hay restaurantes con el filtro aplicado</Text>
+              </View> :
+              <ScrollView style={{ flex: 1 }} >
+                <FlatList
+                  style={{ flex: 1 }}
+                  numColumns={1}
+                  keyExtractor={(item) => item.partner.identification + ""}
+                  // onPressItem={this.handleRestaurantPress}
+                  data={this.state.partners}
+                  renderItem={({ item }) => {
+                    return <RestaurantCardComponent entity={item} action={() => this.handleRestaurantPress(item)} />
+                  }}
+                />
+              </ScrollView>
+          }
           </View>
         </View>
     );
