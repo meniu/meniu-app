@@ -57,7 +57,7 @@ export default class AuthService {
       accountType,
       acceptTermsAndConditions
     };
-    console.log("Se enviará", { objBody }, `a la url: ${Config.apiUrl}/api/Account/Register`);
+    // console.log("Se enviará", { objBody }, `a la url: ${Config.apiUrl}/api/Account/Register`);
 
     return fetch(`${Config.apiUrl}/api/Account/Register`, {
       method: 'POST',
@@ -77,7 +77,7 @@ export default class AuthService {
       this.props.navigation.navigate("Main");
     } catch (error) {
       // Error saving data
-      console.log({ error });
+      // console.log({ error });
 
     }
   }
@@ -87,7 +87,7 @@ export default class AuthService {
       AsyncStorage.setItem('token', token);
     } catch (error) {
       // Error saving data
-      console.log({ error });
+      // console.log({ error });
 
     }
   }
@@ -97,7 +97,7 @@ export default class AuthService {
       AsyncStorage.setItem('credentials', JSON.stringify({ email, password }));
     } catch (error) {
       // Error saving data
-      console.log({ error });
+      // console.log({ error });
 
     }
   }
@@ -113,7 +113,7 @@ export default class AuthService {
   static async retrieveToken() {
 
     let state = await NetInfo.getConnectionInfo();
-    console.log("Connection type", state.type);
+    // console.log("Connection type", state.type);
 
     if(state.type === 'none'){
       //acá iría lo que cambie de screen o muestre el modal
@@ -144,7 +144,7 @@ export default class AuthService {
       let credentials = JSON.parse(await AsyncStorage.getItem('credentials'));
       let user = await (await this.logIn(credentials.email, credentials.password)).json();
 
-      console.log(user);
+      // console.log(user);
       // Token se guarda en user.token
       if (user.applicationUser.token) {
         this.saveCredentialsLocally(email, password);

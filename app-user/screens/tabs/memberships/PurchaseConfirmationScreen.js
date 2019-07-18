@@ -54,8 +54,8 @@ export default class PurchaseConfirmationScreen extends Component {
 
     openBrowser = async (object64) => {
         let result = await WebBrowser.openBrowserAsync(Config.payUpageUrl + `?${object64}`);
-        console.log('result:');
-        console.log(result);
+        // console.log('result:');
+        // console.log(result);
         AuthService.retrieveUser().then(response => response.json()).then(responseJSON => {
             AuthService.saveUserLocally(responseJSON);
             if (responseJSON.activeCombo && !this.user.activeCombo) {
@@ -89,13 +89,13 @@ export default class PurchaseConfirmationScreen extends Component {
                     userFullName: this.user.name + " " + this.user.lastName,
                     paymentId: responseJSON.id
                 }
-                console.log(object);
+                // console.log(object);
                 let object64 = base64.encode(JSON.stringify(object));
                 this.openBrowser(object64);
             }
             else {
                 let error = responseJSON._message;
-                console.log(error);
+                // console.log(error);
             }
         });
 

@@ -23,9 +23,9 @@ class OrderScreen extends Component {
     this.restaurant = navigation.getParam('restaurant', '(Sin Restaurante)');
     this.plate = navigation.getParam('plate', '(Sin Plato)');
     this.codePath = navigation.getParam('codePath', '(Sin QR)')
-    console.log(this.restaurant);
-    console.log(this.plate);
-    console.log(this.codePath);
+    // console.log(this.restaurant);
+    // console.log(this.plate);
+    // console.log(this.codePath);
     this.state = {
 
     };
