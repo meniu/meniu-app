@@ -34,10 +34,10 @@ class SignInScreen extends Component {
   }
 
   componentDidMount() {
-    // AuthService.retrieveUser().then(user => {
-    //   user ? this.props.navigation.navigate("Main"):
-    //   this.setState({loaded:true});
-    // });
+    AuthService.retrieveToken().then(user => {
+      user ? this.props.navigation.navigate("Main"):
+      this.setState({loaded:true});
+    });
   }
   
   static navigationOptions = {
