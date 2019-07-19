@@ -18,7 +18,7 @@ export default class AuthService {
     });
   }
 
-  static async retrieveUser() {
+  static async retrieveUserGet() {
     let user = await AuthService.retrieveUser();
     return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
       headers: {

@@ -59,14 +59,19 @@ class CodeScannedScreen extends Component {
 
   }
 
+  componentDidMount(){
+    
+  }
+
   renderValidCode(){
     return (<View style={styles.container}>
       <FontAwesome name={'check'} size={200} color={Colors.succesColor} />
       <Text>El código escaneado ha sido validado. Puedes entregar el plato al usuario.</Text>
-      <Text>Cupon utilizado: {this.data.coupon.couponType}</Text>
+      <Text>Cupon utilizado: {this.data.couponType}</Text>
       <Text>Tipo de combo: {this.data.comboType}</Text>
-      <Text>Le quedan: {this.data.coupon.foodQuantity} {this.data.coupon.couponType}</Text>
-      <Text>Tipo de plan: {this.data.plan.planType}</Text>
+      <Text>Restaurante: {this.data.partnerIdentification} </Text>
+      <Text>Plato: {this.data.promotionCouponId} </Text>
+      <Text>Tipo de plan: {this.data.planType}</Text>
       <Text>Correo de usuario: {this.data.userEmail}</Text>
     </View>);
   }
