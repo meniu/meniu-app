@@ -2,18 +2,15 @@
 import React, { Component } from 'react';
 
 import {
-  ToastAndroid, Platform, Image, StyleSheet,
-  TextInput, Picker, FlatList, View, Text,
-  ScrollView, Button, TouchableHighlight
+  StyleSheet,
+  FlatList, View, Text,
+  ScrollView,
 } from 'react-native';
 import { Bubbles } from 'react-native-loader';
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
-import { StackActions, NavigationActions } from "react-navigation";
 import RestaurantCardComponent from "../../../components/RestaurantCardComponent";
-import BadgeComponent from '../../../components/BadgeComponent';
 import FilterButtonComponent from '../../../components/FilterButtonComponent';
-import MockData from '../../../constants/MockData';
 import ImportantPromotionCardComponent from '../../../components/ImportantPromotionCardComponent';
 import PartnerService from "../../../services/PartnerService";
 import PromotionService from "../../../services/PromotionService";
@@ -21,7 +18,7 @@ import PromotionService from "../../../services/PromotionService";
  * Restaurantes ordenados por ranking siempre.
  * Filtros por tag / localización
  */
-export default class PartnerSelectionScreen extends React.Component {
+export default class PartnerSelectionScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -99,8 +96,8 @@ export default class PartnerSelectionScreen extends React.Component {
         </View> :
         <View style={styles.container}>
           <View style={styles.upperView}>
-            <View style={{ flex: 1 }}></View>
-            <View style={{ flex: 3, backgroundColor: Colors.backgroundColor }}>     
+            {/* <View style={{ flex: 1 }}></View> */}
+            <View style={{ flex: 1, backgroundColor: Colors.backgroundColor }}>     
               <ScrollView style={{ flex: 1 }} horizontal={true}>
                 <FlatList
                   horizontal={true}
@@ -163,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   upperView: {
-    flex: 5,
+    flex: 3,
     justifyContent: "space-evenly",
     alignItems: "center",
     backgroundColor: Colors.lightBackgroundColor,
