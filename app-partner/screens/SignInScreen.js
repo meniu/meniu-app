@@ -1,9 +1,13 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Button, Image, StyleSheet,  View, Text, 
-  Platform, TextInput, KeyboardAvoidingView } from 'react-native';
+import {
+  Button, Image, StyleSheet, View, Text,
+  Platform, TextInput, KeyboardAvoidingView
+} from 'react-native';
 import Colors from "../constants/Colors";
+import AuthService from '../services/AuthService';
+import Partners from "../constants/Partners";
 
 class SignInScreen extends Component {
 
@@ -11,11 +15,11 @@ class SignInScreen extends Component {
     super(props);
 
     this.state = {
-      restaurant:"",
-      sucursal:"",
-      password:"",
-      signedIn: false, 
-      name: "", 
+      restaurant: "",
+      sucursal: "",
+      password: "",
+      signedIn: false,
+      name: "",
       photoUrl: ""
     };
 
@@ -34,47 +38,56 @@ class SignInScreen extends Component {
     this.passwordInput.focus();
   }
 
-  loginWithUser(){
+  async loginWithUser() {
+    let id = Partners.partners[this.state.restaurant][this.state.sucursal]
+    let authResponse = await AuthService.logIn(id, this.state.password).then(res => res.json());
+
+    if (authResponse.applicationBranchOffice) {
+      await AuthService.saveCredentialsLocally(id, this.state.password);
+      await AuthService.saveTokenLocally(authResponse.token, authResponse.refreshToken);
+      await AuthService.saveUserLocally(authResponse);
+      this.props.navigation.navigate("Main");
+    }
     // POST petition, obtain token.
 
     // Token will be required to be passed to the main application 
     // in order to do other requests
-    this.props.navigation.navigate("Main");
-  } 
+
+  }
 
   render() {
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <Text style={styles.subtitleText}>Ingresa con tu usuario</Text>
-        <TextInput 
+        <TextInput
           style={styles.input}
           value={this.state.restaurant}
           placeholder="restaurante"
           placeholderTextColor={Colors.tintColor}
-          onChangeText={(restaurant)=>this.setState({restaurant})}
-          returnKeyType = "next"
+          onChangeText={(restaurant) => this.setState({ restaurant })}
+          returnKeyType="next"
           onSubmitEditing={this.handleRestaurantInputSubmit}
           blurOnSubmit={false}
           autoFocus
         />
-      	<TextInput 
+        <TextInput
           ref={(input) => { this.sucursalInput = input; }}
           style={styles.input}
           value={this.state.sucursal}
           placeholder="sucursal"
           placeholderTextColor={Colors.tintColor}
-          onChangeText={(sucursal)=>this.setState({sucursal})}
-          returnKeyType = "next"
+          onChangeText={(sucursal) => this.setState({ sucursal })}
+          returnKeyType="next"
           onSubmitEditing={this.handleSucursalInputSubmit}
           blurOnSubmit={false}
         />
-        <TextInput 
+        <TextInput
           ref={(input) => { this.passwordInput = input; }}
           style={styles.input}
           value={this.state.password}
           placeholder="contraseña"
           placeholderTextColor={Colors.tintColor}
-          onChangeText={(password)=>this.setState({password})}
+          onChangeText={(password) => this.setState({ password })}
           secureTextEntry
         />
         <Button
@@ -95,9 +108,9 @@ const iconStyles = {
 };
 
 const styles = StyleSheet.create({
-  container:{ 
-    flex: 1, 
-    alignItems: "center", 
+  container: {
+    flex: 1,
+    alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: Colors.backgroundColor,
   },
@@ -106,14 +119,14 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "center",
   },
-  input:{
+  input: {
     backgroundColor: "white",
-    width:250,
+    width: 250,
   },
-  button:{
-    width:250,
+  button: {
+    width: 250,
   },
-  buttons:{
+  buttons: {
     justifyContent: 'space-between',
     flexDirection: 'row',
     margin: 20,

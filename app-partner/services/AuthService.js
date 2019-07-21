@@ -1,12 +1,9 @@
 export default class AuthService {
 
-    static logIn(name, identification, password) {
+    static logIn(id, password) {
       let objBody = {
-        branchOffice:{
-            name
-        },
-        partner:{
-            identification
+        applicationBranchOffice:{
+          id
         },
         password
       }
@@ -33,9 +30,13 @@ export default class AuthService {
       }
     }
   
-    static saveTokenLocally(token) {
+    static saveTokenLocally(token, refreshToken) {
+      let tokenObject = {
+        token,
+        refreshToken
+      }
       try {
-        AsyncStorage.setItem('token', token);
+        AsyncStorage.setItem('token', tokenObject);
       } catch (error) {
         // Error saving data
         console.log({ error });
