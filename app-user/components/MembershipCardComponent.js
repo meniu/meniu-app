@@ -47,10 +47,28 @@ export default class MembershipCardComponent extends Component {
       case "express": return "express";
       case "adventure": return "aventura";
       case "complete": return "completo";
-      // Personalizado
-      default: return "planpersonalizado";
+      case "personalized": return "planpersonalizado";
+      // Por defecto no lo formatea
+      default: return plan;
     }
+  }
 
+  getPlanName(planName) {
+    let plan = planName.toLowerCase();
+
+    switch (plan) {
+      case "warrior": return "Guerrero";
+      case "executive": return "Ejecutivo";
+      case "elite": return "Elite";
+      case "balanced": return "Balanceado";
+      case "smart": return "Smart";
+      case "express": return "Express";
+      case "adventure": return "Aventura";
+      case "complete": return "Completo";
+      case "personalized": return "Personalizado";
+      // Por defecto no lo formatea
+      default: return plan;
+    }
   }
 
   render() {
@@ -58,10 +76,10 @@ export default class MembershipCardComponent extends Component {
     return (
       <View style={styles.container}>
 
-        <LinearGradient colors={Colors.gradient[this.props.membership.combo.type]} style={styles.gradient}
+        <LinearGradient colors={Colors.gradient[this.props.membership.combo.type || "default"]} style={styles.gradient}
           start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
           <CustomIcon name={this.getIconByPlanName(this.props.membership.combo.type)} size={70} color={Colors.black} style={{ textAlign: "center" }} />
-          <Text style={styles.membershipTitle}>{this.getIconByPlanName(this.props.membership.combo.type)}</Text>
+          <Text style={styles.membershipTitle}>{this.getPlanName(this.props.membership.combo.type)}</Text>
         </LinearGradient>
         <View style={styles.descriptionContainer}>
           <Text>{this.props.membership.combo.description}</Text>
