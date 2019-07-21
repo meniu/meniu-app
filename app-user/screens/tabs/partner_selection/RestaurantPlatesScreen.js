@@ -201,20 +201,16 @@ class RestaurantPlatesScreen extends Component {
         {this.renderModal("success")}
         {this.renderModal("failure")}
         <ImageBackground
-          source={require('../../../assets/images/restaurant1-portrait.jpg')}
+          source={{ uri: Config.azureStorageUrl+ this.restaurant.partner.backgroundImagePath}}
           style={{ resizeMode: "cover", flex: 2 }}
         >
           <View style={styles.partnerContainer}>
-            <Image
-              style={styles.backgroundImage}
-              source={{ uri: Config.azureStorageUrl+ this.restaurant.backgroundImagePath }}
-            >
-            </Image>
-            <Image
-              style={styles.circledImage}
-              source={{ uri: Config.azureStorageUrl+this.restaurant.imagePath }}
-              resizeMode="contain"
-            />
+            <View style={styles.circledImageContainer}>
+              <Image
+                style={styles.circledImage}
+                source={{ uri: Config.azureStorageUrl+this.restaurant.partner.imagePath }}
+              />
+            </View>
             <View style={styles.partnerDetails}>
               <Text style={[styles.restaurantTitle, styles.whiteTextShadow]}>{this.restaurant.partner.name}</Text>
               <Text style={styles.whiteTextShadow}>{this.restaurant.partner.preferredLocation.referenceAddress}</Text>
@@ -287,15 +283,25 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "cover",
   },
-  circledImage: {
-    flex: 1,
-    width: Layout.window.width / 6,
-    height: Layout.window.width / 6,
+  circledImageContainer: {
+    width: Layout.window.width / 4,
+    height: Layout.window.width / 4,
     borderRadius: 500,
     margin: 10,
+    backgroundColor: Colors.white,
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  circledImage: {
+    flex: 1,
+    width: Layout.window.width / 4,
+    height: Layout.window.width / 4,
+    borderRadius: 500,
+    margin: 10,
+    resizeMode: "cover"
   },
   partnerDetails: {
-    flex: 2,
+    width: Layout.window.width / 2,
     flexDirection: "column",
   },
   restaurantTitle: {
@@ -308,10 +314,9 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: -1, height: 1 },
   },
   locationContainer: {
-    flex: 2,
-    // flexDirection:"row",
-    justifyContent: "flex-end",
-    alignItems: "flex-end",
+    width: Layout.window.width / 4,
+    justifyContent: "center",
+    alignItems: "center",
     margin: 5
   },
   badgesContainer: {
