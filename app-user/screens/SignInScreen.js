@@ -33,12 +33,13 @@ class SignInScreen extends Component {
     this.googleSignIn = this.googleSignIn.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     AuthService.retrieveToken().then(user => {
       user ? this.props.navigation.navigate("Main"):
       this.setState({loaded:true});
     });
   }
+
   
   static navigationOptions = {
     title: 'Ingresa',
