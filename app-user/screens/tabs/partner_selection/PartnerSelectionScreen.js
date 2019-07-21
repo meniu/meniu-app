@@ -132,6 +132,11 @@ export default class PartnerSelectionScreen extends React.Component {
                   numColumns={1}
                   keyExtractor={(item) => item.partner.identification + ""}
                   // onPressItem={this.handleRestaurantPress}
+                  getItemLayout={(data, index) => ({
+                    length: Layout.window.width * 0.15, 
+                    offset: Layout.window.width * 0.15 * index, 
+                    index: index
+                  })}
                   data={this.state.partners}
                   renderItem={({ item }) => {
                     return <RestaurantCardComponent entity={item} action={() => this.handleRestaurantPress(item)} />
