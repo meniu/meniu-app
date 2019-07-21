@@ -1,27 +1,17 @@
-import React, { Component } from 'react'
-import { Text, TouchableHighlight, StyleSheet, View, FlatList } from 'react-native'
+import React, { PureComponent } from 'react'
+import { Text, TouchableHighlight, StyleSheet, View } from 'react-native'
 import { LinearGradient } from "expo";
-import { Tooltip } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import CustomIcon from './CustomIcon';
-import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
-import BadgeComponent from './BadgeComponent';
+import { FormattedNumber } from 'react-native-globalize';
 import CouponListComponent from './CouponListComponent'
 
-export default class MembershipCardComponent extends Component {
+export default class MembershipCardComponent extends PureComponent {
 
-  /**
-   * 
-   * @param {} props 
-   * membership- includes: name, price, description, coupons
-   */
-  constructor(props) {
-    super(props)
+ 
+  // PROPS
+  // membership- includes: name, price, description, coupons
 
-    this.state = {
-
-    }
-  }
 
   handleBuyPress() {
 

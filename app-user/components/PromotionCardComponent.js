@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Image, Text, TouchableHighlight, View, StyleSheet } from 'react-native'
 import Colors from '../constants/Colors';
 import BadgeComponent from './BadgeComponent';
@@ -6,7 +6,7 @@ import { Rating, Tile, Card } from 'react-native-elements';
 import Layout from "../constants/Layout";
 import Config from "../constants/Config";
 
-export default class PromotionCardComponent extends Component {
+export default class PromotionCardComponent extends PureComponent {
     
     /** PROPS: 
       -entity:
@@ -16,14 +16,6 @@ export default class PromotionCardComponent extends Component {
       -action:
           function to be executed.
      */
-    constructor(props) {
-      super(props)
-    
-      this.state = {
-         
-      }
-    }
-
   
     renderSubtitle(){
         switch (this.props.actionType) {

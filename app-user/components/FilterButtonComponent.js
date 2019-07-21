@@ -1,15 +1,12 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 import BadgeComponent from './BadgeComponent';
 import Colors from '../constants/Colors';
 
-export default class FilterButtonComponent extends Component {
-    constructor(props) {
-      super(props);
+export default class FilterButtonComponent extends PureComponent {
+
     // type: "basic", "medium", "deluxe" or "gold"
     // selected: boolean. If true, badge will be white and background of type color
-
-    }
 
     toggleSelected = () => {
         this.setState((state)=>({selected:!state.selected}));

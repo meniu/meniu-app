@@ -1,23 +1,15 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import CustomIcon from './CustomIcon';
 import BadgeComponent from './BadgeComponent';
 
-export default class AvailableCouponsComponent extends Component {
+export default class AvailableCouponsComponent extends PureComponent {
 
-    constructor(props) {
-        // couponsNumber: Qty of coupons available
-        // type: Type of coupon (deluxe,premium,basic)
-        super(props)
-    
-        this.state = {
-             
-        }
-    }
-    
-
+    // PROPS
+    // couponsNumber: Qty of coupons available
+    // type: Type of coupon (deluxe,premium,basic)
     render() {
         return (
         <View style={styles.container}>

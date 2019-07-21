@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   Image,
   Text,
@@ -14,14 +14,9 @@ import BadgeComponent from './BadgeComponent';
 import Config from '../constants/Config';
 
 
-class RestaurantCardComponent extends Component {
+class RestaurantCardComponent extends PureComponent {
 
-  constructor(props) {
-    super(props);
-    //Props: entity with uri, name, description and rating
-    this.state = {};
-  }
-
+  //Props: entity with uri, name, description and rating
   render() {
 
     let badges = this.props.entity.couponSummaryModels.map((coupon, i) => {
