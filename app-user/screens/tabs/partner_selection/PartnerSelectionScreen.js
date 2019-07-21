@@ -57,6 +57,8 @@ export default class PartnerSelectionScreen extends Component {
   }
 
   handleRestaurantPress = (restaurant) => {
+    // console.log("handleRestaurantPressentered parameter", restaurant);
+    
     this.props.navigation.navigate("RestaurantPlates", {
       restaurant
     });
