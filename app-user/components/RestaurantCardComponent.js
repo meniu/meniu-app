@@ -38,14 +38,15 @@ class RestaurantCardComponent extends Component {
         >
           <View style={styles.container}>
             <View style={styles.imageContainer}>
-              <Image
-                style={styles.circledImage}
-                resizeMode={"center"}
-                source={{
-                  uri:
-                    Config.azureStorageUrl + this.props.entity.partner.imagePath
-                }}
-              />
+              <View style={styles.circledImageContainer}>
+                <Image
+                  style={styles.circledImage}
+                  source={{
+                    uri:
+                      Config.azureStorageUrl + this.props.entity.partner.imagePath
+                  }}
+                />
+              </View>
             </View>
             <View style={styles.cardInfo}>
               <Text style={styles.restaurantTitle}>{this.props.entity.partner.name}</Text>
@@ -72,12 +73,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  circledImageContainer: {
+    flex: 1,
+    width: Layout.window.width / 6,
+    height: Layout.window.width / 6,
+    borderRadius: 500,
+    margin: 10,
+    backgroundColor: Colors.white,
+    justifyContent:"center",
+    alignItems:"center",
+  },
   circledImage: {
     flex: 1,
     width: Layout.window.width / 6,
     height: Layout.window.width / 6,
     borderRadius: 500,
     margin: 10,
+    resizeMode:"cover"
   },
   backgroundImage: {
     flex: 1,
@@ -95,11 +107,11 @@ const styles = StyleSheet.create({
   restaurantTitle: {
     flex: 3,
     textAlignVertical: "bottom",
-    marginBottom: 10,
+    marginHorizontal: 5,
     marginVertical: 10,
     color: Colors.lightBackgroundColor,
-    textShadowRadius: 20,
-    shadowColor: Colors.black,
+    textShadowRadius: 50,
+    textShadowColor: Colors.black,
     textShadowOffset: { width: -1, height: 1 },
   },
   badgesContainer: {

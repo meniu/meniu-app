@@ -44,10 +44,10 @@ export default class MembershipsScreen extends Component {
     }
 
     componentDidMount() {
-        console.log('im gonna');
+        // console.log('im gonna');
         ComboService.retrieveCombos().then(response => response.json()).then(responseJSON => {
-            console.log('wtf combos')
-            console.log('ya se tiene');
+            // console.log('wtf combos')
+            // console.log('ya se tiene');
             this.setState({
                 combos: responseJSON
             });
@@ -136,9 +136,9 @@ const styles = StyleSheet.create({
     },
     whiteTextShadow:{
         color:Colors.lightBackgroundColor,
-        textShadowRadius:20,
-        shadowColor:Colors.black,
-        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 50,
+        textShadowColor: Colors.black,
+        textShadowOffset: { width: -1, height: 1 },    
     },
     timeFiltersContainer: {
         flex: 1,

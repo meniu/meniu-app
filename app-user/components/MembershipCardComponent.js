@@ -40,7 +40,7 @@ export default class MembershipCardComponent extends Component {
 
     switch (plan) {
       case "warrior": return "guerrero";
-      case "corporate": return "ejecutivo";
+      case "executive": return "ejecutivo";
       case "elite": return "elite";
       case "balanced": return "balanceado";
       case "smart": return "smart";
@@ -61,7 +61,7 @@ export default class MembershipCardComponent extends Component {
         <LinearGradient colors={Colors.gradient[this.props.membership.combo.type]} style={styles.gradient}
           start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
           <CustomIcon name={this.getIconByPlanName(this.props.membership.combo.type)} size={70} color={Colors.black} style={{ textAlign: "center" }} />
-          <Text style={styles.membershipTitle}>{this.props.membership.combo.type}</Text>
+          <Text style={styles.membershipTitle}>{this.getIconByPlanName(this.props.membership.combo.type)}</Text>
         </LinearGradient>
         <View style={styles.descriptionContainer}>
           <Text>{this.props.membership.combo.description}</Text>

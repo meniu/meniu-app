@@ -45,10 +45,10 @@ export default class AccountScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log('aquí va la promsesa');
+    // console.log('aquí va la promsesa');
     AuthService.retrieveUserPromise().then(userResponse => {
-      console.log('aquí va user');
-      console.log(user);
+      // console.log('aquí va user');
+      // console.log(user);
       let user = JSON.parse(userResponse);
       let couponsLeft = {}
 
