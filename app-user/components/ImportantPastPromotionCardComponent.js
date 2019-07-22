@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Image, Text, StyleSheet, View, 
   TouchableHighlight, } from 'react-native'
 import Colors from '../constants/Colors';
@@ -7,19 +7,14 @@ import BadgeComponent from './BadgeComponent';
 import { Rating } from 'react-native-elements';
 import Config from '../constants/Config';
 
-export default class ImportantPastPromotionCardComponent extends Component {
+export default class ImportantPastPromotionCardComponent extends PureComponent {
 
-    constructor(props) {
-      super(props)
-    //   Props: 
+
+    //   PROPS: 
     // item={uri, type, date, name, description, ...} 
     // of the promotion/plate
     // action
     // function to execute when reorder is pressed
-      this.state = {
-         
-      }
-    }
     
   render() {
     return (

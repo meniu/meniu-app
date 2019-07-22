@@ -10,7 +10,7 @@
     ],
     "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/images/M-sin-fondo.png",
+    "icon": "./assets/images/meniu-fondo-amarillo.png",
     "facebookScheme": "fb1056365824552520",
     "facebookAppId": "1056365824552520",
     "facebookDisplayName": "Meniu-user",

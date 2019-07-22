@@ -1,27 +1,20 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Image, View, StyleSheet, TouchableHighlight } from 'react-native'
-import { Button, Divider, Overlay, Text } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import Modal from "react-native-modal"
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 import { Feather } from '@expo/vector-icons';
 import Config from '../constants/Config';
 
-export default class OrderModalComponent extends Component {
+export default class OrderModalComponent extends PureComponent {
 
-    /**
-     * 
-     * @param {*} props 
-     * type: "success"/"failure", 
-     * promotionEntity, 
-     * restaurantEntity
-     * togglevisible: toggle visibility in parent (function)
-     * buttonAction: function to do in desired button.
-     */
-    constructor(props) {
-        super(props)
-        
-    }
+    // PROPS
+    // type: "success"/"failure", 
+    // promotionEntity, 
+    // restaurantEntity
+    // togglevisible: toggle visibility in parent (function)
+    // buttonAction: function to do in desired button.
 
     CloseButton = (props) => {
         return( 

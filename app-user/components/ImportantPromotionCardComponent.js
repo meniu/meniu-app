@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Image, Text, StyleSheet, View } from 'react-native'
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
@@ -6,16 +6,10 @@ import BadgeComponent from './BadgeComponent';
 import { Badge } from 'react-native-elements';
 import Config from '../constants/Config';
 
-export default class ImportantPromotionCardComponent extends Component {
+export default class ImportantPromotionCardComponent extends PureComponent {
 
-    constructor(props) {
-      super(props)
-    //   Props: uri, type, name and description of the promotion/plate
-      this.state = {
-         
-      }
-    }
     
+  // Props: uri, type, name and description of the promotion/plate
   render() {
     return (
       <View style={styles.container}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View, ScrollView, FlatList,
-    ImageBackground,
+    ImageBackground, Alert
 } from 'react-native'
 import { ButtonGroup } from 'react-native-elements';
 import { Bubbles } from 'react-native-loader';
@@ -22,15 +22,93 @@ export default class MembershipsScreen extends Component {
         //   0: mensual, 1: dos semanas
         this.state = {
             timeIndex: 0,
-            combos: [{comboCouponPlans:[]},{comboCouponPlans:[]}]
+            combos: []
         }
         this.timeButtons = ["Mensual", "Dos semanas"];
     }
 
+    componentDidMount() {
+        // console.log('im gonna');
+        ComboService.retrieveCombos()
+            .then(response => response.json())
+            .then(combos=>{
+
+                // console.log('ya se tiene');
+                // console.log({combos});
+                let x = [];
+                combos = combos.map(combo => {
+                    // TODO add logic and modal to treat this combo as a special case. 
+                    // Commented until then.
+                    // this.addPersonalizedToCombo(combo);
+                    return combo;
+                })
+                this.setState({
+                    combos: combos
+                });
+            })
+            .catch(error => {
+                console.log({error});
+                Alert.alert("Error obteniendo los planes","Por favor revisa tu conexión a internet")
+            } 
+
+            );
+
+    }
 
     static navigationOptions = {
         title: 'meniu',
     };
+
+    addPersonalizedToCombo = (combo) => {
+        combo.comboCouponPlans.push({
+            active: true,
+            combo:{
+                id: 0,
+                description: "A tu medida, como más te guste",
+                type:"Personalized",
+                // Must be overwritten when properly configured in modal
+                price: 100
+            },
+            couponPlans: [
+                {
+                    id: 1,
+                    coupon:{type:"Basic"},
+                    foodQuantity:5,
+                    plan:{
+                        "type": combo.plan.type,
+                        "validityInDays": combo.plan.validityInDays,
+                    }
+                },
+                {
+                    id: 2,
+                    coupon:{type:"Premium"},
+                    foodQuantity:5,
+                    plan:{
+                        "type": combo.plan.type,
+                        "validityInDays": combo.plan.validityInDays,
+                    }
+                },
+                {
+                    id: 3,
+                    coupon:{type:"Deluxe"},
+                    foodQuantity:5,
+                    plan:{
+                        "type": combo.plan.type,
+                        "validityInDays": combo.plan.validityInDays,
+                    }
+                },
+                {
+                    id: 4,
+                    coupon:{type:"Gold"},
+                    foodQuantity:5,
+                    plan:{
+                        "type": combo.plan.type,
+                        "validityInDays": combo.plan.validityInDays,
+                    }
+                },
+            ]
+        });
+    }
 
     updateIndex = (timeIndex) => {
         this.setState({ timeIndex })
@@ -43,16 +121,6 @@ export default class MembershipsScreen extends Component {
         });
     }
 
-    componentDidMount() {
-        // console.log('im gonna');
-        ComboService.retrieveCombos().then(response => response.json()).then(responseJSON => {
-            // console.log('wtf combos')
-            // console.log('ya se tiene');
-            this.setState({
-                combos: responseJSON
-            });
-        });
-    }
 
     render() {
         return (

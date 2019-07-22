@@ -1,27 +1,17 @@
-import React, { Component } from 'react'
-import { Text, TouchableHighlight, StyleSheet, View, FlatList } from 'react-native'
+import React, { PureComponent } from 'react'
+import { Text, TouchableHighlight, StyleSheet, View } from 'react-native'
 import { LinearGradient } from "expo";
-import { Tooltip } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import CustomIcon from './CustomIcon';
-import { FormattedNumber, FormattedCurrency } from 'react-native-globalize';
-import BadgeComponent from './BadgeComponent';
+import { FormattedNumber } from 'react-native-globalize';
 import CouponListComponent from './CouponListComponent'
 
-export default class MembershipCardComponent extends Component {
+export default class MembershipCardComponent extends PureComponent {
 
-  /**
-   * 
-   * @param {} props 
-   * membership- includes: name, price, description, coupons
-   */
-  constructor(props) {
-    super(props)
+ 
+  // PROPS
+  // membership- includes: name, price, description, coupons
 
-    this.state = {
-
-    }
-  }
 
   handleBuyPress() {
 
@@ -47,10 +37,28 @@ export default class MembershipCardComponent extends Component {
       case "express": return "express";
       case "adventure": return "aventura";
       case "complete": return "completo";
-      // Personalizado
-      default: return "planpersonalizado";
+      case "personalized": return "planpersonalizado";
+      // Por defecto no lo formatea
+      default: return plan;
     }
+  }
 
+  getPlanName(planName) {
+    let plan = planName.toLowerCase();
+
+    switch (plan) {
+      case "warrior": return "Guerrero";
+      case "executive": return "Ejecutivo";
+      case "elite": return "Elite";
+      case "balanced": return "Balanceado";
+      case "smart": return "Smart";
+      case "express": return "Express";
+      case "adventure": return "Aventura";
+      case "complete": return "Completo";
+      case "personalized": return "Personalizado";
+      // Por defecto no lo formatea
+      default: return plan;
+    }
   }
 
   render() {
@@ -58,10 +66,10 @@ export default class MembershipCardComponent extends Component {
     return (
       <View style={styles.container}>
 
-        <LinearGradient colors={Colors.gradient[this.props.membership.combo.type]} style={styles.gradient}
+        <LinearGradient colors={Colors.gradient[this.props.membership.combo.type || "default"]} style={styles.gradient}
           start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
           <CustomIcon name={this.getIconByPlanName(this.props.membership.combo.type)} size={70} color={Colors.black} style={{ textAlign: "center" }} />
-          <Text style={styles.membershipTitle}>{this.getIconByPlanName(this.props.membership.combo.type)}</Text>
+          <Text style={styles.membershipTitle}>{this.getPlanName(this.props.membership.combo.type)}</Text>
         </LinearGradient>
         <View style={styles.descriptionContainer}>
           <Text>{this.props.membership.combo.description}</Text>
