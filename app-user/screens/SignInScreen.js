@@ -10,7 +10,8 @@ import { Button } from 'react-native-elements';
 import Colors from "../constants/Colors";
 import Layout from '../constants/Layout';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import SafariView from 'react-native-safari-view';
+import * as Facebook from 'expo-facebook';
+import { Google } from 'expo';
 import AuthService from '../services/AuthService';
 import CustomIcon from '../components/CustomIcon';
 
@@ -46,9 +47,9 @@ class SignInScreen extends Component {
 
   async googleSignIn() {
     try {
-      const result = await Expo.Google.logInAsync({
+      const result = await Google.logInAsync({
         androidClientId: "325641301007-dbn776ocng6arpk21leh38onr7t66j5e.apps.googleusercontent.com",
-        //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
+        iosClientId: "325641301007-4htnseppal11sdc58ia9ltin1v7bflh4.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
       // console.log("user", result);
@@ -104,7 +105,7 @@ class SignInScreen extends Component {
 
   // Handle Login with Facebook button tap
   async facebookSignIn() {
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1056365824552520', {
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync('1056365824552520', {
       permissions: ['public_profile'],
     });
     if (type === 'success') {
@@ -205,21 +206,6 @@ class SignInScreen extends Component {
         Alert.alert("Login inválido, por favor intenta de nuevo");
         // console.log({ error });
       });
-  }
-
-  // Open URL in a browser
-  openURL(url) {
-    // Use SafariView on iOS
-    if (Platform.OS === 'ios') {
-      SafariView.show({
-        url: url,
-        fromBottom: true,
-      });
-    }
-    // Or Linking.openURL on Android
-    else {
-      Linking.openURL(url);
-    }
   }
 
   renderLoading() {

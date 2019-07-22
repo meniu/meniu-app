@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Text, TouchableHighlight, StyleSheet, View } from 'react-native'
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 import Colors from '../constants/Colors';
 import CustomIcon from './CustomIcon';
 import { FormattedNumber } from 'react-native-globalize';

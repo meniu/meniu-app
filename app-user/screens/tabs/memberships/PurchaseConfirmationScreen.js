@@ -4,7 +4,7 @@ import {
     ImageBackground,
 } from 'react-native'
 import { Button } from 'react-native-elements';
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 import CustomIcon from '../../../components/CustomIcon'
 import CouponListComponent from '../../../components/CouponListComponent';
 import Colors from '../../../constants/Colors';

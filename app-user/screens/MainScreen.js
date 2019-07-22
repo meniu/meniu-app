@@ -1,7 +1,6 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Image } from 'react-native';
 import { createAppContainer, createStackNavigator, createBottomTabNavigator } from "react-navigation";
 import LastOrdersScreen from "./tabs/last_orders/LastOrdersScreen.js";
 import PartnerSelectionScreen from "./tabs/partner_selection/PartnerSelectionScreen.js";
@@ -9,7 +8,6 @@ import RestaurantPlatesScreen from "./tabs/partner_selection/RestaurantPlatesScr
 import AccountScreen from "./tabs/memberships/AccountScreen.js";
 import MembershipsScreen from "./tabs/memberships/MembershipsScreen.js"
 import Colors from "../constants/Colors";
-import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomIcon from '../components/CustomIcon.js';
 import PurchaseConfirmationScreen from './tabs/memberships/PurchaseConfirmationScreen.js';
 import PostPurchaseScreen from './tabs/memberships/PostPurchaseScreen.js';
