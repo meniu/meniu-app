@@ -11,7 +11,6 @@ import Colors from "../constants/Colors";
 import Layout from '../constants/Layout';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
-import { LoginButton } from 'react-native-fbsdk';
 import AuthService from '../services/AuthService';
 import CustomIcon from '../components/CustomIcon';
 
@@ -33,7 +32,7 @@ class SignInScreen extends Component {
     this.googleSignIn = this.googleSignIn.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     AuthService.retrieveToken().then(user => {
       user ? this.props.navigation.navigate("Main"):
       this.setState({loaded:true});
