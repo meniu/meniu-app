@@ -54,9 +54,9 @@ export default class PurchaseConfirmationScreen extends Component {
 
     openBrowser = async (object64) => {
         let result = await WebBrowser.openBrowserAsync(Config.payUpageUrl + `?${object64}`);
-        // console.log('result:');
-        // console.log(result);
-        AuthService.retrieveUser().then(response => response.json()).then(responseJSON => {
+        /* console.log('result:');
+        console.log(result); */
+        AuthService.retrieveUserGet().then(response => response.json()).then(responseJSON => {
             AuthService.saveUserLocally(responseJSON);
             if (responseJSON.activeCombo && !this.user.activeCombo) {
                 this.props.navigation.navigate("PostPurchase", {

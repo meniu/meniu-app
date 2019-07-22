@@ -3,6 +3,7 @@ import { AsyncStorage, Platform, ToastAndroid } from "react-native";
 import { NetInfo, Alert } from "react-native";
 
 export default class AuthService {
+  
   static logIn(username, password) {
     let objBody = {
       username,
@@ -18,11 +19,11 @@ export default class AuthService {
     });
   }
 
-  static async retrieveUser() {
-    let user = await AuthService.retrieveUser();
+  static async retrieveUserGet() {
+    let token = await this.retrieveToken();
     return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
       headers: {
-        'Authorization': 'Bearer ' + user.applicationUser.token,
+        'Authorization': 'Bearer ' + token,
         'Accept': 'application/json',
         'Content-type': 'application/json'
       }
@@ -82,9 +83,13 @@ export default class AuthService {
     }
   }
 
-  static saveTokenLocally(token) {
+  static saveTokenLocally(token, refreshToken) {
+    let tokenObject = {
+      token,
+      refreshToken
+    };
     try {
-      AsyncStorage.setItem('token', token);
+      AsyncStorage.setItem('token', JSON.stringify(tokenObject));
     } catch (error) {
       // Error saving data
       // console.log({ error });
@@ -120,7 +125,7 @@ export default class AuthService {
       Alert.alert("No tienes internet");
     }
 
-    let token = await AsyncStorage.getItem('token');
+    let token = JSON.parse(await AsyncStorage.getItem('token')).token;
 
     return token;
     /* let response = await fetch(`${Config.apiUrl}/api/CheckToken`, {
@@ -160,6 +165,12 @@ export default class AuthService {
         this.props.navigation.navigate("SignIn");
       }
     } */
+  }
+
+  static async retrieveRefreshToken() {
+    let token = JSON.parse(await AsyncStorage.getItem('token')).refreshToken;
+
+    return token;
   }
 
   static retrieveUserPromise() {
