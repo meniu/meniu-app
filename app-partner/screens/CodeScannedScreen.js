@@ -10,6 +10,7 @@ import {
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import { FontAwesome } from '@expo/vector-icons';
+import PromotionService from '../services/PromotionService';
 
 class CodeScannedScreen extends Component {
 
@@ -26,7 +27,9 @@ class CodeScannedScreen extends Component {
     this.type = this.data.type;
     this.data = JSON.parse(this.data.data);
     console.log("data", this.data);
-    this.state = {};
+    this.state = {
+      res: "Waiting for response..."
+    };
 
     this.isDataValid = this.isDataValid.bind(this);
     this.renderNotInRestaurantPlate = this.renderNotInRestaurantPlate.bind(this);
@@ -34,7 +37,7 @@ class CodeScannedScreen extends Component {
     this.renderValidCode = this.renderValidCode.bind(this);
   }
 
-  isDataValid(){
+  isDataValid() {
     let valid = true;
 
     //TODO Validar que tenga los datos necesarios (tipo plan, tipo plato)
@@ -42,28 +45,34 @@ class CodeScannedScreen extends Component {
     return valid;
   }
 
-  plateInRestaurant(){
+  plateInRestaurant() {
     let plateInRestaurant = true;
     //TODO Validar que plato sea de este restaurante
 
     return plateInRestaurant;
   }
 
-  renderNotInRestaurantPlate(){
+  renderNotInRestaurantPlate() {
     return <View style={styles.container}></View>
 
   }
 
-  renderInvalidCode(){
+  renderInvalidCode() {
     return <View style={styles.container}></View>
 
   }
 
-  componentDidMount(){
-    
+  componentDidMount() {
+    PromotionService.readCode(JSON.stringify(this.data)).then(res => res.json()).then(resJSON => {
+      console.log('Respesta readcode:');
+      console.log(resJSON);
+      this.setState({
+        res: JSON.stringify(resJSON)
+      });
+    })
   }
 
-  renderValidCode(){
+  renderValidCode() {
     return (<View style={styles.container}>
       <FontAwesome name={'check'} size={200} color={Colors.succesColor} />
       <Text>El código escaneado ha sido validado. Puedes entregar el plato al usuario.</Text>
@@ -73,6 +82,7 @@ class CodeScannedScreen extends Component {
       <Text>Plato: {this.data.promotionCouponId} </Text>
       <Text>Tipo de plan: {this.data.planType}</Text>
       <Text>Correo de usuario: {this.data.userEmail}</Text>
+      <Text>Respuesta servidor: {this.state.res}</Text>
     </View>);
   }
   /**
@@ -83,10 +93,10 @@ class CodeScannedScreen extends Component {
   */
   render() {
     let conditionalContent;
-    if(!this.isDataValid()){
+    if (!this.isDataValid()) {
       conditionalContent = this.renderInvalidCode();
     }
-    else if(!this.plateInRestaurant()){
+    else if (!this.plateInRestaurant()) {
       conditionalContent = this.renderNotInRestaurantPlate();
     }
     else {
@@ -98,8 +108,8 @@ class CodeScannedScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    alignItems: "center", 
+    flex: 1,
+    alignItems: "center",
     justifyContent: "space-evenly",
     backgroundColor: Colors.backgroundColor
   },

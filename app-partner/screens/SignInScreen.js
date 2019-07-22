@@ -40,7 +40,9 @@ class SignInScreen extends Component {
 
   async loginWithUser() {
     let id = Partners.partners[this.state.restaurant][this.state.sucursal]
+    console.log('encontré id:', id);
     let authResponse = await AuthService.logIn(id, this.state.password).then(res => res.json());
+    console.log('se obtuvo respuesta');
 
     if (authResponse.applicationBranchOffice) {
       await AuthService.saveCredentialsLocally(id, this.state.password);

@@ -35,11 +35,11 @@ class SignInScreen extends Component {
 
   componentDidMount() {
     AuthService.retrieveUser().then(user => {
-      user ? this.props.navigation.navigate("Main"):
-      this.setState({loaded:true});
+      user ? this.props.navigation.navigate("Main") :
+        this.setState({ loaded: true });
     });
   }
-  
+
   static navigationOptions = {
     title: 'Ingresa',
   };
@@ -84,7 +84,7 @@ class SignInScreen extends Component {
       AuthService.externalLogIn('Facebook', result.user.email).then(response => response.json()).then(responseJSON => {
         console.log('ya respondió');
         console.log(responseJSON);
-        
+
         this.saveUserLocally(result.user);
 
         // TODO: pass token to Backend
@@ -106,7 +106,7 @@ class SignInScreen extends Component {
     await AuthService.saveTokenLocally(token);
   }
 
-  async saveCredentialsLocally(email, password){
+  async saveCredentialsLocally(email, password) {
     await AuthService.saveCredentialsLocally(email, password);
   }
 
@@ -127,7 +127,7 @@ class SignInScreen extends Component {
         // Token se guarda en user.token
         if (user.applicationUser.token) {
           this.saveCredentialsLocally(email, password);
-          this.saveTokenLocally(user.applicationUser.token);
+          this.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
           this.saveUserLocally(user);
           this.props.navigation.navigate("Main");
         }
@@ -156,9 +156,9 @@ class SignInScreen extends Component {
 
   renderLoading() {
     return (
-      <Image 
+      <Image
         source={require('../assets/images/splash.png')}
-        style={{ 
+        style={{
           width: '100%', height: '100%', resizeMode: "cover",
           justifyContent: "center", alignItems: "center",
         }}
@@ -167,23 +167,23 @@ class SignInScreen extends Component {
   }
 
   render() {
-    if(!this.state.loaded)
+    if (!this.state.loaded)
       return this.renderLoading();
     else return (
       <ImageBackground
-          source={require('../assets/images/bn-login-background.jpg')} 
-          style={{resizeMode:"cover", width:Layout.window.width, height:Layout.window.height}}       
+        source={require('../assets/images/bn-login-background.jpg')}
+        style={{ resizeMode: "cover", width: Layout.window.width, height: Layout.window.height }}
       >
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
           <View style={styles.logoContainer}>
-            <Image 
-              source={require('../assets/images/logo-login.png')} 
-              style={styles.titleImage}/>
+            <Image
+              source={require('../assets/images/logo-login.png')}
+              style={styles.titleImage} />
             {/* <Text>Meniu</Text> */}
           </View>
           <View>
             <View style={styles.formContainer}>
-              <View style={{justifyContent:"space-evenly", alignItems:"flex-start"}}>
+              <View style={{ justifyContent: "space-evenly", alignItems: "flex-start" }}>
                 <Text style={styles.subtitleText}>Email</Text>
                 <TextInput
                   style={styles.input}
@@ -203,7 +203,7 @@ class SignInScreen extends Component {
                   secureTextEntry
                 />
               </View>
-              <View style={{justifyContent:"space-around", alignItems:"center"}}>
+              <View style={{ justifyContent: "space-around", alignItems: "center" }}>
                 <Button
                   buttonStyle={styles.button}
                   titleStyle={styles.textButton}
@@ -214,12 +214,12 @@ class SignInScreen extends Component {
                 {/* <TouchableHighlight onPress={()=>{}}>
                   <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
                 </TouchableHighlight> */}
-                <TouchableHighlight 
-                  onPress={()=>this.props.navigation.navigate("SignUp")}
+                <TouchableHighlight
+                  onPress={() => this.props.navigation.navigate("SignUp")}
                 >
                   <Text style={styles.linkText}>Regístrate en meniu</Text>
                 </TouchableHighlight>
-                
+
               </View>
             </View>
             <View style={styles.socialContainer}>
@@ -232,7 +232,7 @@ class SignInScreen extends Component {
                   />
                 }
                 onPress={this.facebookSignIn}
-                containerStyle={{width:'80%'}}
+                containerStyle={{ width: '80%' }}
                 buttonStyle={styles.socialButton}
                 titleStyle={styles.socialButtonTitle}
                 iconContainerStyle={iconStyles}
@@ -248,7 +248,7 @@ class SignInScreen extends Component {
                   />
                 }
                 onPress={this.googleSignIn}
-                containerStyle={{width:'80%'}}
+                containerStyle={{ width: '80%' }}
                 buttonStyle={styles.socialButton}
                 titleStyle={styles.socialButtonTitle}
                 iconContainerStyle={iconStyles}
@@ -258,7 +258,7 @@ class SignInScreen extends Component {
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>
-      
+
     );
   }
 }
@@ -274,23 +274,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   logoContainer: {
-    height:Layout.window.height * 0.2
+    height: Layout.window.height * 0.2
   },
   titleImage: {
-    height:Layout.window.width * 0.5 * 0.8,
-    width:Layout.window.width * 0.694 * 0.8,
-    resizeMode:"contain"
+    height: Layout.window.width * 0.5 * 0.8,
+    width: Layout.window.width * 0.694 * 0.8,
+    resizeMode: "contain"
   },
   formContainer: {
-    height:Layout.window.height * 0.35,
+    height: Layout.window.height * 0.35,
     width: Layout.window.width * 0.9,
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     backgroundColor: Colors.backgroundColor,
-    justifyContent:"space-around",
-    alignItems:"center",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   socialContainer: {
     justifyContent: 'space-between',
@@ -300,15 +300,15 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
-    backgroundColor:Colors.yellowMeniu,
+    backgroundColor: Colors.yellowMeniu,
   },
   socialButton: {
     backgroundColor: Colors.backgroundColor,
-    borderRadius:15,
+    borderRadius: 15,
     // width:'80%',
   },
   socialButtonTitle: {
-    color:"grey",
+    color: "grey",
   },
   subtitleText: {
     fontSize: 16,
@@ -321,22 +321,22 @@ const styles = StyleSheet.create({
     width: 250,
   },
   button: {
-    flexDirection:"column",
+    flexDirection: "column",
     width: "80%",
     backgroundColor: Colors.yellowMeniu,
     justifyContent: "center",
-    alignItems:"center",
-    alignContent:"center",
-    borderRadius:10,
+    alignItems: "center",
+    alignContent: "center",
+    borderRadius: 10,
   },
   linkText: {
-    margin:4,
+    margin: 4,
     borderBottomWidth: 1,
     borderBottomColor: Colors.black,
   },
   textButton: {
-    color:Colors.black, 
-    textAlign:"center",
+    color: Colors.black,
+    textAlign: "center",
   },
   br: {
     height: 10
