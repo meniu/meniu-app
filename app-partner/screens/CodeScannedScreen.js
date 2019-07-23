@@ -93,7 +93,7 @@ class CodeScannedScreen extends Component {
       <Text>Plato: {this.data.promotionCouponId} </Text>
       <Text>Tipo de plan: {this.data.planType}</Text>
       <Text>Correo de usuario: {this.data.userEmail}</Text>
-      <Text>Respuesta servidor: {this.state.res}</Text>
+      {/* <Text>Respuesta servidor: {this.state.res}</Text> */}
     </View>);
   }
   /**
