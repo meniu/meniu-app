@@ -11,6 +11,7 @@ import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import { FontAwesome } from '@expo/vector-icons';
 import PromotionService from '../services/PromotionService';
+import AuthService from '../services/AuthService';
 
 class CodeScannedScreen extends Component {
 
@@ -62,14 +63,24 @@ class CodeScannedScreen extends Component {
 
   }
 
-  componentDidMount() {
-    PromotionService.readCode(JSON.stringify(this.data)).then(res => res.json()).then(resJSON => {
-      console.log('Respesta readcode:');
-      console.log(resJSON);
-      this.setState({
-        res: JSON.stringify(resJSON)
+  async componentDidMount() {
+    let partnerIdentification = (await AuthService.retrieveUser()).applicationBranchOffice.branchOffice.partner.identification;
+    console.log('id1', partnerIdentification);
+    console.log('id2', this.data.partnerIdentification);
+    if(partnerIdentification === this.data.partnerIdentification){
+      PromotionService.readCode(JSON.stringify(this.data)).then(res => res.json()).then(resJSON => {
+        console.log('Respesta readcode:');
+        console.log(resJSON);
+        this.setState({
+          res: JSON.stringify(resJSON)
+        });
       });
-    })
+    } 
+    else{
+      this.setState({
+        res: "This QR code is related to another restaurant's promotion"
+      });
+    }    
   }
 
   renderValidCode() {
