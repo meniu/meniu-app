@@ -79,12 +79,10 @@ class SignUpScreen extends Component {
         <View>
           <Text style={{textAlign:"center", fontWeight:"bold"}}>Términos y Condiciones</Text>
           <Text>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-            Nobis eum nihil vero? Fuga amet, fugit eveniet, explicabo recusandae 
-            tempora ex at delectus ipsam nihil non in deleniti dolore laborum quis.
+            Visita https://meniu.com.co/terminos-y-condiciones/ para saber nuestros términos y condiciones
           </Text>
-          <Text style={{textAlign:"center", fontWeight:"bold"}}>Política de tratamiento de datos</Text>
-          <Text></Text>
+          {/* <Text style={{textAlign:"center", fontWeight:"bold"}}>Política de tratamiento de datos</Text>
+          <Text></Text> */}
         </View>
       </Overlay>
     );

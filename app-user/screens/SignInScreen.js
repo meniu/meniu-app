@@ -34,7 +34,7 @@ class SignInScreen extends Component {
   }
 
   componentDidMount() {
-    AuthService.retrieveToken().then(user => {
+    AuthService.retrieveUser().then(user => {
       user ? this.props.navigation.navigate("Main"):
       this.setState({loaded:true});
     });
