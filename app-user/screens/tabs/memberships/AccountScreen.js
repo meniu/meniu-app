@@ -6,7 +6,7 @@ import {
   TextInput, Picker, FlatList, View, Text
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 import { Bubbles } from 'react-native-loader';
 import CustomIcon from "../../../components/CustomIcon";
 import Colors from '../../../constants/Colors';

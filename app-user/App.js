@@ -8,7 +8,7 @@ import OrderScreen from "./screens/OrderScreen.js";
 
 import Colors from "./constants/Colors.js";
 
-import { Font } from 'expo';
+import * as Font from 'expo-font';
 import { setCustomText } from 'react-native-global-props';
 import { FormattedProvider } from 'react-native-globalize';
 
