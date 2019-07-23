@@ -1,7 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { BarCodeScanner, Permissions } from 'expo';
+import * as Permissions from 'expo-permissions';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import { StackActions, NavigationActions } from "react-navigation";
 
 import {
@@ -13,7 +14,8 @@ import Colors from "../constants/Colors";
 class PlateSaleScreen extends Component {
 
   state = {
-    hasCameraPermission: null
+    hasCameraPermission: null,
+    scanned: false,
   };
 
   async componentDidMount() {
