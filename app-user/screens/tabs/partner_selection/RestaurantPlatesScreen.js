@@ -153,6 +153,25 @@ class RestaurantPlatesScreen extends Component {
     this.props.navigation.navigate("MembershipsStack");
   }
 
+  handleConfirmPress = () => {
+    PromotionService.generateQR(this.state.selectedPlate.couponPlan.coupon.type, 
+      this.restaurant.partner.identification, this.state.selectedPlate.id)
+      .then(response => response.json())
+      .then(responseJSON => {
+
+        if (responseJSON.codePath) 
+          this.navigateOrder(this.state.selectedPlate, this.restaurant, responseJSON.codePath);
+        else 
+          throw new Error ("No code path");
+      })
+      .catch(error => 
+        this.setState({
+          successModalVisible: false,
+          failureModalVisible: true,
+        })
+      );
+  }
+
   renderPartnerCouponSummary = () => {
     return (
       <View style={styles.badgesContainer}>
@@ -174,22 +193,7 @@ class RestaurantPlatesScreen extends Component {
         restaurantEntity={this.restaurant}
         toggleVisible={this.disableModals}
         buttonAction={_type === "success" ?
-          () => {
-            PromotionService.generateQR(this.state.selectedPlate.couponPlan.coupon.type, this.restaurant.partner.identification, this.state.selectedPlate.id).then(response => response.json()).then(responseJSON => {
-
-              if (responseJSON.codePath) {
-                // console.log('QR GENERATED');
-                this.navigateOrder(this.state.selectedPlate, this.restaurant, responseJSON.codePath);
-              }
-              else {
-                this.setState({
-                  successModalVisible: false,
-                  failureModalVisible: true,
-                });
-              }
-            });
-
-          } :
+          this.handleConfirmPress :
           this.navigateMemberShips} />
     ) : null;
   }
