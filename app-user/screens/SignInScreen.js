@@ -33,7 +33,17 @@ class SignInScreen extends Component {
     this.googleSignIn = this.googleSignIn.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+      let user = await AuthService.retrieveUser();
+      let token = await AuthService.retrieveToken();
+      if(user && token) this.props.navigation.navigate("Main");
+    } catch (error) {
+      // console.log();
+      
+      console.log("algo falla", {user, token, error})
+    }
+
     AuthService.retrieveUser().then(user => {
       user ? this.props.navigation.navigate("Main"):
       this.setState({loaded:true});
@@ -220,9 +230,7 @@ class SignInScreen extends Component {
   }
 
   render() {
-    if (!this.state.loaded)
-      return this.renderLoading();
-    else return (
+    return (
       <ImageBackground
         source={require('../assets/images/bn-login-background.jpg')}
         style={{ resizeMode: "cover", width: Layout.window.width, height: Layout.window.height }}
