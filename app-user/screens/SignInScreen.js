@@ -41,7 +41,7 @@ class SignInScreen extends Component {
     } catch (error) {
       // console.log();
       
-      console.log("algo falla", {user, token, error})
+      // console.log("algo falla", {user, token, error})
     }
 
     AuthService.retrieveUser().then(user => {
