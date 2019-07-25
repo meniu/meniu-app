@@ -42,6 +42,9 @@ export default class PromotionService {
     static async generateQR(couponType, partnerIdentification, promotionCouponId){  
         let token = await AuthService.retrieveToken();      
         let user = await AuthService.retrieveUser();
+
+        if(!user.comboCouponPlan || !user.comboCouponPlan.couponPlans)
+            throw new Error("No coupon plan for user");
         let objBody = {
             userEmail: user.applicationUser.email,
             couponType,

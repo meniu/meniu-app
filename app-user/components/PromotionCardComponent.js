@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
-import { Image, Text, TouchableHighlight, View, StyleSheet } from 'react-native'
+import { Text, TouchableHighlight, View, StyleSheet } from 'react-native'
 import Colors from '../constants/Colors';
 import BadgeComponent from './BadgeComponent';
-import { Rating, Tile, Card } from 'react-native-elements';
+import { Card } from 'react-native-elements';
 import Layout from "../constants/Layout";
 import Config from "../constants/Config";
 
@@ -62,11 +62,6 @@ export default class PromotionCardComponent extends PureComponent {
             </Card>
             <BadgeComponent type={this.props.entity.couponPlan.coupon.type} containerStyle={styles.floatingBadge} />
             <View style={styles.infoContainer} >
-                <Rating
-                    imageSize={10}
-                    readonly
-                    startingValue={this.props.entity.rating}
-                />
                 <Text>{this.props.entity.name}</Text>
                 <Text style={{color:Colors.darkBackgroundColor}}>{this.renderSubtitle()}</Text>
             </View>
