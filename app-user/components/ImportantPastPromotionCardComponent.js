@@ -4,7 +4,6 @@ import { Image, Text, StyleSheet, View,
 import Colors from '../constants/Colors';
 import Layout from '../constants/Layout';
 import BadgeComponent from './BadgeComponent';
-import { Rating } from 'react-native-elements';
 import Config from '../constants/Config';
 
 export default class ImportantPastPromotionCardComponent extends PureComponent {
@@ -27,14 +26,6 @@ export default class ImportantPastPromotionCardComponent extends PureComponent {
             />
         </View>
         <View style={styles.floating}>
-          <Rating
-            imageSize={10}
-            readonly
-            startingValue={this.props.entity.rating}
-            ratingBackgroundColor={Colors.transparent}
-            type="custom"
-            style={{backgroundColor:Colors.transparent}}
-          />
           <Text style={styles.floatingText}>{this.props.entity.name}</Text>
           <Text style={styles.floatingDate}>{this.props.entity.transactionDate}</Text>
         </View>

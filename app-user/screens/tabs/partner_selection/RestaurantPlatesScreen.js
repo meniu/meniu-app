@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import Colors from "../../../constants/Colors";
 import Layout from "../../../constants/Layout";
 import PromotionCardComponent from "../../../components/PromotionCardComponent";
-import MockData from "../../../constants/MockData";
 import {
   StyleSheet, View, Image, Picker,
   ScrollView, FlatList, Text, ImageBackground,
@@ -154,6 +153,25 @@ class RestaurantPlatesScreen extends Component {
     this.props.navigation.navigate("MembershipsStack");
   }
 
+  handleConfirmPress = () => {
+    PromotionService.generateQR(this.state.selectedPlate.couponPlan.coupon.type, 
+      this.restaurant.partner.identification, this.state.selectedPlate.id)
+      .then(response => response.json())
+      .then(responseJSON => {
+
+        if (responseJSON.codePath) 
+          this.navigateOrder(this.state.selectedPlate, this.restaurant, responseJSON.codePath);
+        else 
+          throw new Error ("No code path");
+      })
+      .catch(error => 
+        this.setState({
+          successModalVisible: false,
+          failureModalVisible: true,
+        })
+      );
+  }
+
   renderPartnerCouponSummary = () => {
     return (
       <View style={styles.badgesContainer}>
@@ -175,22 +193,7 @@ class RestaurantPlatesScreen extends Component {
         restaurantEntity={this.restaurant}
         toggleVisible={this.disableModals}
         buttonAction={_type === "success" ?
-          () => {
-            PromotionService.generateQR(this.state.selectedPlate.couponPlan.coupon.type, this.restaurant.partner.identification, this.state.selectedPlate.id).then(response => response.json()).then(responseJSON => {
-
-              if (responseJSON.codePath) {
-                // console.log('QR GENERATED');
-                this.navigateOrder(this.state.selectedPlate, this.restaurant, responseJSON.codePath);
-              }
-              else {
-                this.setState({
-                  successModalVisible: false,
-                  failureModalVisible: true,
-                });
-              }
-            });
-
-          } :
+          this.handleConfirmPress :
           this.navigateMemberShips} />
     ) : null;
   }
@@ -218,16 +221,14 @@ class RestaurantPlatesScreen extends Component {
                 this.renderPartnerCouponSummary()
               }
             </View>
-            <View style={styles.locationContainer}>
-              <Tooltip popover={<Text>Ir al restaurante</Text>}>
-                <Icon.Button
-                  name="location-pin"
-                  backgroundColor={Colors.yellowMeniu}
-                  color={"black"}
-                  iconStyle={{ marginRight: 0 }}
-                ></Icon.Button>
-              </Tooltip>
-            </View>
+            {/* <View style={styles.locationContainer}>
+              <Icon.Button
+                name="location-pin"
+                backgroundColor={Colors.yellowMeniu}
+                color={"black"}
+                iconStyle={{ marginRight: 0 }}
+              ></Icon.Button>
+            </View> */}
           </View>
         </ImageBackground>
         <View style={styles.horizontalView}>

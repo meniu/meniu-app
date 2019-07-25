@@ -130,8 +130,12 @@ export default class AuthService {
       //acá iría lo que cambie de screen o muestre el modal
       Alert.alert("No tienes internet");
     }
-
-    let token = JSON.parse(await AsyncStorage.getItem('token')).token;
+    console.log("Este es el obj previo");
+    
+    let prevToken = JSON.parse(await AsyncStorage.getItem('token'));
+    console.log({prevToken});
+    
+    let token = prevToken.token;
 
     return token;
     /* let response = await fetch(`${Config.apiUrl}/api/CheckToken`, {
