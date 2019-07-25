@@ -3,7 +3,7 @@ import { AsyncStorage, Platform, ToastAndroid } from "react-native";
 import { NetInfo, Alert } from "react-native";
 
 export default class AuthService {
-  
+
   static logIn(username, password) {
     let objBody = {
       username,
@@ -20,14 +20,20 @@ export default class AuthService {
   }
 
   static async retrieveUserGet() {
-    let token = await this.retrieveToken();
-    return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/json',
-        'Content-type': 'application/json'
-      }
-    });
+    try {
+      let user = await this.retrieveUser();
+      let token = await this.retrieveToken();
+      return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/json',
+          'Content-type': 'application/json'
+        }
+      });
+    }
+    catch {
+      console.log('Async stoeage error');
+    }
   }
 
   static externalLogIn(authType, email) {
@@ -120,7 +126,7 @@ export default class AuthService {
     let state = await NetInfo.getConnectionInfo();
     // console.log("Connection type", state.type);
 
-    if(state.type === 'none'){
+    if (state.type === 'none') {
       //acá iría lo que cambie de screen o muestre el modal
       Alert.alert("No tienes internet");
     }
@@ -142,7 +148,7 @@ export default class AuthService {
         'Content-type': 'application/json'
       }
     }); */
-    
+
     /* if (response.status === 200) {
       return token;
     } else {
