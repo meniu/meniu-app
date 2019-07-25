@@ -12,6 +12,7 @@ import CustomIcon from "../../../components/CustomIcon";
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
 import AuthService from '../../../services/AuthService';
+import AccountService from '../../../services/AccountService';
 import AvailableCouponsComponent from '../../../components/AvailableCouponsComponent';
 
 export default class AccountScreen extends React.Component {
@@ -20,7 +21,7 @@ export default class AccountScreen extends React.Component {
     super(props)
 
     this.state = {
-      user: null,
+      user: { applicationUser: {}, comboCouponPlan: { couponPlans: [] } },
       couponsLeft: null
     }
   }
@@ -40,35 +41,30 @@ export default class AccountScreen extends React.Component {
 
   handleGetPlanClick = () => {
     this.props.navigation.navigate("Memberships", {
-      user : this.state.user
+      user: this.state.user
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // console.log('aquí va la promsesa');
-    AuthService.retrieveUserPromise().then(userResponse => {
-      // console.log('aquí va user');
-      // console.log(user);
-      let user = JSON.parse(userResponse);
-      let couponsLeft = {}
 
-      if (user.activeCombo) {
-        for (let coupon of user.comboCouponPlan.couponPlans) {
-          couponsLeft[coupon.coupon.type] = coupon.foodQuantity;
-        }
+    let user = await AccountService.retrieveUserGet().then(response => response.json());
+    await AuthService.saveUserLocally(user);
+    let couponsLeft = {}
+    if (user.activeCombo && user.comboCouponPlan) {
+      for (let coupon of user.comboCouponPlan.couponPlans) {
+        couponsLeft[coupon.coupon.type] = coupon.foodQuantity;
       }
-
-
-      this.setState({
-        user,
-        couponsLeft
-      });
+    }
+    this.setState({
+      user,
+      couponsLeft
     });
   }
 
   renderLoading() {
     return (
-      <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+      <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
         <Bubbles size={10} color={Colors.yellowMeniu} />
       </View>);
   }
@@ -90,7 +86,7 @@ export default class AccountScreen extends React.Component {
             </View>
             <View style={styles.flexCenter}>
               <Text style={{ fontWeight: "bold" }}>Fecha de compra</Text>
-              <Text>{this.state.user.activeCombo.createdOn.substring(0,10)}</Text>
+              <Text>{this.state.user.activeCombo.createdOn.substring(0, 10)}</Text>
             </View>
             <View style={styles.flexCenter}>
               <Text style={{ fontWeight: "bold" }}>Válido durante</Text>
@@ -121,16 +117,16 @@ export default class AccountScreen extends React.Component {
 
   render() {
 
-    let plan = this.state.user && this.state.user.activeCombo;
+    let plan = this.state.user && this.state.user.activeCombo && this.state.user.comboCouponPlan;
 
-    if (!this.state.user || !this.state.couponsLeft)
+    if (!this.state.user.id || !this.state.couponsLeft)
       return this.renderLoading();
     return (
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>
           <View style={styles.circledImage}>
             <CustomIcon name="usuario-hombre" size={70} color={Colors.white} />
-          </View>  
+          </View>
           <View style={{ justifyContent: "center", alignItems: "flex-start", marginVertical: 10 }}>
             <Text style={{ flex: 1, fontWeight: "bold" }}>{this.state.user.name + ' ' + this.state.user.lastName}</Text>
             <Text style={{ flex: 1 }}>{this.state.user.applicationUser.email}</Text>
@@ -174,8 +170,8 @@ const styles = StyleSheet.create({
   },
   gradient: {
     // flex: 1,
-    width:Layout.window.width * 0.25,
-    height:Layout.window.width * 0.25,
+    width: Layout.window.width * 0.25,
+    height: Layout.window.width * 0.25,
     margin: 8,
     borderRadius: 10,
     justifyContent: "center",

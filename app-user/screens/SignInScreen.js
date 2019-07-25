@@ -180,8 +180,8 @@ class SignInScreen extends Component {
     await AuthService.saveUserLocally(user);
   }
 
-  async saveTokenLocally(token) {
-    await AuthService.saveTokenLocally(token);
+  async saveTokenLocally(token, refreshToken) {
+    await AuthService.saveTokenLocally(token, refreshToken);
   }
 
   async saveCredentialsLocally(email, password) {

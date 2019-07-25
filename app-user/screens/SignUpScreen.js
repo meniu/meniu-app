@@ -60,6 +60,8 @@ class SignUpScreen extends Component {
         // Token se guarda en user.token
         if(user.applicationUser.token) {
           AuthService.saveUserLocally(user);
+          AuthService.saveCredentialsLocally(this.state.email, this.state.password);
+          AuthService.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
           this.props.navigation.navigate("Main");
         }
         else throw Error("Registro inválido");
