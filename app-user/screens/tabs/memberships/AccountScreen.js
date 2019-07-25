@@ -20,7 +20,7 @@ export default class AccountScreen extends React.Component {
     super(props)
 
     this.state = {
-      user: null,
+      user: { applicationUser: {}, comboCouponPlan: { couponPlans: [] } },
       couponsLeft: null
     }
   }
@@ -47,10 +47,10 @@ export default class AccountScreen extends React.Component {
   async componentDidMount() {
     // console.log('aquí va la promsesa');
 
-    let user = AuthService.retrieveUserGet().then(response => response.json());
-    await AuthService.saveUserLocally(responseJSON);
+    let user = await AuthService.retrieveUserGet().then(response => response.json());
+    await AuthService.saveUserLocally(user);
     let couponsLeft = {}
-    if (user.activeCombo) {
+    if (user.activeCombo && user.comboCouponPlan) {
       for (let coupon of user.comboCouponPlan.couponPlans) {
         couponsLeft[coupon.coupon.type] = coupon.foodQuantity;
       }
@@ -116,9 +116,9 @@ export default class AccountScreen extends React.Component {
 
   render() {
 
-    let plan = this.state.user && this.state.user.activeCombo;
+    let plan = this.state.user && this.state.user.activeCombo && this.state.user.comboCouponPlan;
 
-    if (!this.state.user || !this.state.couponsLeft)
+    if (!this.state.user.id || !this.state.couponsLeft)
       return this.renderLoading();
     return (
       <View style={styles.container}>

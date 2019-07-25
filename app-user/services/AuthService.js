@@ -22,6 +22,7 @@ export default class AuthService {
   static async retrieveUserGet() {
     try {
       let user = await this.retrieveUser();
+      console.log('user in local', user.id);
       let token = await this.retrieveToken();
       return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
         headers: {
@@ -99,7 +100,6 @@ export default class AuthService {
     } catch (error) {
       // Error saving data
       // console.log({ error });
-
     }
   }
 
@@ -113,12 +113,41 @@ export default class AuthService {
     }
   }
 
+  static async refreshToken() {
+    let token = await this.retrieveTokenObject();
+    let newToken = await fetch(`${Config.apiUrl}/api/Account/RefreshToken`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(token)
+    }).then(response => response.json());
+    this.saveTokenLocally(newToken.token, newToken.refreshToken);
+    return newToken.token;
+  }
+
   static async retrieveUser() {
-    return JSON.parse(await AsyncStorage.getItem('user'));
+    let user = JSON.parse(await AsyncStorage.getItem('user'));
+    if (user) {
+      if (user.id) {
+        return user;
+      }
+      else {
+        this.logOut(() => { });
+      }
+    }
+    else {
+      return user;
+    }
   }
 
   static async retrieveCredentials() {
     return JSON.parse(await AsyncStorage.getItem('credentials'));
+  }
+
+  static async retrieveTokenObject() {
+    return JSON.parse(await AsyncStorage.getItem('token'));
   }
 
   static async retrieveToken() {
@@ -130,12 +159,10 @@ export default class AuthService {
       //acá iría lo que cambie de screen o muestre el modal
       Alert.alert("No tienes internet");
     }
-    console.log("Este es el obj previo");
-    
-    let prevToken = JSON.parse(await AsyncStorage.getItem('token'));
-    console.log({prevToken});
-    
-    let token = prevToken.token;
+
+    let tokenObject = JSON.parse(await AsyncStorage.getItem('token'));
+
+    let token = tokenObject.token;
 
     return token;
     /* let response = await fetch(`${Config.apiUrl}/api/CheckToken`, {
@@ -179,7 +206,6 @@ export default class AuthService {
 
   static async retrieveRefreshToken() {
     let token = JSON.parse(await AsyncStorage.getItem('token')).refreshToken;
-
     return token;
   }
 
@@ -196,6 +222,4 @@ export default class AuthService {
     AsyncStorage.removeItem('token');
     AsyncStorage.removeItem("user", callBack);
   }
-
-
 }

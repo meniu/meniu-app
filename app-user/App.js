@@ -11,25 +11,26 @@ import Colors from "./constants/Colors.js";
 import * as Font from 'expo-font';
 import { setCustomText } from 'react-native-global-props';
 import { FormattedProvider } from 'react-native-globalize';
+import {unregister} from './services/Interceptor';
 
 const AppNavigator = createStackNavigator({
   SignUp: {
     screen: SignUpScreen,
-    navigationOptions: ({navigation}) =>({
+    navigationOptions: ({ navigation }) => ({
       header: null,
     }),
   },
   SignIn: {
     screen: SignInScreen,
-    navigationOptions: ({navigation}) =>({
+    navigationOptions: ({ navigation }) => ({
       header: null,
     }),
   },
   Main: {
     screen: MainScreen,
-    navigationOptions: ({navigation}) =>({
-       header: null,
-     }),
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+    }),
   },
   Order: {
     screen: OrderScreen,
@@ -39,48 +40,48 @@ const AppNavigator = createStackNavigator({
     /* header default config is here */
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: Colors.cardColor ,
+        backgroundColor: Colors.cardColor,
         height: 40,
-      }, 
+      },
     },
     headerLayoutPreset: "center",
-});
+  });
 
 const AppContainer = createAppContainer(AppNavigator);
 export default class App extends React.Component {
 
   constructor(props) {
     super(props)
-  
+
     this.state = {
-      fontLoaded: false,     
+      fontLoaded: false,
     }
-  }  
+  }
 
   componentDidMount() {
     Font.loadAsync({
       'meniu': require('./assets/fonts/meniu.ttf'),
-    }).then(()=>{
+    }).then(() => {
       this.defaultFonts();
       this.setState({ fontLoaded: true });
     });
   }
 
-  defaultFonts(){
+  defaultFonts() {
     const customTextProps = {
       style: {
         fontFamily: 'meniu',
         lineHeight: 18
       }
     }
-    setCustomText({customTextProps})
+    setCustomText({ customTextProps })
   }
 
-  render(){
+  render() {
     return this.state.fontLoaded ?
       <FormattedProvider locale="es-419">
-        <AppContainer/>
-      </FormattedProvider> 
+        <AppContainer />
+      </FormattedProvider>
       : null;
   }
 }
