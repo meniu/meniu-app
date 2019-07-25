@@ -18,24 +18,7 @@ export default class AuthService {
       body: JSON.stringify(objBody)
     });
   }
-
-  static async retrieveUserGet() {
-    try {
-      let user = await this.retrieveUser();
-      console.log('user in local', user.id);
-      let token = await this.retrieveToken();
-      return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Accept': 'application/json',
-          'Content-type': 'application/json'
-        }
-      });
-    }
-    catch {
-      console.log('Async stoeage error');
-    }
-  }
+  
 
   static externalLogIn(authType, email) {
     const acceptTermsAndConditions = true;

@@ -12,6 +12,7 @@ import CustomIcon from "../../../components/CustomIcon";
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
 import AuthService from '../../../services/AuthService';
+import AccountService from '../../../services/AccountService';
 import AvailableCouponsComponent from '../../../components/AvailableCouponsComponent';
 
 export default class AccountScreen extends React.Component {
@@ -47,7 +48,7 @@ export default class AccountScreen extends React.Component {
   async componentDidMount() {
     // console.log('aquí va la promsesa');
 
-    let user = await AuthService.retrieveUserGet().then(response => response.json());
+    let user = await AccountService.retrieveUserGet().then(response => response.json());
     await AuthService.saveUserLocally(user);
     let couponsLeft = {}
     if (user.activeCombo && user.comboCouponPlan) {

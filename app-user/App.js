@@ -11,7 +11,6 @@ import Colors from "./constants/Colors.js";
 import * as Font from 'expo-font';
 import { setCustomText } from 'react-native-global-props';
 import { FormattedProvider } from 'react-native-globalize';
-import {unregister} from './services/Interceptor';
 
 const AppNavigator = createStackNavigator({
   SignUp: {

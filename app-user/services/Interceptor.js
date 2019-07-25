@@ -1,28 +1,39 @@
-import fetchIntercept from 'fetch-intercept';
 import AuthService from './AuthService';
 
-export const unregister = fetchIntercept.register({
-    request: function (url, config) {
-        return [url, config];
-    },
-
-    requestError: function (error) {
-        return Promise.reject(error);
-    },
-
-    response: async function (response) {
-        // Unauthorized case
-        if (response.status === 401) {
-            console.log('need to refresh token');
-            let token = await AuthService.refreshToken();
-            //Don't know how to obtain fetch to send it again
+export function fetchRetry (url, fetchOptions = {}) {
+    return new Promise((resolve, reject) => {
+        async function success(response) {
+            if(response.status === 401){
+                console.log('entré a actualizar el token');
+                let newToken = await AuthService.refreshToken();
+                fetchOptions.headers.Authorization = 'Bearer ' + newToken;
+                retryFetchUrl();
+            }
+            else{
+                resolve(response);
+            }            
         }
-        else {
-            return response;
+        function successRetried(response) {
+            resolve(response);
         }
-    },
-
-    responseError: function (error) {
-        return Promise.reject(error);
-    }
-});
+        function failure(error) {
+            reject(error);
+        }
+        function finalHandler(finalError) {
+            throw finalError;
+        }
+        async function fetchUrl() {
+            return fetch(url, fetchOptions)
+                .then(success)
+                .catch(failure)
+                .catch(finalHandler);
+        }
+        async function retryFetchUrl() {
+            return fetch(url, fetchOptions)
+                .then(successRetried)
+                .catch(failure)
+                .catch(finalHandler);
+        }
+        fetchUrl();
+    });
+};

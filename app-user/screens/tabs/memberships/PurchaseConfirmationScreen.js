@@ -14,6 +14,7 @@ import Config from '../../../constants/Config';
 import base64 from 'react-native-base64';
 import PaymentService from '../../../services/PaymentService';
 import AuthService from '../../../services/AuthService';
+import AccountService from '../../../services/AccountService';
 
 export default class PurchaseConfirmationScreen extends Component {
 
@@ -23,7 +24,7 @@ export default class PurchaseConfirmationScreen extends Component {
         const { navigation } = this.props;
         this.plan = navigation.getParam('plan', 'Sin Plan');
         this.user = navigation.getParam('user', 'Sin User');
-
+        this.type = navigation.getParam('type', 'Sin Type');
         this.state = {
 
         }
@@ -56,7 +57,7 @@ export default class PurchaseConfirmationScreen extends Component {
         let result = await WebBrowser.openBrowserAsync(Config.payUpageUrl + `?${object64}`);
         /* console.log('result:');
         console.log(result); */
-        AuthService.retrieveUserGet().then(response => response.json()).then(responseJSON => {
+        AccountService.retrieveUserGet().then(response => response.json()).then(responseJSON => {
             AuthService.saveUserLocally(responseJSON);
             if (responseJSON.activeCombo && !this.user.activeCombo) {
                 this.props.navigation.navigate("PostPurchase", {
@@ -87,7 +88,8 @@ export default class PurchaseConfirmationScreen extends Component {
                     comboType: this.plan.combo.type,
                     price: this.plan.combo.price,
                     userFullName: this.user.name + " " + this.user.lastName,
-                    paymentId: responseJSON.id
+                    paymentId: responseJSON.id,
+                    planType : this.type
                 }
                 // console.log(object);
                 let object64 = base64.encode(JSON.stringify(object));

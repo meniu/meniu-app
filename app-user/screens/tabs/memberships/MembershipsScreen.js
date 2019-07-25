@@ -117,7 +117,8 @@ export default class MembershipsScreen extends Component {
     handleMembershipPress = (plan) => {
         this.props.navigation.navigate("PurchaseConfirmation", {
             plan,
-            user: this.user
+            user: this.user,
+            type: this.timeButtons[this.state.timeIndex]
         });
     }
 
