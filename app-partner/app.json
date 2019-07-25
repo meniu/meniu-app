@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "meniu-app-partner",
+    "name": "Meniu - Aliado",
     "slug": "meniu-app-partner",
     "privacy": "public",
-    "sdkVersion": "31.0.0",
+    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/M-fondo-blanco.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -23,8 +23,14 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.meniu.meniuAppPartner"
     },
-    "description": "App for meniu - partner\n :)"
+    "android": {
+      "package": "com.meniu.meniu_app_partner",
+      "versionCode": 1,
+      "permissions": []
+    },
+    "description": "App de aliados Meniu"
   }
 }
