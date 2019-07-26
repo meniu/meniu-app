@@ -4,7 +4,7 @@ export function fetchRetry (url, fetchOptions = {}) {
     return new Promise((resolve, reject) => {
         async function success(response) {
             if(response.status === 401){
-                console.log('entré a actualizar el token');
+                // console.log('entré a actualizar el token');
                 let newToken = await AuthService.refreshToken();
                 fetchOptions.headers.Authorization = 'Bearer ' + newToken;
                 retryFetchUrl();

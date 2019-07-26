@@ -6,7 +6,7 @@ export default class AccountService {
     static async retrieveUserGet() {
         try {
             let user = await AuthService.retrieveUser();
-            console.log('user in local', user.id);
+            // console.log('user in local', user.id);
             let token = await AuthService.retrieveToken();
             return fetchRetry(`${Config.apiUrl}/api/Account/${user.id}`, {
                 headers: {
