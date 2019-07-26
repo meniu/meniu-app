@@ -86,7 +86,7 @@ export default class AccountScreen extends React.Component {
             </View>
             <View style={styles.flexCenter}>
               <Text style={{ fontWeight: "bold" }}>Fecha de compra</Text>
-              <Text>{this.state.user.activeCombo.createdOn.substring(0, 10)}</Text>
+              <Text>{this.state.user.comboAcquisitionDate.substring(0, 10)}</Text>
             </View>
             <View style={styles.flexCenter}>
               <Text style={{ fontWeight: "bold" }}>Válido durante</Text>

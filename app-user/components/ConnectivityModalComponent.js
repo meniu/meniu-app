@@ -34,13 +34,16 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent: "center",
         alignItems: "center",
+        padding: 20,
+        borderRadius: 20
     },
     modalFailureContent: {
         justifyContent: "center",
         alignItems: "center",
         width: Layout.window.width * 0.7,
         height: Layout.window.height * 0.5,
-        backgroundColor: Colors.white ,
-        padding: 5
+        backgroundColor: Colors.white,
+        padding: 20,
+        borderRadius: 20
     },
 })

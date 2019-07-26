@@ -41,7 +41,7 @@ export default class PurchaseConfirmationScreen extends Component {
 
     CloseButton = (props) => {
         return (
-            <TouchableHighlight style={{ position: "absolute", top: 10, right: 10 }} onPress={this.navigateBack} >
+            <TouchableHighlight style={{ position: "absolute", top: 20, right: 20 }} onPress={this.navigateBack} >
                 <CustomIcon name="x" size={Layout.window.width / 12} />
             </TouchableHighlight>
         );
@@ -132,7 +132,7 @@ export default class PurchaseConfirmationScreen extends Component {
                             <Text style={styles.membershipTitle}>{this.plan.combo.type}</Text>
                         </LinearGradient>
 
-                        <Text style={{ fontSize: 26 }}>Confirma tu compra</Text>
+                        <Text style={{ fontSize: 24 }}>Confirma tu compra</Text>
 
                         <View style={{ width: "80%", alignItems: "flex-start" }}>
                             <Text style={styles.headerText}>Plan:</Text>
@@ -186,14 +186,16 @@ const styles = StyleSheet.create({
         width: Layout.window.width * 0.8,
         paddingVertical: 10,
         paddingHorizontal: 10,
-        borderRadius: 15,
+        borderRadius: 20,
+        padding: 20,
         backgroundColor: Colors.backgroundColor,
         justifyContent: "space-around",
         alignItems: "center",
     },
     gradient: {
-        height: Layout.window.height / 8,
-        width: "40%",
+        marginTop: 20,
+        height: Layout.window.height / 6,
+        width: "50%",
         justifyContent: "center",
         alignItems: "stretch",
     },

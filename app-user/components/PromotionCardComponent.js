@@ -7,7 +7,7 @@ import Layout from "../constants/Layout";
 import Config from "../constants/Config";
 
 export default class PromotionCardComponent extends PureComponent {
-    
+
     /** PROPS: 
       -entity:
           type, uri, price(discount), score, name, description(optional), date (optional) 
@@ -16,8 +16,8 @@ export default class PromotionCardComponent extends PureComponent {
       -action:
           function to be executed.
      */
-  
-    renderSubtitle(){
+
+    renderSubtitle() {
         switch (this.props.actionType) {
             case "reorder":
                 return this.props.entity.transactionDate;
@@ -26,7 +26,7 @@ export default class PromotionCardComponent extends PureComponent {
         }
     }
 
-    renderOrder(){
+    renderOrder() {
         switch (this.props.actionType) {
             case "reorder":
                 return "Reordenar";
@@ -37,8 +37,8 @@ export default class PromotionCardComponent extends PureComponent {
 
     render() {
         return (
-        <View style={styles.container}>
-            {/* <View style={styles.imageContainer}>
+            <View style={styles.container}>
+                {/* <View style={styles.imageContainer}>
                 <BadgeComponent type={this.props.entity.type}/>
                 <Image
                     style={{width: 50, height: 50}}
@@ -46,68 +46,71 @@ export default class PromotionCardComponent extends PureComponent {
                 />
                 <Text>{"$ " + this.props.entity.discount}</Text>
             </View> */}
-            <Card
-                image={{uri: Config.azureStorageUrl + this.props.entity.imagePath}}
-                imageStyle={{ width:'100%', height:55, }}
-                imageProps={{resizeMode:"cover"}}
-                imageWrapperStyle={{overflow:"hidden"}}
-                containerStyle={styles.imageContainer}
+                <Card
+                    image={{ uri: Config.azureStorageUrl + this.props.entity.imagePath }}
+                    imageStyle={{ width: '100%', height: 55, }}
+                    imageProps={{ resizeMode: "cover" }}
+                    imageWrapperStyle={{ overflow: "hidden" }}
+                    containerStyle={styles.imageContainer}
                 // wrapperStyle={{opacity:0.5}}
                 >
-                <View style={{justifyContent:"center", alignItems:"center"}}>
-                    <Text>
-                        {"-$ " + this.props.entity.saving}
+                    <View style={{ justifyContent: "center", alignItems: "center" }}>
+                        <Text>
+                            {"-$ " + this.props.entity.saving}
+                        </Text>
+                    </View>
+                </Card>
+                <BadgeComponent type={this.props.entity.couponPlan.coupon.type} containerStyle={styles.floatingBadge} />
+                <View style={styles.infoContainer} >
+                    <Text numberOfLines={5}>
+                        <Text>{this.props.entity.name}</Text>
+                        <Text style={{ color: Colors.darkBackgroundColor}}>{this.renderSubtitle() ? '\n'+this.renderSubtitle() : this.renderSubtitle()}</Text>
                     </Text>
                 </View>
-            </Card>
-            <BadgeComponent type={this.props.entity.couponPlan.coupon.type} containerStyle={styles.floatingBadge} />
-            <View style={styles.infoContainer} >
-                <Text>{this.props.entity.name}</Text>
-                <Text style={{color:Colors.darkBackgroundColor}}>{this.renderSubtitle()}</Text>
+                <TouchableHighlight style={styles.actionButton} onPress={this.props.action}>
+                    <Text style={{ color: Colors.darkBackgroundColor }}>{this.renderOrder()}</Text>
+                </TouchableHighlight>
             </View>
-            <TouchableHighlight style={styles.actionButton} onPress={this.props.action}>
-                <Text style={{color:Colors.darkBackgroundColor}}>{this.renderOrder()}</Text>
-            </TouchableHighlight>
-        </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container:{ 
-      flex: 1, 
-      flexDirection: "row",
-      alignItems: "stretch", 
-      justifyContent: "space-between",
-      backgroundColor: Colors.cardColor,
-      borderWidth: 1,
-      borderColor: Colors.border,
-      borderRadius: Layout.radius,
-      margin:2,
+    container: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "stretch",
+        justifyContent: "space-between",
+        backgroundColor: Colors.cardColor,
+        borderWidth: 1,
+        borderColor: Colors.border,
+        borderRadius: Layout.radius,
+        margin: 2,
     },
     imageContainer: {
         flex: 1,
-        alignItems: "stretch", 
+        alignItems: "stretch",
         justifyContent: "flex-start",
         backgroundColor: Colors.yellowMeniu,
-        borderRadius:Layout.radius,
-        margin:5,
-        marginBottom:5,
-        overflow:"hidden",
+        borderRadius: Layout.radius,
+        margin: 5,
+        marginBottom: 5,
+        overflow: "hidden",
     },
     infoContainer: {
-        flex:2,
+        flex: 2,
         flexDirection: "column",
-        justifyContent:"center",
+        justifyContent: "center",
         alignItems: "flex-start",
-        borderRightWidth:1, 
-        borderRightColor:Colors.border,
+        margin: 2
     },
-    actionButton:{
-        flex:1,
-        justifyContent:"center",
-        alignItems:"center",
-    }, 
+    actionButton: {   
+        borderLeftWidth: 1,     
+        borderLeftColor: Colors.border,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
     floatingBadge: {
         position: "absolute",
         top: 0,
@@ -115,5 +118,4 @@ const styles = StyleSheet.create({
         zIndex: 2,
         elevation: 2,
     }
-  });
-  
+});
