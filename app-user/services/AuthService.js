@@ -62,10 +62,7 @@ export default class AuthService {
 
   static saveUserLocally(user) {
     try {
-      AsyncStorage.setItem('user', JSON.stringify(user));
-      if (Platform.OS === 'android')
-        ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
-      this.props.navigation.navigate("Main");
+      AsyncStorage.setItem('user', JSON.stringify(user));      
     } catch (error) {
       // Error saving data
       // console.log({ error });

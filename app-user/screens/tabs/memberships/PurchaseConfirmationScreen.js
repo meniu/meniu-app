@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
     Text, StyleSheet, View, TouchableHighlight,
-    ImageBackground,
+    ImageBackground, ActivityIndicator
 } from 'react-native'
 import { Button } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
@@ -9,11 +9,12 @@ import CustomIcon from '../../../components/CustomIcon'
 import CouponListComponent from '../../../components/CouponListComponent';
 import Colors from '../../../constants/Colors';
 import Layout from '../../../constants/Layout';
-import { WebBrowser } from 'expo';
+import * as WebBrowser from 'expo-web-browser'
 import Config from '../../../constants/Config';
 import base64 from 'react-native-base64';
 import PaymentService from '../../../services/PaymentService';
 import AuthService from '../../../services/AuthService';
+import { Alert } from "react-native";
 import AccountService from '../../../services/AccountService';
 
 export default class PurchaseConfirmationScreen extends Component {
@@ -26,7 +27,7 @@ export default class PurchaseConfirmationScreen extends Component {
         this.user = navigation.getParam('user', 'Sin User');
         this.type = navigation.getParam('type', 'Sin Type');
         this.state = {
-
+            loading: false
         }
     }
 
@@ -54,9 +55,8 @@ export default class PurchaseConfirmationScreen extends Component {
     }
 
     openBrowser = async (object64) => {
-        let result = await WebBrowser.openBrowserAsync(Config.payUpageUrl + `?${object64}`);
-        /* console.log('result:');
-        console.log(result); */
+        await WebBrowser.openAuthSessionAsync(Config.payUpageUrl + `?${object64}`);
+        //web browser closed
         AccountService.retrieveUserGet().then(response => response.json()).then(responseJSON => {
             AuthService.saveUserLocally(responseJSON);
             if (responseJSON.activeCombo && !this.user.activeCombo) {
@@ -64,7 +64,7 @@ export default class PurchaseConfirmationScreen extends Component {
                     plan: this.plan
                 });
             }
-            else{
+            else {
                 this.user = responseJSON;
             }
         });
@@ -75,32 +75,45 @@ export default class PurchaseConfirmationScreen extends Component {
      * Once confirmed, redirects to PostPurchase Screen
      */
     handleGetPlanClick = async () => {
-        let correctProcess = false;
-        PaymentService.initiatePayment(this.plan.combo.type).then(response => {
-            if (response.status === 200) {
-                correctProcess = true;
-            }
-            return response.json();
-        }).then(responseJSON => {
-            if (correctProcess) {
-                let object = {
-                    userEmail: this.user.applicationUser.email,
-                    comboType: this.plan.combo.type,
-                    price: this.plan.combo.price,
-                    userFullName: this.user.name + " " + this.user.lastName,
-                    paymentId: responseJSON.id,
-                    planType : this.type
+        this.setState({
+            loading: true
+        }, async () => {
+            let correctProcess = false;
+            PaymentService.initiatePayment(this.plan.combo.type).then(response => {
+                if (response.status === 200) {
+                    correctProcess = true;
                 }
-                // console.log(object);
-                let object64 = base64.encode(JSON.stringify(object));
-                this.openBrowser(object64);
-            }
-            else {
-                let error = responseJSON._message;
-                // console.log(error);
-            }
+                return response.json();
+            }).then(responseJSON => {
+                this.setState({
+                    loading: false
+                }, () => {
+                    if (correctProcess) {
+                        let object = {
+                            userEmail: this.user.applicationUser.email,
+                            comboType: this.plan.combo.type,
+                            price: this.plan.combo.price,
+                            userFullName: this.user.name + " " + this.user.lastName,
+                            paymentId: responseJSON.id,
+                            planType: this.type
+                        }
+                        // console.log(object);
+                        let object64 = base64.encode(JSON.stringify(object));
+                        this.openBrowser(object64);
+                    }
+                    else {
+                        let error = responseJSON._message;
+                        Alert.alert("Existe un pago en proceso para este plan. Inténtalo más tarde.");
+                    }
+                });
+            }).catch( error => {
+                this.setState({
+                    loading: false
+                }, () => {
+                    Alert.alert("Hubo un error. Inténtelo más tarde.");
+                });
+            });
         });
-
         /*  */
     }
 
@@ -132,7 +145,7 @@ export default class PurchaseConfirmationScreen extends Component {
                             <Text style={[styles.subtitleText, { fontWeight: "900" }]}>$ {this.plan.combo.price}</Text>
 
                             <Text style={styles.headerText}>Incluye:</Text>
-                            <CouponListComponent coupons={this.plan.couponPlans} combo={this.plan.combo} showNumber = {true} />
+                            <CouponListComponent coupons={this.plan.couponPlans} combo={this.plan.combo} showNumber={true} />
 
                             <Text style={styles.headerText}>Válido:</Text>
                             <Text style={styles.subtitleText}>{this.plan.couponPlans[0].plan.validityInDays} días</Text>
@@ -142,12 +155,27 @@ export default class PurchaseConfirmationScreen extends Component {
                             title="Confirmar" onPress={() => this.handleGetPlanClick()} />
                     </View>
                 </View>
+                {this.state.loading &&
+                    <View style={styles.loading}>
+                        <ActivityIndicator size='large' color='#000000' />
+                    </View>
+                }
             </ImageBackground>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    loading: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#F5FCFF88'
+    },
     container: {
         flex: 1,
         alignItems: "center",

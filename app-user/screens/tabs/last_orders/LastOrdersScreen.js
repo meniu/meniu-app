@@ -9,7 +9,6 @@ import {
 import { Text } from 'react-native-elements';
 import { Bubbles } from 'react-native-loader';
 import Colors from "../../../constants/Colors";
-import MockData from '../../../constants/MockData';
 import Layout from '../../../constants/Layout';
 import PromotionCardComponent from '../../../components/PromotionCardComponent';
 import ImportantPastPromotionCardComponent from "../../../components/ImportantPastPromotionCardComponent";
