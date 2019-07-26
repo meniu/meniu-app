@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
     Text, StyleSheet, View, TouchableHighlight,
-    ImageBackground,
+    ImageBackground, ActivityIndicator
 } from 'react-native'
 import { Button } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,7 +27,7 @@ export default class PurchaseConfirmationScreen extends Component {
         this.user = navigation.getParam('user', 'Sin User');
         this.type = navigation.getParam('type', 'Sin Type');
         this.state = {
-
+            loading: false
         }
     }
 
@@ -75,33 +75,45 @@ export default class PurchaseConfirmationScreen extends Component {
      * Once confirmed, redirects to PostPurchase Screen
      */
     handleGetPlanClick = async () => {
-        let correctProcess = false;
-        let response = await PaymentService.initiatePayment(this.plan.combo.type);
-
-        if (response.status === 200) {
-            correctProcess = true;
-        }
-        let responseJSON = await response.json();
-        console.log(correctProcess);
-        console.log(responseJSON);
-
-        if (correctProcess) {
-            let object = {
-                userEmail: this.user.applicationUser.email,
-                comboType: this.plan.combo.type,
-                price: this.plan.combo.price,
-                userFullName: this.user.name + " " + this.user.lastName,
-                paymentId: responseJSON.id,
-                planType: this.type
-            }
-            // console.log(object);
-            let object64 = base64.encode(JSON.stringify(object));
-            await this.openBrowser(object64);
-        }
-        else {
-            let error = responseJSON._message;
-            Alert.alert("Existe un pago en proceso para este plan. Inténtalo más tarde.");
-        }
+        this.setState({
+            loading: true
+        }, async () => {
+            let correctProcess = false;
+            PaymentService.initiatePayment(this.plan.combo.type).then(response => {
+                if (response.status === 200) {
+                    correctProcess = true;
+                }
+                return response.json();
+            }).then(responseJSON => {
+                this.setState({
+                    loading: false
+                }, () => {
+                    if (correctProcess) {
+                        let object = {
+                            userEmail: this.user.applicationUser.email,
+                            comboType: this.plan.combo.type,
+                            price: this.plan.combo.price,
+                            userFullName: this.user.name + " " + this.user.lastName,
+                            paymentId: responseJSON.id,
+                            planType: this.type
+                        }
+                        // console.log(object);
+                        let object64 = base64.encode(JSON.stringify(object));
+                        this.openBrowser(object64);
+                    }
+                    else {
+                        let error = responseJSON._message;
+                        Alert.alert("Existe un pago en proceso para este plan. Inténtalo más tarde.");
+                    }
+                });
+            }).catch( error => {
+                this.setState({
+                    loading: false
+                }, () => {
+                    Alert.alert("Hubo un error. Inténtelo más tarde.");
+                });
+            });
+        });
         /*  */
     }
 
@@ -143,12 +155,27 @@ export default class PurchaseConfirmationScreen extends Component {
                             title="Confirmar" onPress={() => this.handleGetPlanClick()} />
                     </View>
                 </View>
+                {this.state.loading &&
+                    <View style={styles.loading}>
+                        <ActivityIndicator size='large' color='#000000' />
+                    </View>
+                }
             </ImageBackground>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    loading: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#F5FCFF88'
+    },
     container: {
         flex: 1,
         alignItems: "center",
