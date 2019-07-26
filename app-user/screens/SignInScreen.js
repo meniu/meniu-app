@@ -37,16 +37,16 @@ class SignInScreen extends Component {
     try {
       let user = await AuthService.retrieveUser();
       let token = await AuthService.retrieveToken();
-      if(user && token) this.props.navigation.navigate("Main");
+      if (user && token) this.props.navigation.navigate("Main");
     } catch (error) {
       // console.log();
-      
+
       // console.log("algo falla", {user, token, error})
     }
 
     AuthService.retrieveUser().then(user => {
-      user ? this.props.navigation.navigate("Main"):
-      this.setState({loaded:true});
+      user ? this.props.navigation.navigate("Main") :
+        this.setState({ loaded: true });
     });
   }
 
@@ -84,7 +84,7 @@ class SignInScreen extends Component {
             case 200:
               // best case
               break;
-          
+
             default:
               // Any other error
               break;
@@ -103,8 +103,8 @@ class SignInScreen extends Component {
         });
 
       } else {
-      Alert.alert("Ha habido un problema iniciando sesión con google");
-      // console.log("cancelled")
+        Alert.alert("Ha habido un problema iniciando sesión con google");
+        // console.log("cancelled")
       }
     } catch (e) {
       Alert.alert("Ha habido un problema iniciando sesión con google");
@@ -125,49 +125,49 @@ class SignInScreen extends Component {
       // console.log({fbUser});
       AuthService.externalLogIn('Facebook', fbUser.email).then(response => response.json())
         .then(responseJSON => {
-        // console.log("fb ok ", {responseJSON});
-        
-        switch (responseJSON._statusCode) {
-          case 400:
-            // No user given...
-            this.props.navigation.navigate("SignUp", {
-              email: fbUser.email,
-              firstName: fbUser.name,
-            })
-            break;
+          // console.log("fb ok ", {responseJSON});
 
-          case undefined:
-            // No status code should mean the object retrieved has the user
-            break;
+          switch (responseJSON._statusCode) {
+            case 400:
+              // No user given...
+              this.props.navigation.navigate("SignUp", {
+                email: fbUser.email,
+                firstName: fbUser.name,
+              })
+              break;
 
-          case 200:
-            // best case
-            break;
-        
-          default:
-            // Any other error
-            break;
-        }
-        let user = responseJSON;
+            case undefined:
+              // No status code should mean the object retrieved has the user
+              break;
 
-        if (user.applicationUser.token) {
-          // TODO Check if with social login credentials saved are needed
-          // this.saveCredentialsLocally(email, password);
-          this.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
-          this.saveUserLocally(user);
-          this.props.navigation.navigate("Main");
-        }
-        else throw Error("Login inválido");
-        // this.saveUserLocally(result.user);
+            case 200:
+              // best case
+              break;
 
-        // TODO: pass token to Backend
-        // this.props.navigation.navigate("Main");
-      })
-      .catch(error=>{
-        Alert.alert(`Hubo un problema con nuestros servidores`)
-        // console.log({error});
-        
-      });
+            default:
+              // Any other error
+              break;
+          }
+          let user = responseJSON;
+
+          if (user.applicationUser.token) {
+            // TODO Check if with social login credentials saved are needed
+            // this.saveCredentialsLocally(email, password);
+            this.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
+            this.saveUserLocally(user);
+            this.props.navigation.navigate("Main");
+          }
+          else throw Error("Login inválido");
+          // this.saveUserLocally(result.user);
+
+          // TODO: pass token to Backend
+          // this.props.navigation.navigate("Main");
+        })
+        .catch(error => {
+          Alert.alert(`Hubo un problema con nuestros servidores`)
+          // console.log({error});
+
+        });
 
     }
     else {
@@ -204,6 +204,8 @@ class SignInScreen extends Component {
         // console.log(user);
         // Token se guarda en user.token
         if (user.applicationUser.token) {
+          if (Platform.OS === 'android')
+            ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
           this.saveCredentialsLocally(email, password);
           this.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
           this.saveUserLocally(user);
