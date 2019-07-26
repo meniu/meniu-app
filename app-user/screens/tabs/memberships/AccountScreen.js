@@ -108,7 +108,7 @@ export default class AccountScreen extends React.Component {
         <View style={{ flex: 2, justifyContent: "space-around", alignItems: "flex-start" }}>
           <Text>No tienes ningún plan disponible</Text>
           <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
-            title="obtener un plan" onPress={this.handleGetPlanClick} />
+            title="Obtener un plan" onPress={this.handleGetPlanClick} />
         </View>
         <View style={{ flex: 1 }} />
       </View>
