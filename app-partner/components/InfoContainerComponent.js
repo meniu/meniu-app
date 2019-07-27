@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import { Text } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from "expo-linear-gradient";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Layout from '../constants/Layout';
 
 // Component used to display warning, error or info screens
 export default class InfoContainerComponent extends PureComponent {
@@ -9,7 +12,7 @@ export default class InfoContainerComponent extends PureComponent {
     /**
      * Props:
      * -infoType: 'error' ...
-     * -header
+     * -title
      * -subtitile
      * -children (JSX wrapped inside InfoContainerComponent tags)
      */
@@ -29,10 +32,14 @@ export default class InfoContainerComponent extends PureComponent {
                 <LinearGradient colors={this.renderGradientColors()} style={styles.backGradient}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                     <View style={{ backgroundColor: Colors.white, padding: 3, margin: 3, borderRadius: 15 }}>
-                        <Text>Icono aqui</Text>
+                        <MaterialCommunityIcons name="qrcode-scan" size={50} />
                     </View>
-                    <Text style={styles.headerText}>¡Titulo!</Text>
-                    <Text style={styles.subtitleText}>Descripción</Text>
+                    <Text h4 style={this.props.infoType === "error" ? styles.whiteText : {}}>
+                        {this.props.title}
+                    </Text>
+                    <Text style={this.props.infoType === "error" ? styles.whiteText : {}}>
+                        {this.props.subtitle}
+                    </Text>
                 </LinearGradient>
                 <View style={styles.mainContainer}>
                     {this.props.children}
@@ -47,7 +54,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "flex-start",
-        backgroundColor: Colors.darkBackgroundColor,
+        backgroundColor: Colors.backgroundColor,
     },
     backGradient: {
         height: Layout.window.height * 0.25,
@@ -64,14 +71,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 10,
         borderRadius: 15,
-        backgroundColor: Colors.backgroundColor,
+        backgroundColor: Colors.lightBackgroundColor,
         justifyContent: "space-around",
         alignItems: "center",
     },
-    headerText: {
-        fontWeight: "bold",
-    },
-    subtitleText: {
-        color: Colors.darkBackgroundColor,
-    },
+    whiteText: {
+        color: Colors.backgroundColor,
+    }
 });

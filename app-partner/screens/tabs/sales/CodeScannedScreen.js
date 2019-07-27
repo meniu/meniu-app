@@ -5,9 +5,10 @@ import { StackActions, NavigationActions } from "react-navigation";
 
 import {
   StyleSheet,
-  View, Text
+  View
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { Button, Text } from 'react-native-elements'
+import { FontAwesome, Feather } from '@expo/vector-icons';
 import Colors from '../../../constants/Colors';
 import PromotionService from '../../../services/PromotionService';
 import AuthService from '../../../services/AuthService';
@@ -32,35 +33,15 @@ class CodeScannedScreen extends Component {
       res: "Waiting for response..."
     };
 
+    // Info data
+    this.infoType = "success";
+    this.title = "title"
+    this.subtitle = "subtitle";
+
     this.isDataValid = this.isDataValid.bind(this);
     this.renderNotInRestaurantPlate = this.renderNotInRestaurantPlate.bind(this);
     this.renderInvalidCode = this.renderInvalidCode.bind(this);
     this.renderValidCode = this.renderValidCode.bind(this);
-  }
-
-  isDataValid() {
-    let valid = true;
-
-    //TODO Validar que tenga los datos necesarios (tipo plan, tipo plato)
-
-    return valid;
-  }
-
-  plateInRestaurant() {
-    let plateInRestaurant = true;
-    //TODO Validar que plato sea de este restaurante
-
-    return plateInRestaurant;
-  }
-
-  renderNotInRestaurantPlate() {
-    return <View style={styles.container}></View>
-
-  }
-
-  renderInvalidCode() {
-    return <View style={styles.container}></View>
-
   }
 
   async componentDidMount() {
@@ -83,17 +64,90 @@ class CodeScannedScreen extends Component {
     }
   }
 
+  isDataValid() {
+    let valid = true;
+
+    //TODO Validar que tenga los datos necesarios (tipo plan, tipo plato)
+
+    return valid;
+  }
+
+  plateInRestaurant() {
+    let plateInRestaurant = true;
+    //TODO Validar que plato sea de este restaurante
+
+    return plateInRestaurant;
+  }
+
+  handleGoBack = () => {
+    this.props.navigation.pop();
+  }
+
+  handleOrderFinished = () => {
+    this.props.navigation.navigate("SalesMain");
+  }
+
+  renderNotInRestaurantPlate() {
+    this.title = "Plato de otro restaurante";
+    this.subtitle = "El cupón no se puede redimir en este restaurante";
+    this.infoType = "error";
+    return (
+      <View style={styles.container}>
+        <Feather name={'x'} size={80} color={Colors.black} />
+        <Text h4>No disponible</Text>
+        <Text>El plato escaneado no se encuentra disponible en tu restaurante</Text>
+        <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
+          title="Volver" onPress={handleGoBack} />
+      </View>
+    );
+
+  }
+
+  renderInvalidCode() {
+    this.title = "Código no validado";
+    this.subtitle = "El código no pudo ser validado";
+    this.infoType = "error";
+    return (
+      <View style={styles.container}>
+        <Feather name={'x'} size={80} color={Colors.black} />
+        <Text h4>No disponible</Text>
+        <Text>El plato escaneado no es válido o no se encuentra disponible en tu restaurante</Text>
+        <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
+          title="Volver" onPress={this.handleGoBack} />
+      </View>
+    );
+
+  }
+
   renderValidCode() {
+    this.title = "Código validado";
+    this.subtitle = "Ya puedes entregar el plato a nuestro Meniuser";
+    this.infoType = "success";
+    // console.log("data QR", this.data);
+    // this.data = {
+    //   "comboType": "Warrior",
+    //     "couponType": 0,
+    //       "partnerIdentification": 123456789,
+    //         "planType": 0,
+    //           "promotionCouponId": 1,
+    //             "userEmail": "asd@asd.com",
+    // }
+
     return (<View style={styles.container}>
-      <FontAwesome name={'check'} size={200} color={Colors.succesColor} />
-      <Text>El código escaneado ha sido validado. Puedes entregar el plato al usuario.</Text>
-      <Text>Cupon utilizado: {this.data.couponType}</Text>
-      <Text>Tipo de combo: {this.data.comboType}</Text>
-      <Text>Restaurante: {this.data.partnerIdentification} </Text>
-      <Text>Plato: {this.data.promotionCouponId} </Text>
-      <Text>Tipo de plan: {this.data.planType}</Text>
-      <Text>Correo de usuario: {this.data.userEmail}</Text>
-      {/* <Text>Respuesta servidor: {this.state.res}</Text> */}
+      <FontAwesome name={'check'} size={80} color={Colors.successColor} />
+
+      <View style={{ width: "80%", alignItems: "flex-start" }}>
+        <Text style={styles.headerText}>Nombre del plato:</Text>
+        <Text style={styles.subtitleText}>'Nombre'</Text>
+
+        <Text style={styles.headerText}>Categoría:</Text>
+        <Text style={styles.subtitleText}>'Categoría'</Text>
+
+        <Text style={styles.headerText}>Incluye:</Text>
+        <Text style={styles.subtitleText}>'Incluye'</Text>
+      </View>
+      <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
+        title="Orden realizada" onPress={this.handleOrderFinished} />
     </View>);
   }
   /**
@@ -113,15 +167,11 @@ class CodeScannedScreen extends Component {
     else {
       conditionalContent = this.renderValidCode();
     }
+    // conditionalContent = this.renderInvalidCode();
     return (
-      <View>
-        <View>
-
-        </View>
-        <View>
-
-        </View>
-      </View>
+      <InfoContainerComponent title={this.title} subtitle={this.subtitle} infoType={this.infoType}>
+        {conditionalContent}
+      </InfoContainerComponent>
     );
   }
 }
@@ -131,14 +181,26 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: Colors.backgroundColor
   },
-  gradient: {
-
+  buttonStyle: {
+    flexDirection: "column",
+    width: "80%",
+    backgroundColor: Colors.yellowMeniu,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    borderRadius: 10,
   },
-  messageContainer: {
-
-  }
+  textButtonStyle: {
+    color: Colors.black,
+    textAlign: "center",
+  },
+  headerText: {
+    fontWeight: "bold",
+  },
+  subtitleText: {
+    color: Colors.darkBackgroundColor,
+  },
 });
 
 

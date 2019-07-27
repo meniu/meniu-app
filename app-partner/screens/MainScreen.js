@@ -7,12 +7,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import OffersMainScreen from './tabs/offers/OffersMainScreen';
 import ReportsMainScreen from './tabs/reports/ReportsMainScreen';
 import CodeScannedScreen from './tabs/sales/CodeScannedScreen';
-import PlateSaleScreen from './tabs/sales/PlateSaleScreen';
 
 const SalesStack = createStackNavigator({
   SalesMain: SalesMainScreen,
   CodeScanned: CodeScannedScreen,
-  PlateSale: PlateSaleScreen,
 }, {
     defaultNavigationOptions: {
       headerStyle: {

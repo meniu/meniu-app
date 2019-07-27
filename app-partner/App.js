@@ -4,6 +4,7 @@ import { createAppContainer, createStackNavigator, StackActions, NavigationActio
 import SignInScreen from "./screens/SignInScreen.js";
 import MainScreen from "./screens/MainScreen.js";
 import Colors from "./constants/Colors";
+import PlateSaleScreen from './screens/PlateSaleScreen';
 
 const AppNavigator = createStackNavigator({
   SignIn: {
@@ -15,6 +16,13 @@ const AppNavigator = createStackNavigator({
       header: null,
     }),
   },
+  PlateSale: {
+    screen: PlateSaleScreen,
+    navigationOptions: () => ({
+      header: null,
+    }),
+  }
+
 }, {
     initialRouteName: "SignIn",
     defaultNavigationOptions: {
