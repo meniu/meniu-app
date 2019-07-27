@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View, ScrollView, FlatList,
+import {
+    Text, StyleSheet, View, ScrollView, FlatList,
     ImageBackground, Alert
 } from 'react-native'
 import { ButtonGroup } from 'react-native-elements';
@@ -31,7 +32,7 @@ export default class MembershipsScreen extends Component {
         // console.log('im gonna');
         ComboService.retrieveCombos()
             .then(response => response.json())
-            .then(combos=>{
+            .then(combos => {
 
                 // console.log('ya se tiene');
                 // console.log({combos});
@@ -41,15 +42,15 @@ export default class MembershipsScreen extends Component {
                     // Commented until then.
                     // this.addPersonalizedToCombo(combo);
                     return combo;
-                })
+                });
                 this.setState({
                     combos: combos
                 });
             })
             .catch(error => {
-                console.log({error});
-                Alert.alert("Error obteniendo los planes","Por favor revisa tu conexión a internet")
-            } 
+                console.log({ error });
+                Alert.alert("Error obteniendo los planes", "Por favor revisa tu conexión a internet")
+            }
 
             );
 
@@ -62,46 +63,46 @@ export default class MembershipsScreen extends Component {
     addPersonalizedToCombo = (combo) => {
         combo.comboCouponPlans.push({
             active: true,
-            combo:{
+            combo: {
                 id: 0,
                 description: "A tu medida, como más te guste",
-                type:"Personalized",
+                type: "Personalized",
                 // Must be overwritten when properly configured in modal
                 price: 100
             },
             couponPlans: [
                 {
                     id: 1,
-                    coupon:{type:"Basic"},
-                    foodQuantity:5,
-                    plan:{
+                    coupon: { type: "Basic" },
+                    foodQuantity: 5,
+                    plan: {
                         "type": combo.plan.type,
                         "validityInDays": combo.plan.validityInDays,
                     }
                 },
                 {
                     id: 2,
-                    coupon:{type:"Premium"},
-                    foodQuantity:5,
-                    plan:{
+                    coupon: { type: "Premium" },
+                    foodQuantity: 5,
+                    plan: {
                         "type": combo.plan.type,
                         "validityInDays": combo.plan.validityInDays,
                     }
                 },
                 {
                     id: 3,
-                    coupon:{type:"Deluxe"},
-                    foodQuantity:5,
-                    plan:{
+                    coupon: { type: "Deluxe" },
+                    foodQuantity: 5,
+                    plan: {
                         "type": combo.plan.type,
                         "validityInDays": combo.plan.validityInDays,
                     }
                 },
                 {
                     id: 4,
-                    coupon:{type:"Gold"},
-                    foodQuantity:5,
-                    plan:{
+                    coupon: { type: "Gold" },
+                    foodQuantity: 5,
+                    plan: {
                         "type": combo.plan.type,
                         "validityInDays": combo.plan.validityInDays,
                     }
@@ -117,40 +118,51 @@ export default class MembershipsScreen extends Component {
     handleMembershipPress = (plan) => {
         this.props.navigation.navigate("PurchaseConfirmation", {
             plan,
-            user: this.user
+            user: this.user,
+            type: this.timeButtons[this.state.timeIndex]
         });
+    }
+
+    renderLoading() {
+        return (
+            <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
+                <Bubbles size={10} color={Colors.yellowMeniu} />
+            </View>);
     }
 
 
     render() {
+
+        if (this.state.combos.length <= 0)
+            return this.renderLoading();
         return (
             <View style={styles.container}>
                 <ImageBackground
-                    source={require('../../../assets/images/planes-portrait.jpg')} 
-                    style={{resizeMode:"cover", flex:2}}
+                    source={require('../../../assets/images/planes-portrait.jpg')}
+                    style={{ resizeMode: "cover", flex: 2 }}
                 >
                     <View style={styles.planDetail}>
-                        <View 
-                            style={{ 
-                                flex: 1, marginHorizontal:10, backgroundColor:Colors.brownTransparent, 
-                                borderColor:Colors.white, borderRadius:5, borderWidth: 2,
+                        <View
+                            style={{
+                                flex: 1, marginHorizontal: 10, backgroundColor: Colors.brownTransparent,
+                                borderColor: Colors.white, borderRadius: 5, borderWidth: 2,
                             }}>
-                            <CustomIcon 
+                            <CustomIcon
                                 name={this.state.timeIndex === 0 ? "plan-mensual" : "plan-semimensual"}
-                                size={70} 
-                                color={Colors.white} 
-                            />                   
+                                size={70}
+                                color={Colors.white}
+                            />
                         </View>
                         <View style={{ flex: 4, alignItems: "flex-start" }}>
-                            <Text style={{backgroundColor:Colors.lightBackgroundColor, padding:5}}>
-                                {this.state.timeIndex === 0 ? "Plan Mensual" : "Plan semi mensual"}
+                            <Text style={{ backgroundColor: Colors.lightBackgroundColor, padding: 5 }}>
+                                {"Plan " + this.state.combos[this.state.timeIndex].plan.type}
                             </Text>
                             <Text style={styles.whiteTextShadow}>Disfruta nuevos platos y ahorra</Text>
                             <Text style={styles.whiteTextShadow}>
                                 {this.state.timeIndex === 0 ? "Obten 20 platos" : "Obten 10 platos"}
                             </Text>
-                            <Text style={{backgroundColor:Colors.lightOrange, color:Colors.lightBackgroundColor, borderRadius:15, padding:5}}>
-                                {this.state.timeIndex === 0 ? "Válido: 2 meses" : "Válido: 4 semanas"}
+                            <Text style={{ backgroundColor: Colors.lightOrange, color: Colors.lightBackgroundColor, borderRadius: 15, padding: 5 }}>
+                                {"Válido: " + this.state.combos[this.state.timeIndex].plan.validityInDays + " días"}
                             </Text>
                         </View>
                     </View>
@@ -169,26 +181,27 @@ export default class MembershipsScreen extends Component {
                 <View style={styles.planList}>
                     {
                         this.state.combos.length <= 0 ?
-                            <View style={{width:'100%',height:'100%',justifyContent:"center", alignItems:"center"}}>
+                            <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
                                 <Bubbles size={10} color={Colors.yellowMeniu} />
                             </View> :
-                        <ScrollView style={{ flex: 1 }} >
-                            <FlatList
-                                style={{ flex: 1 }}
-                                /* key={(this.state.timeIndex)} */
-                                numColumns={1}
-                                keyExtractor={(item) => item.combo.id.toString()}
-                                onPressItem={this.handleMembershipPress}
-                                data={this.state.timeIndex === 0 ? this.state.combos[0].comboCouponPlans : this.state.combos[1].comboCouponPlans}
-                                renderItem={({ item }) => {
-                                    return <MembershipCardComponent membership={item} action={() => this.handleMembershipPress(item)} />
-                                }}
-                            />
-                        </ScrollView>
+                            <ScrollView style={{ flex: 1 }} >
+                                <FlatList
+                                    style={{ flex: 1 }}
+                                    /* key={(this.state.timeIndex)} */
+                                    numColumns={1}
+                                    keyExtractor={(item) => item.combo.id.toString()}
+                                    onPressItem={this.handleMembershipPress}
+                                    data={this.state.timeIndex === 0 ? this.state.combos[0].comboCouponPlans : this.state.combos[1].comboCouponPlans}
+                                    renderItem={({ item }) => {
+                                        return <MembershipCardComponent membership={item} action={() => this.handleMembershipPress(item)} />
+                                    }}
+                                />
+                            </ScrollView>
                     }
                 </View>
             </View>
         )
+
     }
 }
 
@@ -202,11 +215,11 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "center",
     },
-    whiteTextShadow:{
-        color:Colors.lightBackgroundColor,
+    whiteTextShadow: {
+        color: Colors.lightBackgroundColor,
         textShadowRadius: 50,
         textShadowColor: Colors.black,
-        textShadowOffset: { width: -1, height: 1 },    
+        textShadowOffset: { width: -1, height: 1 },
     },
     timeFiltersContainer: {
         flex: 1,

@@ -1,6 +1,7 @@
 import Config from "../constants/Config";
 import { AsyncStorage, Platform, ToastAndroid } from "react-native";
 import AuthService from './AuthService';
+import { fetchRetry } from './Interceptor';
 
 export default class PaymentService {
 
@@ -19,7 +20,7 @@ export default class PaymentService {
                 }
             }
         };
-        return fetch(`${Config.apiUrl}/api/Payment`, {
+        return fetchRetry(`${Config.apiUrl}/api/Payment`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + token,

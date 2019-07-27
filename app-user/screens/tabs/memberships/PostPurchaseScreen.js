@@ -55,17 +55,17 @@ export default class PostPurchaseScreen extends Component {
                     </LinearGradient>
 
                     <View style={{ width: "80%", alignItems: "flex-start" }}>
-                        <Text style={styles.headerText}>Tipo de plan:</Text>
+                        <Text style={styles.headerText}>Plan:</Text>
                         <Text style={styles.subtitleText}>{this.plan.combo.type}</Text>
 
                         <Text style={styles.headerText}>Precio:</Text>
                         <Text style={[styles.subtitleText, { fontWeight: "900" }]}>$ {this.plan.price}</Text>
 
                         <Text style={styles.headerText}>Incluye:</Text>
-                        <CouponListComponent coupons={[{ type: this.plan.couponPlan.coupon.type, foodQuantity: this.plan.foodQuantity }]} />
+                        <CouponListComponent coupons={this.plan.couponPlans} combo={this.plan.combo} showNumber = {true}/>
 
                         <Text style={styles.headerText}>Válido:</Text>
-                        <Text style={styles.subtitleText}>{this.plan.couponPlan.plan.validityInDays} días</Text>
+                        <Text style={styles.subtitleText}>{this.plan.couponPlans[0].plan.validityInDays} días</Text>
                     </View>
 
                     <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}

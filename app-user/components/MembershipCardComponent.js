@@ -78,7 +78,7 @@ export default class MembershipCardComponent extends PureComponent {
             numberStyle="decimal"
             style={styles.priceText}
           />
-          <CouponListComponent coupons={this.props.membership.couponPlans} combo = {this.props.membership}/>
+          <CouponListComponent coupons={this.props.membership.couponPlans} combo = {this.props.membership} showNumber = {false}/>
         </View>
         <View style={styles.button}>
           <TouchableHighlight onPress={this.props.action}>

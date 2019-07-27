@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {
   Image, StyleSheet, View, Text, ToastAndroid,
   Platform, TextInput, KeyboardAvoidingView, Alert,
-  TouchableHighlight, ImageBackground
+  TouchableHighlight, ImageBackground, ActivityIndicator
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import Colors from "../constants/Colors";
@@ -24,6 +24,7 @@ class SignInScreen extends Component {
       email: "",
       password: "",
       loaded: true,
+      loging: false
     };
 
     this.handleEmailInputSubmit = this.handleEmailInputSubmit.bind(this);
@@ -37,16 +38,16 @@ class SignInScreen extends Component {
     try {
       let user = await AuthService.retrieveUser();
       let token = await AuthService.retrieveToken();
-      if(user && token) this.props.navigation.navigate("Main");
+      if (user && token) this.props.navigation.navigate("Main");
     } catch (error) {
       // console.log();
-      
+
       // console.log("algo falla", {user, token, error})
     }
 
     AuthService.retrieveUser().then(user => {
-      user ? this.props.navigation.navigate("Main"):
-      this.setState({loaded:true});
+      user ? this.props.navigation.navigate("Main") :
+        this.setState({ loaded: true });
     });
   }
 
@@ -84,7 +85,7 @@ class SignInScreen extends Component {
             case 200:
               // best case
               break;
-          
+
             default:
               // Any other error
               break;
@@ -103,8 +104,8 @@ class SignInScreen extends Component {
         });
 
       } else {
-      Alert.alert("Ha habido un problema iniciando sesión con google");
-      // console.log("cancelled")
+        Alert.alert("Ha habido un problema iniciando sesión con google");
+        // console.log("cancelled")
       }
     } catch (e) {
       Alert.alert("Ha habido un problema iniciando sesión con google");
@@ -125,49 +126,49 @@ class SignInScreen extends Component {
       // console.log({fbUser});
       AuthService.externalLogIn('Facebook', fbUser.email).then(response => response.json())
         .then(responseJSON => {
-        // console.log("fb ok ", {responseJSON});
-        
-        switch (responseJSON._statusCode) {
-          case 400:
-            // No user given...
-            this.props.navigation.navigate("SignUp", {
-              email: fbUser.email,
-              firstName: fbUser.name,
-            })
-            break;
+          // console.log("fb ok ", {responseJSON});
 
-          case undefined:
-            // No status code should mean the object retrieved has the user
-            break;
+          switch (responseJSON._statusCode) {
+            case 400:
+              // No user given...
+              this.props.navigation.navigate("SignUp", {
+                email: fbUser.email,
+                firstName: fbUser.name,
+              })
+              break;
 
-          case 200:
-            // best case
-            break;
-        
-          default:
-            // Any other error
-            break;
-        }
-        let user = responseJSON;
+            case undefined:
+              // No status code should mean the object retrieved has the user
+              break;
 
-        if (user.applicationUser.token) {
-          // TODO Check if with social login credentials saved are needed
-          // this.saveCredentialsLocally(email, password);
-          this.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
-          this.saveUserLocally(user);
-          this.props.navigation.navigate("Main");
-        }
-        else throw Error("Login inválido");
-        // this.saveUserLocally(result.user);
+            case 200:
+              // best case
+              break;
 
-        // TODO: pass token to Backend
-        // this.props.navigation.navigate("Main");
-      })
-      .catch(error=>{
-        Alert.alert(`Hubo un problema con nuestros servidores`)
-        // console.log({error});
-        
-      });
+            default:
+              // Any other error
+              break;
+          }
+          let user = responseJSON;
+
+          if (user.applicationUser.token) {
+            // TODO Check if with social login credentials saved are needed
+            // this.saveCredentialsLocally(email, password);
+            this.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
+            this.saveUserLocally(user);
+            this.props.navigation.navigate("Main");
+          }
+          else throw Error("Login inválido");
+          // this.saveUserLocally(result.user);
+
+          // TODO: pass token to Backend
+          // this.props.navigation.navigate("Main");
+        })
+        .catch(error => {
+          Alert.alert(`Hubo un problema con nuestros servidores`)
+          // console.log({error});
+
+        });
 
     }
     else {
@@ -180,8 +181,8 @@ class SignInScreen extends Component {
     await AuthService.saveUserLocally(user);
   }
 
-  async saveTokenLocally(token) {
-    await AuthService.saveTokenLocally(token);
+  async saveTokenLocally(token, refreshToken) {
+    await AuthService.saveTokenLocally(token, refreshToken);
   }
 
   async saveCredentialsLocally(email, password) {
@@ -193,28 +194,49 @@ class SignInScreen extends Component {
     this.passwordInput.focus();
   }
 
+  blurInputs = () => {
+    this.emailInput.blur();
+    this.passwordInput.blur();
+  }
+
   loginWithUser() {
     // POST petition, obtain token.
+    this.blurInputs();
     const { email, password } = this.state;
-
-    AuthService.logIn(email, password)
-      .then((response) => response.json())
-      .then((responseJSON) => {
-        let user = responseJSON;
-        // console.log(user);
-        // Token se guarda en user.token
-        if (user.applicationUser.token) {
-          this.saveCredentialsLocally(email, password);
-          this.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
-          this.saveUserLocally(user);
-          this.props.navigation.navigate("Main");
-        }
-        else throw Error("Login inválido");
-      })
-      .catch((error) => {
-        Alert.alert("Login inválido, por favor intenta de nuevo");
-        // console.log({ error });
-      });
+    this.setState({
+      loging: true
+    }, () => {
+      AuthService.logIn(email, password)
+        .then((response) => response.json())
+        .then((responseJSON) => {
+          let user = responseJSON;
+          // console.log(user);
+          // Token se guarda en user.token
+          if (user.applicationUser.token) {
+            if (Platform.OS === 'android')
+              ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
+            this.saveCredentialsLocally(email, password);
+            this.saveTokenLocally(user.applicationUser.token, user.applicationUser.refreshToken);
+            this.saveUserLocally(user);
+            this.setState({
+              loging: false,
+              email: "",
+              password: ""
+            }, () => {
+              this.props.navigation.navigate("Main");
+            });
+          }
+          else throw Error("Login inválido");
+        })
+        .catch((error) => {
+          this.setState({
+            loging: false
+          }, () => {
+            Alert.alert("Login inválido, por favor intenta de nuevo");
+            // console.log({ error });
+          });
+        });
+    });
   }
 
   renderLoading() {
@@ -247,6 +269,7 @@ class SignInScreen extends Component {
               <View style={{ justifyContent: "space-evenly", alignItems: "flex-start" }}>
                 <Text style={styles.subtitleText}>Email</Text>
                 <TextInput
+                  ref={(input) => this.emailInput = input}
                   style={styles.input}
                   value={this.state.email}
                   keyboardType="email-address"
@@ -276,7 +299,14 @@ class SignInScreen extends Component {
                   <Text style={styles.linkText}>¿Olvidaste tu contraseña?</Text>
                 </TouchableHighlight> */}
                 <TouchableHighlight
-                  onPress={() => this.props.navigation.navigate("SignUp")}
+                  onPress={() => {
+                    this.setState({
+                      email: "",
+                      password : ""
+                    }, () => {
+                      this.props.navigation.navigate("SignUp");
+                    });                    
+                  }}
                 >
                   <Text style={styles.linkText}>Regístrate en meniu</Text>
                 </TouchableHighlight>
@@ -318,6 +348,11 @@ class SignInScreen extends Component {
             </View>
           </View>
         </KeyboardAvoidingView>
+        {this.state.loging &&
+          <View style={styles.loading}>
+            <ActivityIndicator size='large' color='#000000' />
+          </View>
+        }
       </ImageBackground>
 
     );
@@ -329,6 +364,16 @@ const iconStyles = {
 };
 
 const styles = StyleSheet.create({
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F5FCFF88'
+  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -380,6 +425,10 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "white",
     width: 250,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5
   },
   button: {
     flexDirection: "column",

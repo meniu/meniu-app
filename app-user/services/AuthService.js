@@ -3,7 +3,7 @@ import { AsyncStorage, Platform, ToastAndroid } from "react-native";
 import { NetInfo, Alert } from "react-native";
 
 export default class AuthService {
-  
+
   static logIn(username, password) {
     let objBody = {
       username,
@@ -18,17 +18,7 @@ export default class AuthService {
       body: JSON.stringify(objBody)
     });
   }
-
-  static async retrieveUserGet() {
-    let token = await this.retrieveToken();
-    return fetch(`${Config.apiUrl}/api/Account/${user.id}`, {
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/json',
-        'Content-type': 'application/json'
-      }
-    });
-  }
+  
 
   static externalLogIn(authType, email) {
     const acceptTermsAndConditions = true;
@@ -72,10 +62,7 @@ export default class AuthService {
 
   static saveUserLocally(user) {
     try {
-      AsyncStorage.setItem('user', JSON.stringify(user));
-      if (Platform.OS === 'android')
-        ToastAndroid.show('Bienvenido, ' + user.name, ToastAndroid.SHORT);
-      this.props.navigation.navigate("Main");
+      AsyncStorage.setItem('user', JSON.stringify(user));      
     } catch (error) {
       // Error saving data
       // console.log({ error });
@@ -93,7 +80,6 @@ export default class AuthService {
     } catch (error) {
       // Error saving data
       // console.log({ error });
-
     }
   }
 
@@ -107,12 +93,41 @@ export default class AuthService {
     }
   }
 
+  static async refreshToken() {
+    let token = await this.retrieveTokenObject();
+    let newToken = await fetch(`${Config.apiUrl}/api/Account/RefreshToken`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(token)
+    }).then(response => response.json());
+    this.saveTokenLocally(newToken.token, newToken.refreshToken);
+    return newToken.token;
+  }
+
   static async retrieveUser() {
-    return JSON.parse(await AsyncStorage.getItem('user'));
+    let user = JSON.parse(await AsyncStorage.getItem('user'));
+    if (user) {
+      if (user.id) {
+        return user;
+      }
+      else {
+        this.logOut(() => { });
+      }
+    }
+    else {
+      return user;
+    }
   }
 
   static async retrieveCredentials() {
     return JSON.parse(await AsyncStorage.getItem('credentials'));
+  }
+
+  static async retrieveTokenObject() {
+    return JSON.parse(await AsyncStorage.getItem('token'));
   }
 
   static async retrieveToken() {
@@ -120,16 +135,14 @@ export default class AuthService {
     let state = await NetInfo.getConnectionInfo();
     // console.log("Connection type", state.type);
 
-    if(state.type === 'none'){
+    if (state.type === 'none') {
       //acá iría lo que cambie de screen o muestre el modal
       Alert.alert("No tienes internet");
     }
-    console.log("Este es el obj previo");
-    
-    let prevToken = JSON.parse(await AsyncStorage.getItem('token'));
-    console.log({prevToken});
-    
-    let token = prevToken.token;
+
+    let tokenObject = JSON.parse(await AsyncStorage.getItem('token'));
+
+    let token = tokenObject.token;
 
     return token;
     /* let response = await fetch(`${Config.apiUrl}/api/CheckToken`, {
@@ -146,7 +159,7 @@ export default class AuthService {
         'Content-type': 'application/json'
       }
     }); */
-    
+
     /* if (response.status === 200) {
       return token;
     } else {
@@ -173,7 +186,6 @@ export default class AuthService {
 
   static async retrieveRefreshToken() {
     let token = JSON.parse(await AsyncStorage.getItem('token')).refreshToken;
-
     return token;
   }
 
@@ -190,6 +202,4 @@ export default class AuthService {
     AsyncStorage.removeItem('token');
     AsyncStorage.removeItem("user", callBack);
   }
-
-
 }

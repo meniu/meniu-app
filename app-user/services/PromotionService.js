@@ -1,12 +1,13 @@
 import Config from "../constants/Config";
 import { AsyncStorage, Platform, ToastAndroid } from "react-native";
 import AuthService from './AuthService';
+import { fetchRetry } from './Interceptor';
 
 export default class PromotionService {
 
     static async retrievePromotions() {
         let token = await AuthService.retrieveToken();
-        return fetch(`${Config.apiUrl}/api/Promotion`, {
+        return fetchRetry(`${Config.apiUrl}/api/Promotion`, {
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
@@ -19,7 +20,7 @@ export default class PromotionService {
         let token = await AuthService.retrieveToken();
         let user = await AuthService.retrieveUser();
         // console.log(`${Config.apiUrl}/api/Promotion?userEmail=${user.applicationUser.email}`);
-        return fetch(`${Config.apiUrl}/api/Promotion?userEmail=${user.applicationUser.email}`, {
+        return fetchRetry(`${Config.apiUrl}/api/Promotion?userEmail=${user.applicationUser.email}`, {
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
@@ -30,7 +31,7 @@ export default class PromotionService {
 
     static async retrievePromotionsByPartner(partnerId) {
         let token = await AuthService.retrieveToken();
-        return fetch(`${Config.apiUrl}/api/Promotion/${partnerId}`, {
+        return fetchRetry(`${Config.apiUrl}/api/Promotion/${partnerId}`, {
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Accept': 'application/json',
@@ -53,7 +54,7 @@ export default class PromotionService {
             promotionCouponId,
             comboType: user.comboCouponPlan.combo.type
         }
-        return fetch(`${Config.apiUrl}/api/Promotion/Generate/Code`, {
+        return fetchRetry(`${Config.apiUrl}/api/Promotion/Generate/Code`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + token,
