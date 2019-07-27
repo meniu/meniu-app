@@ -3,13 +3,12 @@
 import React, { Component } from 'react';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { StackActions, NavigationActions } from "react-navigation";
 
 import {
   StyleSheet, Alert, Modal,
   View, Text
 } from 'react-native';
-import Colors from "../constants/Colors";
+import Colors from '../../../constants/Colors';
 
 class PlateSaleScreen extends Component {
 
@@ -24,7 +23,7 @@ class PlateSaleScreen extends Component {
   }
 
   handleBarCodeScanned = data => {
-    this.props.navigation.navigate("CodeScanned",{
+    this.props.navigation.navigate("CodeScanned", {
       data
     });
   };
@@ -42,7 +41,7 @@ class PlateSaleScreen extends Component {
         <View style={styles.QRcontainer}>
           <BarCodeScanner
             onBarCodeScanned={this.handleBarCodeScanned}
-            style={{height: 200, width: 200}}
+            style={{ height: 200, width: 200 }}
           />
         </View>
         <Text style={{ flex: 1 }}>
@@ -57,14 +56,14 @@ class PlateSaleScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    alignItems: "center", 
+    flex: 1,
+    alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: Colors.backgroundColor
   },
   QRcontainer: {
-    flex:6,
-    alignItems:"center",
+    flex: 6,
+    alignItems: "center",
     justifyContent: "center",
   },
 });

@@ -7,11 +7,11 @@ import {
   StyleSheet,
   View, Text
 } from 'react-native';
-import Colors from "../constants/Colors";
-import Layout from "../constants/Layout";
 import { FontAwesome } from '@expo/vector-icons';
-import PromotionService from '../services/PromotionService';
-import AuthService from '../services/AuthService';
+import Colors from '../../../constants/Colors';
+import PromotionService from '../../../services/PromotionService';
+import AuthService from '../../../services/AuthService';
+import InfoContainerComponent from '../../../components/InfoContainerComponent';
 
 class CodeScannedScreen extends Component {
 
@@ -67,7 +67,7 @@ class CodeScannedScreen extends Component {
     let partnerIdentification = (await AuthService.retrieveUser()).applicationBranchOffice.branchOffice.partner.identification;
     console.log('id1', partnerIdentification);
     console.log('id2', this.data.partnerIdentification);
-    if(partnerIdentification === this.data.partnerIdentification){
+    if (partnerIdentification === this.data.partnerIdentification) {
       PromotionService.readCode(JSON.stringify(this.data)).then(res => res.json()).then(resJSON => {
         console.log('Respesta readcode:');
         console.log(resJSON);
@@ -75,12 +75,12 @@ class CodeScannedScreen extends Component {
           res: JSON.stringify(resJSON)
         });
       });
-    } 
-    else{
+    }
+    else {
       this.setState({
         res: "This QR code is related to another restaurant's promotion"
       });
-    }    
+    }
   }
 
   renderValidCode() {
@@ -113,7 +113,16 @@ class CodeScannedScreen extends Component {
     else {
       conditionalContent = this.renderValidCode();
     }
-    return conditionalContent;
+    return (
+      <View>
+        <View>
+
+        </View>
+        <View>
+
+        </View>
+      </View>
+    );
   }
 }
 
@@ -124,6 +133,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     backgroundColor: Colors.backgroundColor
   },
+  gradient: {
+
+  },
+  messageContainer: {
+
+  }
 });
 
 
