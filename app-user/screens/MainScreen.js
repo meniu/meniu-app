@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
 import { createAppContainer, createStackNavigator, createBottomTabNavigator } from "react-navigation";
 import LastOrdersScreen from "./tabs/last_orders/LastOrdersScreen.js";
 import PartnerSelectionScreen from "./tabs/partner_selection/PartnerSelectionScreen.js";

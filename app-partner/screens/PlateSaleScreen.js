@@ -3,13 +3,12 @@
 import React, { Component } from 'react';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { StackActions, NavigationActions } from "react-navigation";
 
 import {
   StyleSheet, Alert, Modal,
   View, Text
 } from 'react-native';
-import Colors from "../constants/Colors";
+import Colors from '../constants/Colors';
 
 class PlateSaleScreen extends Component {
 
@@ -24,7 +23,7 @@ class PlateSaleScreen extends Component {
   }
 
   handleBarCodeScanned = data => {
-    this.props.navigation.navigate("CodeScanned",{
+    this.props.navigation.navigate("CodeScanned", {
       data
     });
   };
@@ -32,22 +31,17 @@ class PlateSaleScreen extends Component {
 
   render() {
     if (this.state.hasCameraPermission === null) {
-      return <Text>Requesting for camera permission</Text>;
+      return <Text>Pidiendo acceso a cámara</Text>;
     }
     if (this.state.hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
+      return <Text>No hay acceso a cámara</Text>;
     }
     let try1 = (
       <View style={styles.container}>
-        <View style={styles.QRcontainer}>
-          <BarCodeScanner
-            onBarCodeScanned={this.handleBarCodeScanned}
-            style={{height: 200, width: 200}}
-          />
-        </View>
-        <Text style={{ flex: 1 }}>
-          Escanea el código QR del usuario Meniu para registrar el plato que quiere comprar
-        </Text>
+        <BarCodeScanner
+          onBarCodeScanned={this.handleBarCodeScanned}
+          style={{ ...StyleSheet.absoluteFillObject, backgroundColor: Colors.transparent }}
+        />
       </View>
     );
 
@@ -57,14 +51,14 @@ class PlateSaleScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
-    alignItems: "center", 
+    flex: 1,
+    alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: Colors.backgroundColor
   },
   QRcontainer: {
-    flex:6,
-    alignItems:"center",
+    flex: 6,
+    alignItems: "center",
     justifyContent: "center",
   },
 });
