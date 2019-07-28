@@ -9,6 +9,9 @@ import PlateSaleScreen from './screens/PlateSaleScreen';
 const AppNavigator = createStackNavigator({
   SignIn: {
     screen: SignInScreen,
+    navigationOptions: () => ({
+      header: null,
+    }),
   },
   Main: {
     screen: MainScreen,

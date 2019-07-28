@@ -2,12 +2,14 @@
 
 import React, { Component } from 'react';
 import {
-  Button, Image, StyleSheet, View, Text,
-  Platform, TextInput, KeyboardAvoidingView
+  StyleSheet, View, ImageBackground,
+  TextInput, KeyboardAvoidingView
 } from 'react-native';
+import { Button, Text } from 'react-native-elements';
 import Colors from "../constants/Colors";
 import AuthService from '../services/AuthService';
 import Partners from "../constants/Partners";
+import Layout from '../constants/Layout';
 
 class SignInScreen extends Component {
 
@@ -59,47 +61,57 @@ class SignInScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-        <Text style={styles.subtitleText}>Ingresa con tu usuario</Text>
-        <TextInput
-          style={styles.input}
-          value={this.state.restaurant}
-          placeholder="restaurante"
-          placeholderTextColor={Colors.tintColor}
-          onChangeText={(restaurant) => this.setState({ restaurant })}
-          returnKeyType="next"
-          onSubmitEditing={this.handleRestaurantInputSubmit}
-          blurOnSubmit={false}
-          autoFocus
-        />
-        <TextInput
-          ref={(input) => { this.sucursalInput = input; }}
-          style={styles.input}
-          value={this.state.sucursal}
-          placeholder="sucursal"
-          placeholderTextColor={Colors.tintColor}
-          onChangeText={(sucursal) => this.setState({ sucursal })}
-          returnKeyType="next"
-          onSubmitEditing={this.handleSucursalInputSubmit}
-          blurOnSubmit={false}
-        />
-        <TextInput
-          ref={(input) => { this.passwordInput = input; }}
-          style={styles.input}
-          value={this.state.password}
-          placeholder="contraseña"
-          placeholderTextColor={Colors.tintColor}
-          onChangeText={(password) => this.setState({ password })}
-          secureTextEntry
-        />
-        <Button
-          style={styles.button}
-          title="Ingresa"
-          color={Colors.tintColor}
-          onPress={this.loginWithUser}
-        />
-        <Text>¿Olvidaste tu contraseña?</Text>
-      </KeyboardAvoidingView>
+      <ImageBackground
+        source={require('../assets/images/bg-login.jpg')}
+        style={{ resizeMode: "cover", width: Layout.window.width, height: Layout.window.height }}
+      >
+        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+          <View style={styles.logoContainer}>
+            <Text style={styles.subtitleText}>Meniu - Aliados</Text>
+          </View>
+          <View style={styles.formContainer}>
+            <TextInput
+              style={styles.input}
+              value={this.state.restaurant}
+              placeholder="restaurante"
+              placeholderTextColor={Colors.tintColor}
+              onChangeText={(restaurant) => this.setState({ restaurant })}
+              returnKeyType="next"
+              onSubmitEditing={this.handleRestaurantInputSubmit}
+              blurOnSubmit={false}
+              autoFocus
+            />
+            <TextInput
+              ref={(input) => { this.sucursalInput = input; }}
+              style={styles.input}
+              value={this.state.sucursal}
+              placeholder="sucursal"
+              placeholderTextColor={Colors.tintColor}
+              onChangeText={(sucursal) => this.setState({ sucursal })}
+              returnKeyType="next"
+              onSubmitEditing={this.handleSucursalInputSubmit}
+              blurOnSubmit={false}
+            />
+            <TextInput
+              ref={(input) => { this.passwordInput = input; }}
+              style={styles.input}
+              value={this.state.password}
+              placeholder="contraseña"
+              placeholderTextColor={Colors.tintColor}
+              onChangeText={(password) => this.setState({ password })}
+              secureTextEntry
+            />
+            <Button
+              buttonStyle={styles.button}
+              titleStyle={styles.textButton}
+              title="Iniciar Sesión"
+              color={Colors.tintColor}
+              onPress={this.loginWithUser}
+            />
+            <Text>¿Olvidaste tu contraseña?</Text>
+          </View>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     );
   }
 }
@@ -114,11 +126,24 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
+    backgroundColor: Colors.darkShadow,
+  },
+  logoContainer: {
+    height: Layout.window.height * 0.2
+  },
+  formContainer: {
+    height: Layout.window.height * 0.5,
+    width: Layout.window.width * 0.9,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 15,
     backgroundColor: Colors.backgroundColor,
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   subtitleText: {
     fontSize: 24,
-    color: "black",
+    color: Colors.lightBackgroundColor,
     textAlign: "center",
   },
   input: {
@@ -126,7 +151,17 @@ const styles = StyleSheet.create({
     width: 250,
   },
   button: {
-    width: 250,
+    flexDirection: "column",
+    width: "80%",
+    backgroundColor: Colors.yellowMeniu,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    borderRadius: 10,
+  },
+  textButton: {
+    color: Colors.black,
+    textAlign: "center",
   },
   buttons: {
     justifyContent: 'space-between',
