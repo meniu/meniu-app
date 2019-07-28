@@ -7,6 +7,8 @@ export default {
   lightBackgroundColor: "white",
   darkBackgroundColor: "#888",
   transparent: "transparent",
+  darkTransparent: "#00000033",
+  darkShadow: "#00000099",
   lightOrange: "#FDCF00",
   darkOrange: "#FC8F00",
   lightRed: "#FB3F26",

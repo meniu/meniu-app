@@ -5,12 +5,16 @@ import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 import {
-  StyleSheet, Alert, Modal,
-  View, Text
+  StyleSheet,
+  View,
 } from 'react-native';
+import { Text } from 'react-native-elements';
+import { Feather } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
+import Layout from '../constants/Layout';
 
 class PlateSaleScreen extends Component {
+
 
   state = {
     hasCameraPermission: null,
@@ -36,30 +40,45 @@ class PlateSaleScreen extends Component {
     if (this.state.hasCameraPermission === false) {
       return <Text>No hay acceso a cámara</Text>;
     }
-    let try1 = (
-      <View style={styles.container}>
-        <BarCodeScanner
-          onBarCodeScanned={this.handleBarCodeScanned}
-          style={{ ...StyleSheet.absoluteFillObject, backgroundColor: Colors.transparent }}
-        />
-      </View>
+    return (
+      <BarCodeScanner
+        onBarCodeScanned={this.handleBarCodeScanned}
+        style={[StyleSheet.absoluteFillObject, styles.QRcontainer]}
+      >
+        <Text h4 style={styles.text}>
+          Escanea el QR del usuario para registrar el plato
+        </Text>
+        <View style={styles.focused}>
+          <Feather name={'plus'} size={Layout.window.width * 0.15} color={Colors.lightBackgroundColor} />
+        </View>
+      </BarCodeScanner>
     );
-
-    return try1;
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: Colors.backgroundColor
-  },
+
   QRcontainer: {
-    flex: 6,
-    alignItems: "center",
+    flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.darkTransparent,
+  },
+  text: {
+    color: Colors.lightBackgroundColor,
+    textAlign: "center",
+    margin: 10,
+  },
+  focused: {
+    width: Layout.window.width * 0.6,
+    height: Layout.window.width * 0.6,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 3,
+    borderRadius: 5,
+    borderColor: Colors.lightBackgroundColor,
+    borderStyle: "dashed",
+    backgroundColor: Colors.transparent,
   },
 });
 
