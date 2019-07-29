@@ -66,6 +66,7 @@ class CodeScannedScreen extends Component {
     console.log(this.data.partnerIdentification); */
     if (partnerIdentification === this.data.partnerIdentification) {
       PromotionService.readCode(JSON.stringify(this.data)).then(res => res.json()).then(resJSON => {
+        console.log(resJSON);
         if (resJSON._statusCode) {
           this.setState({
             res: resJSON,
@@ -162,13 +163,13 @@ class CodeScannedScreen extends Component {
 
       <View style={{ width: "80%", alignItems: "flex-start" }}>
         <Text style={styles.headerText}>Nombre del plato:</Text>
-        <Text style={styles.subtitleText}>'Nombre'</Text>
+        <Text style={styles.subtitleText}>{this.state.res.promotionCoupon.name}</Text>
 
-        <Text style={styles.headerText}>Categoría:</Text>
-        <Text style={styles.subtitleText}>'Categoría'</Text>
+        <Text style={styles.headerText}>Bebida:</Text>
+        <Text style={styles.subtitleText}>{this.state.res.promotionCoupon.hasDrink ? this.state.res.promotionCoupon.drinkDescription : "No incluye bebida"}</Text>
 
-        <Text style={styles.headerText}>Incluye:</Text>
-        <Text style={styles.subtitleText}>'Incluye'</Text>
+        <Text style={styles.headerText}>Cliente:</Text>
+        <Text style={styles.subtitleText}>{this.state.res.user.name + " " + this.state.res.user.lastName}</Text>
       </View>
       <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
         title="Orden realizada" onPress={this.handleOrderFinished} />
