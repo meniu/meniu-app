@@ -13,6 +13,7 @@ import Colors from '../../../constants/Colors';
 import PromotionService from '../../../services/PromotionService';
 import AuthService from '../../../services/AuthService';
 import InfoContainerComponent from '../../../components/InfoContainerComponent';
+import { Bubbles } from 'react-native-loader';
 
 class CodeScannedScreen extends Component {
 
@@ -28,10 +29,18 @@ class CodeScannedScreen extends Component {
     this.target = this.data.target;
     this.type = this.data.type;
     this.data = JSON.parse(this.data.data);
-    console.log("data", this.data);
     this.state = {
-      res: "Waiting for response..."
+      res: null,
+      state: 0
     };
+
+    /**
+     * This.state.state is related to the result of reading QR and its response from back endpoint:
+     * 0 -> No response yet (before fetch).
+     * 1 -> Success (no errors).
+     * 2 -> Invalid (response errors).
+     * 3 -> Another restaurant plate (different partnerId).
+     */
 
     // Info data
     this.infoType = "success";
@@ -44,22 +53,38 @@ class CodeScannedScreen extends Component {
     this.renderValidCode = this.renderValidCode.bind(this);
   }
 
+  renderLoading() {
+    return (
+      <View style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }}>
+        <Bubbles size={10} color={Colors.yellowMeniu} />
+      </View>);
+  }
+
   async componentDidMount() {
     let partnerIdentification = (await AuthService.retrieveUser()).applicationBranchOffice.branchOffice.partner.identification;
-    console.log('id1', partnerIdentification);
-    console.log('id2', this.data.partnerIdentification);
+    /* console.log(partnerIdentification);
+    console.log(this.data.partnerIdentification); */
     if (partnerIdentification === this.data.partnerIdentification) {
       PromotionService.readCode(JSON.stringify(this.data)).then(res => res.json()).then(resJSON => {
-        console.log('Respesta readcode:');
         console.log(resJSON);
-        this.setState({
-          res: JSON.stringify(resJSON)
-        });
+        if (resJSON._statusCode) {
+          this.setState({
+            res: resJSON,
+            state: 2
+          });
+        }
+        else {
+          this.setState({
+            res: resJSON,
+            state: 1
+          });
+        }
       });
     }
     else {
       this.setState({
-        res: "This QR code is related to another restaurant's promotion"
+        state: 3,
+        res: null
       });
     }
   }
@@ -97,7 +122,7 @@ class CodeScannedScreen extends Component {
         <Text h4>No disponible</Text>
         <Text>El plato escaneado no se encuentra disponible en tu restaurante</Text>
         <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
-          title="Volver" onPress={handleGoBack} />
+          title="Volver" onPress={this.handleGoBack} />
       </View>
     );
 
@@ -138,13 +163,13 @@ class CodeScannedScreen extends Component {
 
       <View style={{ width: "80%", alignItems: "flex-start" }}>
         <Text style={styles.headerText}>Nombre del plato:</Text>
-        <Text style={styles.subtitleText}>'Nombre'</Text>
+        <Text style={styles.subtitleText}>{this.state.res.promotionCoupon.name}</Text>
 
-        <Text style={styles.headerText}>Categoría:</Text>
-        <Text style={styles.subtitleText}>'Categoría'</Text>
+        <Text style={styles.headerText}>Bebida:</Text>
+        <Text style={styles.subtitleText}>{this.state.res.promotionCoupon.hasDrink ? this.state.res.promotionCoupon.drinkDescription : "No incluye bebida"}</Text>
 
-        <Text style={styles.headerText}>Incluye:</Text>
-        <Text style={styles.subtitleText}>'Incluye'</Text>
+        <Text style={styles.headerText}>Cliente:</Text>
+        <Text style={styles.subtitleText}>{this.state.res.user.name + " " + this.state.res.user.lastName}</Text>
       </View>
       <Button buttonStyle={styles.buttonStyle} titleStyle={styles.textButtonStyle}
         title="Orden realizada" onPress={this.handleOrderFinished} />
@@ -158,7 +183,22 @@ class CodeScannedScreen extends Component {
   */
   render() {
     let conditionalContent;
-    if (!this.isDataValid()) {
+    if (this.state.state === 0)
+      return this.renderLoading();
+
+    if (this.state.state === 1) {
+      conditionalContent = this.renderValidCode();
+    }
+    else if (this.state.state === 3) {
+      conditionalContent = this.renderNotInRestaurantPlate();
+    }
+    else {
+      conditionalContent = this.renderInvalidCode();
+    }
+    /* if (this.) {
+      conditionalContent = this.renderLoading();
+    }
+    else if (!this.isDataValid()) {
       conditionalContent = this.renderInvalidCode();
     }
     else if (!this.plateInRestaurant()) {
@@ -166,7 +206,7 @@ class CodeScannedScreen extends Component {
     }
     else {
       conditionalContent = this.renderValidCode();
-    }
+    } */
     // conditionalContent = this.renderInvalidCode();
     return (
       <InfoContainerComponent title={this.title} subtitle={this.subtitle} infoType={this.infoType}>

@@ -30,7 +30,7 @@ export default class OrderModalComponent extends PureComponent {
             <this.CloseButton/>
             <View style={{justifyContent:"flex-end", alignItems:"center", marginTop:20}}>
                 <Image
-                    style={{height: Layout.window.width/4, width: Layout.window.width/3, resizeMode:"contain"}}
+                    style={{height: Layout.window.width/3, width: Layout.window.width/2, resizeMode:"contain", borderRadius: 20, margin: 10}}
                     source={{uri:Config.azureStorageUrl + this.props.promotionEntity.imagePath}}
                 />
                 <Image
@@ -108,15 +108,17 @@ const styles = StyleSheet.create({
         width: Layout.window.width * 0.7,
         height: Layout.window.height * 0.7,
         backgroundColor: Colors.white,
-        padding: 5
+        padding: 20,
+        borderRadius: 20
     },
     modalFailureContent: {
         justifyContent: "center",
         alignItems: "center",
         width: Layout.window.width * 0.7,
         height: Layout.window.height * 0.5,
-        backgroundColor: Colors.white ,
-        padding: 5
+        backgroundColor: Colors.white,
+        padding: 20,
+        borderRadius: 20
     },
     headerText:{
         fontWeight:"bold",

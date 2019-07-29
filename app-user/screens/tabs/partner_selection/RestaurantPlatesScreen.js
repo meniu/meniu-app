@@ -190,7 +190,7 @@ class RestaurantPlatesScreen extends Component {
         type={_type}
         visible={_type === "success" ? this.state.successModalVisible : this.state.failureModalVisible}
         promotionEntity={this.state.selectedPlate}
-        restaurantEntity={this.restaurant}
+        restaurantEntity={this.restaurant.partner}
         toggleVisible={this.disableModals}
         buttonAction={_type === "success" ?
           this.handleConfirmPress :
