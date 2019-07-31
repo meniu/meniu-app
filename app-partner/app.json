@@ -29,7 +29,9 @@
     "android": {
       "package": "com.meniu.meniu_app_partner",
       "versionCode": 1,
-      "permissions": []
+      "permissions": [
+        "CAMERA"
+      ]
     },
     "description": "App de aliados Meniu"
   }
