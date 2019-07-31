@@ -32,7 +32,7 @@
     "android": {
       "package": "com.meniu.meniu_app_user",
       "versionCode": 6,
-      "permissions": [],
+      "permissions": []
     },
     "description": "App de usuarios para Meniu"
   }
