@@ -58,7 +58,7 @@ class SignInScreen extends Component {
   async googleSignIn() {
     try {
       const result = await Google.logInAsync({
-        androidClientId: "325641301007-dbn776ocng6arpk21leh38onr7t66j5e.apps.googleusercontent.com",
+        androidClientId: "325641301007-1kejj8kbjvrqfe4e80k9ies6uefcjtgo.apps.googleusercontent.com",
         iosClientId: "325641301007-4htnseppal11sdc58ia9ltin1v7bflh4.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
@@ -115,15 +115,15 @@ class SignInScreen extends Component {
 
   // Handle Login with Facebook button tap
   async facebookSignIn() {
-    const { type, token } = await Facebook.logInWithReadPermissionsAsync('1056365824552520', {
-      permissions: ['public_profile'],
+    const { type, token, permissions } = await Facebook.logInWithReadPermissionsAsync('1056365824552520', {
+      permissions: ['public_profile', 'email'],
     });
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
       const response = await fetch(
         `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email`);
       const fbUser = await response.json();
-      // console.log({fbUser});
+      // console.log({ fbUser, permissions });
       AuthService.externalLogIn('Facebook', fbUser.email).then(response => response.json())
         .then(responseJSON => {
           // console.log("fb ok ", {responseJSON});
@@ -135,7 +135,7 @@ class SignInScreen extends Component {
                 email: fbUser.email,
                 firstName: fbUser.name,
               })
-              break;
+              return;
 
             case undefined:
               // No status code should mean the object retrieved has the user
@@ -158,14 +158,14 @@ class SignInScreen extends Component {
             this.saveUserLocally(user);
             this.props.navigation.navigate("Main");
           }
-          else throw Error("Login inválido");
+          else Alert.alert("Login inválido");
           // this.saveUserLocally(result.user);
 
           // TODO: pass token to Backend
           // this.props.navigation.navigate("Main");
         })
         .catch(error => {
-          Alert.alert(`Hubo un problema con nuestros servidores`)
+          Alert.alert(`Hubo un problema con nuestros servidores`);
           // console.log({error});
 
         });
@@ -242,7 +242,7 @@ class SignInScreen extends Component {
   renderLoading() {
     return (
       <Image
-        source={require('../assets/images/splash.png')}
+        source={require('../assets/images/splash.jpg')}
         style={{
           width: '100%', height: '100%', resizeMode: "cover",
           justifyContent: "center", alignItems: "center",
@@ -302,10 +302,10 @@ class SignInScreen extends Component {
                   onPress={() => {
                     this.setState({
                       email: "",
-                      password : ""
+                      password: ""
                     }, () => {
                       this.props.navigation.navigate("SignUp");
-                    });                    
+                    });
                   }}
                 >
                   <Text style={styles.linkText}>Regístrate en meniu</Text>

@@ -15,7 +15,7 @@
     "facebookAppId": "1056365824552520",
     "facebookDisplayName": "Meniu-user",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/splash.jpg",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -32,7 +32,12 @@
     "android": {
       "package": "com.meniu.meniu_app_user",
       "versionCode": 5,
-      "permissions": []
+      "permissions": [],
+      "config": {
+        "googleSignIn": {
+          "certificateHash": "8E34D8975572797F8FBE3C5D09CEF5741169C938"
+        }
+      }
     },
     "description": "App de usuarios para Meniu"
   }
