@@ -8,14 +8,14 @@
       "ios",
       "android"
     ],
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/images/meniu-fondo-amarillo.png",
     "facebookScheme": "fb1056365824552520",
     "facebookAppId": "1056365824552520",
     "facebookDisplayName": "Meniu-user",
     "splash": {
-      "image": "./assets/images/splash.jpg",
+      "image": "./assets/images/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -31,7 +31,7 @@
     },
     "android": {
       "package": "com.meniu.meniu_app_user",
-      "versionCode": 6,
+      "versionCode": 7,
       "permissions": [],
       "config": {
         "googleSignIn": {

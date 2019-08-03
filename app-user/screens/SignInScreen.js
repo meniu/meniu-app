@@ -242,7 +242,7 @@ class SignInScreen extends Component {
   renderLoading() {
     return (
       <Image
-        source={require('../assets/images/splash.jpg')}
+        source={require('../assets/images/splash.png')}
         style={{
           width: '100%', height: '100%', resizeMode: "cover",
           justifyContent: "center", alignItems: "center",
